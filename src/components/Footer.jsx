@@ -44,10 +44,29 @@ const Footer = () => {
         <div className="text-center sm:text-left">
           <h3 className="font-bold mb-2">SUPPORT</h3>
           <ul>
-            <li>FAQ</li>
-            <li>Support client</li>
-            <li>SAV</li>
-            <li>Chat en direct</li>
+            <li>
+              <Link to="/faq" className="hover:underline hover:font-semibold transition-colors duration-300">
+                FAQ
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/politique-de-retour" className="hover:underline hover:font-semibold transition-colors duration-300">
+                Politique de retour
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/livraison" className="hover:underline hover:font-semibold transition-colors duration-300">
+                Livraison
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/support-client" className="hover:underline hover:font-semibold transition-colors duration-300">
+                Support client
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

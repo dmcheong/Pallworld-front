@@ -8,6 +8,8 @@ import Tokens from './pages/Tokens';
 // import Checkout from './pages/Checkout';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Faq from './pages/Faq';
+import Retour from './pages/Retour';
 
 const AppRouter = () => {
   return (
@@ -21,6 +23,8 @@ const AppRouter = () => {
         <Route path="/checkout" element={<Checkout />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/faq" element={<Faq />} />
+        <Route path="/politique-de-retour" element={<Retour />} />
       </Routes>
     </Router>
   );
