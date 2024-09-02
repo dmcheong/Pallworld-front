@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
-import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaInstagram, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
 
 const Footer = () => {
   return (
     <footer className="text-black py-8 bg-gray-100">
-      <div className="container mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
+      <div className="container mx-auto grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-8">
         <div className="text-center sm:text-left">
           <img 
             src={logo} 
@@ -23,16 +23,19 @@ const Footer = () => {
                 Textile
               </Link>
             </li>
+
             <li>
               <Link to="/shop/goodies" className="hover:underline hover:font-semibold transition-colors duration-300">
                 Goodies
               </Link>
             </li>
+
             <li>
               <Link to="/shop/promos" className="hover:underline hover:font-semibold transition-colors duration-300">
                 Promos
               </Link>
             </li>
+
             <li>
               <Link to="/tokens" className="hover:underline hover:font-semibold transition-colors duration-300">
                 Tokens
@@ -66,6 +69,26 @@ const Footer = () => {
               <Link to="/support-client" className="hover:underline hover:font-semibold transition-colors duration-300">
                 Support client
               </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div className="text-center sm:text-left">
+          <h3 className="font-bold mb-2">CONTACT</h3>
+          <ul>
+            <li className="flex items-center justify-center sm:justify-start">
+                  <FaMapMarkerAlt className="mr-2" />
+                  <span>12 Rue Anatole France, 92000 Nanterre, France</span>
+                </li>
+
+            <li className="flex items-center justify-center sm:justify-start  mt-2">
+              <FaPhone className="mr-2" />
+              <span>+33 1 48 07 07 02</span>
+            </li>
+
+            <li className="flex items-center justify-center sm:justify-start mt-2">
+              <FaEnvelope className="mr-2" />
+              <span>contact@palworld.com</span>
             </li>
           </ul>
         </div>

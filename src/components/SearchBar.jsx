@@ -23,7 +23,7 @@ function SearchBar() {
   return (
     <>
       <FaSearch
-        className="text-gray-600 cursor-pointer"
+        className="text-gray-600 hover:text-gray-800 cursor-pointer"
         onClick={openSearch}
       />
 
@@ -37,7 +37,7 @@ function SearchBar() {
             onClick={(e) => e.stopPropagation()} // Prevents closing modal when clicking inside the input
           >
             <div className="relative">
-              <FaSearch className="absolute left-3 top-2/4 transform -translate-y-2/4 text-gray-600" />
+              <FaSearch className="absolute left-3 top-2/4 transform -translate-y-2/4 text-gray-600 " />
               <input
                 type="text"
                 placeholder="Search"

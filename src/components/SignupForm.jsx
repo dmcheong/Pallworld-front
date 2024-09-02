@@ -61,7 +61,7 @@ const SignupForm = () => {
 
       <p className="text-center mt-4 text-sm">
         Vous avez déjà un compte ?{' '}
-        <Link to="/login" className="text-sky-600 hover:underline">
+        <Link to="/connexion" className="text-sky-600 hover:underline">
           Se connecter
         </Link>
       </p>

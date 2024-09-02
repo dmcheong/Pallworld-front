@@ -26,11 +26,11 @@ function Header() {
 
         {/* Right: User and Cart icons */}
         <div className="flex items-center justify-end flex-1 space-x-4">
-          <Link to="/login">
+          <Link to="/connexion">
             <FaUser className="text-gray-600 hover:text-gray-800" />
           </Link>
 
-          <Link to="/cart">
+          <Link to="/panier">
             <FaShoppingCart className="text-gray-600 hover:text-gray-800" />
           </Link>
         </div>
@@ -55,7 +55,7 @@ function Header() {
             PROMOS
           </Link>
           
-          <Link to="/tokens" className="text-sm sm:text-base hover:underline hover:font-medium">
+          <Link to="/shop/tokens" className="text-sm sm:text-base hover:underline hover:font-medium">
             TOKENS
           </Link>
 
