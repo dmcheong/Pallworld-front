@@ -43,77 +43,19 @@ const ProductCarousel = () => {
       
       <div className="container mx-auto">
         <Slider {...settings}>
-          <div className="p-4">
-            <div className="border rounded-lg p-4 flex flex-col items-center transform transition-transform duration-300 hover:scale-105 hover:z-10">
-              <img
-                src={comingsoon}
-                alt="Produit 1"
-                className="h-56 w-full object-cover mb-4 rounded-lg transform transition-transform duration-300"
-              />
-              <h3 className="text-lg font-semibold">Produit 1</h3>
-              <p className="mt-2">€19.99</p>
+          {[...Array(6)].map((_, index) => (
+            <div key={index} className="p-4">
+              <div className="border rounded-lg p-4 flex flex-col items-center shadow-lg transform transition-transform duration-300 hover:scale-105 hover:z-10">
+                <img
+                  src={comingsoon}
+                  alt={`Produit ${index + 1}`}
+                  className="h-56 w-full object-cover mb-4 rounded-lg"
+                />
+                <h3 className="text-lg font-semibold">Produit {index + 1}</h3>
+                <p className="mt-2">€{19.99 + index}</p>
+              </div>
             </div>
-          </div>
-
-          <div className="p-4">
-            <div className="border rounded-lg p-4 flex flex-col items-center transform transition-transform duration-300 hover:scale-105 hover:z-10">
-              <img
-                src={comingsoon}
-                alt="Produit 2"
-                className="h-56 w-full object-cover mb-4 rounded-lg transform transition-transform duration-300"
-              />
-              <h3 className="text-lg font-semibold">Produit 2</h3>
-              <p className="mt-2">€29.99</p>
-            </div>
-          </div>
-
-          <div className="p-4">
-            <div className="border rounded-lg p-4 flex flex-col items-center transform transition-transform duration-300 hover:scale-105 hover:z-10">
-              <img
-                src={comingsoon}
-                alt="Produit 3"
-                className="h-56 w-full object-cover mb-4 rounded-lg transform transition-transform duration-300"
-              />
-              <h3 className="text-lg font-semibold">Produit 3</h3>
-              <p className="mt-2">€39.99</p>
-            </div>
-          </div>
-
-          <div className="p-4">
-            <div className="border rounded-lg p-4 flex flex-col items-center transform transition-transform duration-300 hover:scale-105 hover:z-10">
-              <img
-                src={comingsoon}
-                alt="Produit 4"
-                className="h-56 w-full object-cover mb-4 rounded-lg transform transition-transform duration-300"
-              />
-              <h3 className="text-lg font-semibold">Produit 4</h3>
-              <p className="mt-2">€49.99</p>
-            </div>
-          </div>
-
-          <div className="p-4">
-            <div className="border rounded-lg p-4 flex flex-col items-center transform transition-transform duration-300 hover:scale-105 hover:z-10">
-              <img
-                src={comingsoon}
-                alt="Produit 5"
-                className="h-56 w-full object-cover mb-4 rounded-lg transform transition-transform duration-300"
-              />
-              <h3 className="text-lg font-semibold">Produit 5</h3>
-              <p className="mt-2">€59.99</p>
-            </div>
-          </div>
-
-          <div className="p-4">
-            <div className="border rounded-lg p-4 flex flex-col items-center transform transition-transform duration-300 hover:scale-105 hover:z-10">
-              <img
-                src={comingsoon}
-                alt="Produit 6"
-                className="h-56 w-full object-cover mb-4 rounded-lg transform transition-transform duration-300"
-              />
-              <h3 className="text-lg font-semibold">Produit 6</h3>
-              <p className="mt-2">€69.99</p>
-            </div>
-          </div>
+          ))}
         </Slider>
       </div>
     </section>

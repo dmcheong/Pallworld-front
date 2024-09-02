@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-// import Shop from './pages/Shop';
+import Shop from './pages/Shop';
 // import Tokens from './pages/Tokens';
 // import ProductDetails from './pages/ProductDetails';
 // import Cart from './pages/Cart';
@@ -14,8 +14,8 @@ const AppRouter = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/shop/:category" element={<Shop />} />
-        <Route path="/tokens" element={<Tokens />} />
+        <Route path="/shop/:category" element={<Shop />} />
+        {/* <Route path="/tokens" element={<Tokens />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
