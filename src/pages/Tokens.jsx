@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import tokensBanner from '../assets/banners/tokens-banner.jpg';
@@ -83,9 +84,12 @@ const Tokens = () => {
       {/* FAQ Section */}
       <section className="bg-sky-600 text-white py-12 text-center">
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">UNE QUESTION ?</h2>
-        <button className="bg-white text-sky-600 py-3 px-6 rounded-lg text-lg sm:text-xl font-semibold hover:bg-gray-200 transition-colors duration-300">
+        <Link
+          to="/faq"
+          className="bg-white text-sky-600 py-3 px-6 rounded-lg text-lg sm:text-xl font-semibold hover:bg-gray-200 transition-colors duration-300 inline-block"
+        >
           FAQ →
-        </button>
+        </Link>
       </section>
 
       {/* Footer */}

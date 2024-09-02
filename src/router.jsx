@@ -9,7 +9,9 @@ import Tokens from './pages/Tokens';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Faq from './pages/Faq';
-import Retour from './pages/Retour';
+import Retour from './pages/Return';
+import Shipping from './pages/Shipping';
+import Support from './pages/Support';
 
 const AppRouter = () => {
   return (
@@ -21,10 +23,12 @@ const AppRouter = () => {
         {/* <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} /> */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/connexion" element={<Login />} />
+        <Route path="/inscription" element={<Signup />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/politique-de-retour" element={<Retour />} />
+        <Route path="/livraison" element={<Shipping />} />
+        <Route path="/support-client" element={<Support />} />
       </Routes>
     </Router>
   );

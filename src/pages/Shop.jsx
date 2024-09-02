@@ -1,5 +1,5 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductList from '../components/ProductList';
@@ -17,6 +17,30 @@ const banners = {
 const Shop = () => {
   const { category } = useParams();
   const bannerImage = banners[category] || banners['textile'];
+
+  const [showScrollTopButton, setShowScrollTopButton] = useState(false);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  const handleScroll = () => {
+    if (window.scrollY > 200) {
+      setShowScrollTopButton(true);
+    } else {
+      setShowScrollTopButton(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <div>
@@ -47,12 +71,26 @@ const Shop = () => {
       {/* FAQ Section */}
       <section className="bg-sky-600 text-white py-12 text-center">
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">UNE QUESTION ?</h2>
-        <button className="bg-white text-sky-600 py-3 px-6 rounded-lg text-lg sm:text-xl font-semibold hover:bg-gray-200 transition-colors duration-300">
+        <Link
+          to="/faq"
+          className="bg-white text-sky-600 py-3 px-6 rounded-lg text-lg sm:text-xl font-semibold hover:bg-gray-200 transition-colors duration-300 inline-block"
+        >
           FAQ →
-        </button>
+        </Link>
       </section>
 
       <Footer />
+
+      {/* Scroll to Top Button */}
+      {showScrollTopButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 bg-sky-600 text-white p-5 rounded-full shadow-lg hover:bg-sky-800 transition-colors duration-300 text-2xl"
+          aria-label="Retour en haut"
+        >
+          ↑
+        </button>
+      )}
     </div>
   );
 };
