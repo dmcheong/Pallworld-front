@@ -12,7 +12,7 @@ const SupportClient = () => {
       {/* Hero Section */}
       <section className="relative bg-sky-600 text-white py-16">
         <div className="container mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold">Support Client</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold">Support client</h1>
           <p className="text-lg sm:text-xl mt-4">Nous sommes là pour vous aider.</p>
         </div>
       </section>
@@ -25,7 +25,7 @@ const SupportClient = () => {
           <div className="flex flex-col lg:flex-row lg:space-x-16">
             {/* Contact Information */}
             <div className="lg:w-1/3 bg-white shadow-lg rounded-lg p-8 mb-8 lg:mb-0">
-              <h3 className="text-xl font-semibold mb-4">Informations de Contact</h3>
+              <h3 className="text-xl font-semibold mb-4">Informations de contact</h3>
               <ul className="space-y-4">
                 <li className="flex items-center">
                   <FaEnvelope className="text-sky-600 mr-3" />
@@ -40,6 +40,19 @@ const SupportClient = () => {
                   <span>12 Rue Anatole France, 92000 Nanterre, France</span>
                 </li>
               </ul>
+
+              {/* Google Maps Integration */}
+              <div className="mt-8">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9995268328054!2d2.1938787156751653!3d48.891223579290246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e6652ef4a51853%3A0x5b3ad4f2436e55f6!2s12%20Rue%20Anatole%20France%2C%2092000%20Nanterre%2C%20France!5e0!3m2!1sen!2sfr!4v1631536726785!5m2!1sen!2sfr"
+                  width="100%"
+                  height="300"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  title="Google Maps"
+                ></iframe>
+              </div>
             </div>
 
             {/* Support Form */}

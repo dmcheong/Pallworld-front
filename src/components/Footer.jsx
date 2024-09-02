@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
+import logo from '../assets/logos/logo-rect.png';
 import { FaFacebook, FaTwitter, FaInstagram, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
 
 const Footer = () => {
@@ -88,7 +88,7 @@ const Footer = () => {
 
             <li className="flex items-center justify-center sm:justify-start mt-2">
               <FaEnvelope className="mr-2" />
-              <span>contact@palworld.com</span>
+              <span>support@palworld.com</span>
             </li>
           </ul>
         </div>

@@ -54,7 +54,7 @@ const Home = () => {
             </div>
           </Link>
 
-          <Link to="/tokens" className="relative group">
+          <Link to="/shop/tokens" className="relative group">
             <img src={tokens} alt="Tokens" className="w-full h-64 object-cover" />
             <div className="absolute inset-0 bg-gray-200 bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300"></div>
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-end justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -93,7 +93,7 @@ const Home = () => {
             </div>
           </div>
 
-          <Link to="/shop?category=textile">
+          <Link to="/shop/textile">
             <button className="bg-sky-600 text-white py-3 px-6 rounded-lg text-lg sm:text-xl font-semibold hover:bg-sky-800 transition-colors duration-300">
               Utilisez notre outil dès maintenant !
             </button>

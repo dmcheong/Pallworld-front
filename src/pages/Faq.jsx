@@ -42,7 +42,7 @@ const FAQ = () => {
     {
       question: 'Comment puis-je contacter le support client ?',
       answer:
-        'Vous pouvez contacter notre support client via notre formulaire de contact. Nous nous efforçons de répondre à toutes les demandes dans les 24 heures.',
+        'Vous pouvez contacter notre support client via notre formulaire de contact ou par email à support@palworldeshop.com. Nous nous efforçons de répondre à toutes les demandes dans les 24 heures.',
     },
   ];
 
@@ -61,7 +61,7 @@ const FAQ = () => {
       {/* FAQ Section */}
       <section className="bg-gray-100 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Questions Fréquentes</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Questions fréquentes</h2>
 
           <div className="space-y-4">
             {questions.map((item, index) => (
