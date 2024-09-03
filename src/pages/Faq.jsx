@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { Link } from 'react-router-dom';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import Support from '../components/Support';
 
 const FAQ = () => {
-  const [activeIndex, setActiveIndex] = useState(null);
-
-  const toggleAccordion = (index) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
-
   const questions = [
     {
       question: 'Comment puis-je passer une commande ?',
@@ -41,7 +35,7 @@ const FAQ = () => {
     },
     {
       question: 'Comment puis-je contacter le support client ?',
-      answer:
+      answer: (
         <>
         Vous pouvez contacter notre support client via notre par email à support@palworldeshop.com ou via notre {' '}
         <Link to="/support-client" className="text-sky-600 hover:underline">
@@ -49,6 +43,7 @@ const FAQ = () => {
         </Link>.
         Nous nous efforçons de répondre à toutes les demandes dans les 24 heures.
         </>
+      ),
     },
   ];
 
@@ -64,35 +59,14 @@ const FAQ = () => {
         </div>
       </section>
 
-      {/* FAQ */}
+      {/* FAQ Section */}
       <section className="bg-gray-100 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Questions fréquentes</h2>
-
-          <div className="space-y-4">
-            {questions.map((item, index) => (
-              <div key={index} className="bg-white shadow rounded-lg">
-                <button
-                  className="flex justify-between items-center w-full px-6 py-4 text-left focus:outline-none"
-                  onClick={() => toggleAccordion(index)}
-                >
-                  <h3 className="text-xl font-semibold">{item.question}</h3>
-                  <span>
-                    {activeIndex === index ? <FaChevronUp /> : <FaChevronDown />}
-                  </span>
-                </button>
-                {activeIndex === index && (
-                  <div className="px-6 pb-4 text-gray-700 leading-relaxed">
-                    {item.answer}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          <Support questions={questions} />
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import panierImage from '../assets/pals.jpg';
+import SideImage from '../components/SideImage';
 
 const Panier = () => {
   return (
@@ -11,15 +11,9 @@ const Panier = () => {
 
       <section className="container mx-auto py-8">
         <div className="flex flex-col md:flex-row items-center justify-center">
-          
+
           {/* Left: Image */}
-          <div className="md:w-1/2 p-4 hidden md:flex items-center">
-            <img 
-              src={panierImage} 
-              alt="Panier" 
-              className="w-full h-auto max-h-[415px] min-h-[200px] object-cover rounded-lg" 
-            />
-          </div>
+          <SideImage />
 
           {/* Right: Cart Details */}
           <div className="md:w-1/2 p-4 bg-white shadow-lg rounded-lg">

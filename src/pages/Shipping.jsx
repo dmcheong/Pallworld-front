@@ -1,20 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { Link } from 'react-router-dom';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import Support from '../components/Support';
 
 const Shipping = () => {
-  const [activeIndex, setActiveIndex] = useState(null);
-
-  const toggleAccordion = (index) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
-
   const shippingInfo = [
     {
-      title: 'Options de livraison',
-      content: (
+      question: 'Options de livraison',
+      answer: (
         <ul className="list-disc list-inside">
           <li><strong>Livraison Standard</strong> - Livraison en 5 à 7 jours ouvrables.</li>
           <li><strong>Livraison Express</strong> - Livraison en 2 à 3 jours ouvrables.</li>
@@ -23,29 +16,30 @@ const Shipping = () => {
       ),
     },
     {
-      title: 'Frais de livraison',
-      content:
+      question: 'Frais de livraison',
+      answer:
         "Les frais de livraison sont calculés en fonction de votre localisation et de l'option de livraison choisie. Les frais exacts seront affichés lors de la validation de votre commande avant le paiement. Nous offrons la livraison gratuite pour les commandes supérieures à un certain montant. Consultez notre site régulièrement pour les promotions et offres spéciales.",
     },
     {
-      title: 'Délais de livraison',
-      content:
+      question: 'Délais de livraison',
+      answer:
         "Les délais de livraison peuvent varier en fonction de votre emplacement et de l'option de livraison sélectionnée. Veuillez noter que les délais de livraison sont estimés et peuvent être affectés par des facteurs hors de notre contrôle, tels que les conditions météorologiques ou les retards douaniers pour les expéditions internationales. Nous nous efforçons de traiter et d'expédier toutes les commandes dans les 1 à 2 jours ouvrables suivant leur réception.",
     },
     {
-      title: 'Suivi de commande',
-      content:
+      question: 'Suivi de commande',
+      answer:
         "Une fois votre commande expédiée, vous recevrez un email contenant les informations de suivi. Vous pouvez utiliser ce lien pour suivre la progression de votre livraison. Si vous rencontrez des problèmes avec le suivi ou la réception de votre commande, veuillez contacter notre support client.",
     },
     {
-      title: 'Informations complémentaires',
-      content:
+      question: 'Informations complémentaires',
+      answer: (
         <>
-        Si vous avez des questions supplémentaires concernant la livraison, n'hésitez pas à nous contacter par email à support@palworldeshop.com ou via notre {' '}
-        <Link to="/support-client" className="text-sky-600 hover:underline">
-          formulaire de contact
-        </Link>.
+          Si vous avez des questions supplémentaires concernant la livraison, n'hésitez pas à nous contacter par email à support@palworldeshop.com ou via notre{' '}
+          <a href="/support-client" className="text-sky-600 hover:underline">
+            formulaire de contact
+          </a>.
         </>
+      ),
     },
   ];
 
@@ -66,30 +60,10 @@ const Shipping = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Options et détails de Livraison</h2>
 
-          <div className="space-y-4">
-            {shippingInfo.map((info, index) => (
-              <div key={index} className="bg-white shadow rounded-lg">
-                <button
-                  className="flex justify-between items-center w-full px-6 py-4 text-left focus:outline-none"
-                  onClick={() => toggleAccordion(index)}
-                >
-                  <h3 className="text-xl font-semibold">{info.title}</h3>
-                  <span>
-                    {activeIndex === index ? <FaChevronUp /> : <FaChevronDown />}
-                  </span>
-                </button>
-                {activeIndex === index && (
-                  <div className="px-6 pb-4 text-gray-700 leading-relaxed">
-                    {info.content}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          <Support questions={shippingInfo} />
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

@@ -42,7 +42,7 @@ const ProductCarousel = () => {
   };
 
   return (
-    <section className="py-8 bg-sky-600 text-white container-carousel">
+    <section className="py-16 bg-sky-600 text-white container-carousel">
       <h2 className="text-center text-2xl sm:text-3xl font-bold mb-4">NOTRE SELECTION</h2>
       
       <div className="container mx-auto">

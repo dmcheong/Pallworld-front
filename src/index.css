@@ -40,7 +40,7 @@ code {
 
 .container-carousel {
   overflow: hidden; 
-  padding: 0 20px;  
+  padding: 50px;  
   position: relative;
   margin: auto;
 }
