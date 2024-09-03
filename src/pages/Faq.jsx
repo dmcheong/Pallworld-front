@@ -33,7 +33,7 @@ const FAQ = () => {
         <>
           Étant donné que nos articles sont personnalisés selon vos préférences, ils ne peuvent pas être retournés. Nous vous recommandons de vérifier attentivement toutes les options de personnalisation avant de finaliser votre commande.
           Pour plus de détails, veuillez consulter notre{' '}
-          <Link to="/return-policy" className="text-sky-600 hover:underline">
+          <Link to="/politique-de-retour" className="text-sky-600 hover:underline">
             politique de retours
           </Link>.
         </>
@@ -42,7 +42,13 @@ const FAQ = () => {
     {
       question: 'Comment puis-je contacter le support client ?',
       answer:
-        'Vous pouvez contacter notre support client via notre formulaire de contact ou par email à support@palworldeshop.com. Nous nous efforçons de répondre à toutes les demandes dans les 24 heures.',
+        <>
+        Vous pouvez contacter notre support client via notre par email à support@palworldeshop.com ou via notre {' '}
+        <Link to="/support-client" className="text-sky-600 hover:underline">
+          formulaire de contact
+        </Link>.
+        Nous nous efforçons de répondre à toutes les demandes dans les 24 heures.
+        </>
     },
   ];
 

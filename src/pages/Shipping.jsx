@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 const Shipping = () => {
@@ -39,7 +40,12 @@ const Shipping = () => {
     {
       title: 'Informations complémentaires',
       content:
-        "Si vous avez des questions supplémentaires concernant la livraison, n'hésitez pas à nous contacter via notre formulaire de contact ou par email à support@palworldeshop.com.",
+        <>
+        Si vous avez des questions supplémentaires concernant la livraison, n'hésitez pas à nous contacter par email à support@palworldeshop.com ou via notre {' '}
+        <Link to="/support-client" className="text-sky-600 hover:underline">
+          formulaire de contact
+        </Link>.
+        </>
     },
   ];
 

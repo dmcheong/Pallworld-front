@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 // import ProductDetails from './pages/ProductDetails';
-// import Cart from './pages/Cart';
-// import Checkout from './pages/Checkout';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Faq from './pages/Faq';
@@ -18,9 +18,9 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop/:category" element={<Shop />} />
-        {/* <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/panier" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} /> */}
+        <Route path="/finaliser-ma-commande" element={<Checkout />} />
+        {/* <Route path="/product/:id" element={<ProductDetails />} /> */}
         <Route path="/connexion" element={<Login />} />
         <Route path="/inscription" element={<Signup />} />
         <Route path="/faq" element={<Faq />} />

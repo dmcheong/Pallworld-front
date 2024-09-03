@@ -97,7 +97,7 @@ const Footer = () => {
       <div className="container mx-auto mt-8">
         <hr className="my-4"/>
         <div className="flex justify-between items-center text-center sm:text-left">
-          <p className="pt-2 font-semibold">&copy; 2023 Palworld E-shop. Tous droits réservés.</p>
+          <p className="pt-2 font-semibold">&copy; 2024 Palworld E-shop. Tous droits réservés.</p>
           <div className="flex space-x-4">
             <FaFacebook className="text-gray-600 hover:text-blue-600 transition-colors duration-300" />
             <FaTwitter className="text-gray-600 hover:text-blue-400 transition-colors duration-300" />
