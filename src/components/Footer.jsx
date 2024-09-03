@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logos/logo-rect.png';
-import { FaFacebook, FaTwitter, FaInstagram, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -11,7 +11,7 @@ const Footer = () => {
           <img 
             src={logo} 
             alt="Logo" 
-            className="h-20 sm:h-28 mx-auto sm:mx-0 mb-4 transition-transform duration-300 hover:scale-105" 
+            className="h-auto max-h-20 sm:max-h-28 w-auto mx-auto sm:mx-0 mb-4 transition-transform duration-300 hover:scale-105" 
           />
         </div>
 
@@ -54,41 +54,30 @@ const Footer = () => {
             </li>
 
             <li>
-              <Link to="/politique-de-retour" className="hover:underline hover:font-semibold transition-colors duration-300">
-                Politique de retour
-              </Link>
-            </li>
-
-            <li>
               <Link to="/livraison" className="hover:underline hover:font-semibold transition-colors duration-300">
                 Livraison
               </Link>
             </li>
 
             <li>
+              <Link to="/politique-de-retour" className="hover:underline hover:font-semibold transition-colors duration-300">
+                Politique de retour
+              </Link>
+            </li>
+
+            <li>
               <Link to="/support-client" className="hover:underline hover:font-semibold transition-colors duration-300">
-                Support client
+                Nous contacter
               </Link>
             </li>
           </ul>
         </div>
 
         <div className="text-center sm:text-left">
-          <h3 className="font-bold mb-2">CONTACT</h3>
+          <h3 className="font-bold mb-2">ADRESSE</h3>
           <ul>
             <li className="flex items-center justify-center sm:justify-start">
-                  <FaMapMarkerAlt className="mr-2" />
-                  <span>12 Rue Anatole France, 92000 Nanterre, France</span>
-                </li>
-
-            <li className="flex items-center justify-center sm:justify-start  mt-2">
-              <FaPhone className="mr-2" />
-              <span>+33 1 48 07 07 02</span>
-            </li>
-
-            <li className="flex items-center justify-center sm:justify-start mt-2">
-              <FaEnvelope className="mr-2" />
-              <span>support@palworld.com</span>
+              <span>12 Rue Anatole France, 92000 Nanterre, France</span>
             </li>
           </ul>
         </div>
@@ -99,9 +88,9 @@ const Footer = () => {
         <div className="flex justify-between items-center text-center sm:text-left">
           <p className="pt-2 font-semibold">&copy; 2024 Palworld E-shop. Tous droits réservés.</p>
           <div className="flex space-x-4">
-            <FaFacebook className="text-gray-600 hover:text-blue-600 transition-colors duration-300" />
-            <FaTwitter className="text-gray-600 hover:text-blue-400 transition-colors duration-300" />
-            <FaInstagram className="text-gray-600 hover:text-pink-600 transition-colors duration-300" />
+            <FaFacebook className="text-gray-600 hover:text-blue-600 transition-colors duration-300 text-xl" />
+            <FaTwitter className="text-gray-600 hover:text-blue-400 transition-colors duration-300 text-xl" />
+            <FaInstagram className="text-gray-600 hover:text-pink-600 transition-colors duration-300 text-xl" />
           </div>
         </div>
       </div>

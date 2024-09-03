@@ -48,7 +48,7 @@ const ReturnPolicy = () => {
     <div>
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="relative bg-sky-600 text-white py-16">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl font-bold">Politique de retours</h1>
@@ -56,7 +56,7 @@ const ReturnPolicy = () => {
         </div>
       </section>
 
-      {/* Return Policy Section */}
+      {/* Return Policy */}
       <section className="bg-gray-100 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Politique de retours et de remboursements</h2>

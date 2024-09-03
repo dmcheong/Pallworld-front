@@ -9,7 +9,7 @@ const SupportClient = () => {
     <div>
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="relative bg-sky-600 text-white py-16">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl font-bold">Support client</h1>
@@ -17,7 +17,7 @@ const SupportClient = () => {
         </div>
       </section>
 
-      {/* Support Form Section */}
+      {/* Support Form */}
       <section className="bg-gray-100 py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Contactez-nous</h2>

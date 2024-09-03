@@ -16,26 +16,58 @@ code {
     monospace;
 }
 
-/* Styles de base pour tous les scrollbars */
 ::-webkit-scrollbar {
-    width: 12px; /* Largeur de la scrollbar */
+    width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Couleur de la piste */
+    background: #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #888; /* Couleur de la barre */
-    border-radius: 10px; /* Arrondi des coins de la barre */
-    border: 3px solid #f1f1f1; /* Bordure autour de la barre */
+    background-color: #888; 
+    border-radius: 10px; 
+    border: 3px solid #f1f1f1; 
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #555; /* Couleur de la barre au survol */
+    background-color: #555; 
 }
 
-/* Pour les scrollbars horizontales */
 ::-webkit-scrollbar-horizontal {
-    height: 12px; /* Hauteur de la scrollbar horizontale */
+    height: 12px; 
+}
+
+.container-carousel {
+  overflow: hidden; 
+  padding: 0 20px;  
+  position: relative;
+  margin: auto;
+}
+
+.slick-prev, .slick-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.slick-prev {
+  left: 10px; 
+}
+
+.slick-next {
+  right: 10px;
+}
+
+@media (max-width: 768px) {
+  .slick-prev, .slick-next {
+    width: 25px;
+    height: 25px;
+    background-color: rgba(0, 0, 0, 0.7); 
+  }
 }

@@ -49,7 +49,7 @@ const Shop = () => {
     <div>
       <Header />
 
-      {/* Banner Section */}
+      {/* Hero */}
       <section className="relative">
         <img
           src={bannerImage}
@@ -58,7 +58,7 @@ const Shop = () => {
         />
       </section>
 
-      {/* Filters and Products Section */}
+      {/* Filters and Products */}
       <section className="container mx-auto py-8">
         {category === 'tokens' ? (
           <>
@@ -135,7 +135,7 @@ const Shop = () => {
         )}
       </section>
 
-      {/* FAQ Section */}
+      {/* FAQ */}
       <section className="bg-sky-600 text-white py-12 text-center">
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">UNE QUESTION ?</h2>
         <Link

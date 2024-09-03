@@ -15,30 +15,34 @@ const ProductCarousel = () => {
     autoplay: true,
     autoplaySpeed: 2500,
     pauseOnHover: true,
+    arrows: true,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
+          arrows: true,
         }
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
+          arrows: true,
         }
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
+          arrows: true,
         }
       }
     ]
   };
 
   return (
-    <section className="py-8 bg-sky-600 text-white">
+    <section className="py-8 bg-sky-600 text-white container-carousel">
       <h2 className="text-center text-2xl sm:text-3xl font-bold mb-4">NOTRE SELECTION</h2>
       
       <div className="container mx-auto">
