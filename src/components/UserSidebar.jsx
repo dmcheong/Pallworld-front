@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { FaUser, FaHistory, FaBars } from 'react-icons/fa';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { FaUser, FaHistory, FaBars, FaSignOutAlt } from 'react-icons/fa';
 
 const UserSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    // Supprimer le token du localStorage pour déconnecter l'utilisateur
+    localStorage.removeItem('token');
+    // Rediriger l'utilisateur vers la page de connexion
+    navigate('/connexion');
   };
 
   return (
@@ -46,6 +54,15 @@ const UserSidebar = () => {
             <FaHistory className="mr-3" />
             Historique de commandes
           </NavLink>
+
+          {/* Bouton de déconnexion */}
+          <button
+            onClick={handleLogout}
+            className="flex items-center p-2 text-red-600 hover:bg-gray-100 rounded-lg transition w-full"
+          >
+            <FaSignOutAlt className="mr-3" />
+            Se déconnecter
+          </button>
         </nav>
       </div>
     </div>

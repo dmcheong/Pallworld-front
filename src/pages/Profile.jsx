@@ -6,12 +6,19 @@ import Footer from '../components/Footer';
 import SidebarMenu from '../components/UserSidebar';
 import TextInput from '../components/TextInput';
 import FormButton from '../components/FormButton';
-import { jwtDecode }from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const europeanCountries = [
+    "Allemagne", "Autriche", "Belgique", "Bulgarie", "Chypre", "Croatie", "Danemark",
+    "Espagne", "Estonie", "Finlande", "France", "Grèce", "Hongrie", "Irlande", "Italie",
+    "Lettonie", "Lituanie", "Luxembourg", "Malte", "Pays-Bas", "Pologne", "Portugal",
+    "République tchèque", "Roumanie", "Slovaquie", "Slovénie", "Suède"
+  ];
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -120,10 +127,11 @@ const Profile = () => {
                 onChange={handleInputChange}
               />
               <TextInput
-                label="Pays"
-                name="country"
-                value={userData.country || ''}
+                label="Adresse"
+                name="address"
+                value={userData.address || ''}
                 onChange={handleInputChange}
+                className="md:col-span-2"
               />
               <TextInput
                 label="Ville"
@@ -132,23 +140,34 @@ const Profile = () => {
                 onChange={handleInputChange}
               />
               <TextInput
-                label="Adresse"
-                name="address"
-                value={userData.address || ''}
-                onChange={handleInputChange}
-                className="md:col-span-2"
-              />
-              <TextInput
                 label="Code Postal"
                 name="codePostal"
                 value={userData.codePostal || ''}
                 onChange={handleInputChange}
               />
+              <div>
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="country">
+                  Pays
+                </label>
+                <select
+                  name="country"
+                  value={userData.country || ''}
+                  onChange={handleInputChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                >
+                  <option value="">Sélectionnez votre pays</option>
+                  {europeanCountries.map((country) => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="flex justify-end space-x-4">
               <FormButton text="Mettre à jour" />
-              <FormButton text="Supprimer mon compte" type="button" onClick={handleDelete} />
+              <FormButton text="Supprimer mon compte" type="button" onClick={handleDelete} color="red" />
             </div>
           </form>
         </div>
