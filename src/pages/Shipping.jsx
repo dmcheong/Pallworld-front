@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Support from '../components/Support';
+import Questions from '../components/Questions';
 
 const Shipping = () => {
   const shippingInfo = [
@@ -34,8 +34,8 @@ const Shipping = () => {
       question: 'Informations complémentaires',
       answer: (
         <>
-          Si vous avez des questions supplémentaires concernant la livraison, n'hésitez pas à nous contacter par email à support@palworldeshop.com ou via notre{' '}
-          <a href="/support-client" className="text-sky-600 hover:underline">
+          Si vous avez des questions supplémentaires concernant la livraison, n'hésitez pas à nous contacter par email à palworldynov@gmail.com ou via notre{' '}
+          <a href="/contact" className="text-sky-600 hover:underline">
             formulaire de contact
           </a>.
         </>
@@ -60,7 +60,7 @@ const Shipping = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Options et détails de Livraison</h2>
 
-          <Support questions={shippingInfo} />
+          <Questions questions={shippingInfo} />
         </div>
       </section>
 

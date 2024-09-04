@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Support from '../components/Support';
+import Questions from '../components/Questions';
 import { Link } from 'react-router-dom';
 
 const ReturnPolicy = () => {
@@ -30,8 +30,8 @@ const ReturnPolicy = () => {
       question: 'Contactez-nous',
       answer: (
         <>
-          Si vous avez des questions supplémentaires concernant notre politique de retours, n'hésitez pas à nous contacter par email à support@palworldeshop.com ou via notre{' '}
-          <Link to="/support-client" className="text-sky-600 hover:underline">
+          Si vous avez des questions supplémentaires concernant notre politique de retours, n'hésitez pas à nous contacter par email à palworldynov@gmail.com ou via notre{' '}
+          <Link to="/contact" className="text-sky-600 hover:underline">
             formulaire de contact
           </Link>.
         </>
@@ -55,7 +55,7 @@ const ReturnPolicy = () => {
       <section className="bg-gray-100 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Politique de retours et de remboursements</h2>
-          <Support questions={policies} />
+          <Questions questions={policies} />
         </div>
       </section>
 

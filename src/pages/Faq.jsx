@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Support from '../components/Support';
+import Questions from '../components/Questions';
 
 const FAQ = () => {
   const questions = [
@@ -37,8 +37,8 @@ const FAQ = () => {
       question: 'Comment puis-je contacter le support client ?',
       answer: (
         <>
-        Vous pouvez contacter notre support client via notre par email à support@palworldeshop.com ou via notre {' '}
-        <Link to="/support-client" className="text-sky-600 hover:underline">
+        Vous pouvez contacter notre support client via notre par email à palworldynov@gmail.com ou via notre {' '}
+        <Link to="/contact" className="text-sky-600 hover:underline">
           formulaire de contact
         </Link>.
         Nous nous efforçons de répondre à toutes les demandes dans les 24 heures.
@@ -63,7 +63,7 @@ const FAQ = () => {
       <section className="bg-gray-100 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Questions fréquentes</h2>
-          <Support questions={questions} />
+          <Questions questions={questions} />
         </div>
       </section>
 

@@ -10,7 +10,10 @@ import Signup from './pages/Signup';
 import Faq from './pages/Faq';
 import Retour from './pages/Return';
 import Shipping from './pages/Shipping';
-import Support from './pages/Support';
+import Contact from './pages/Contact';
+import Profil from './pages/Profile';
+import PurchaseHistory from './pages/PurchaseHistory';
+import PrivateRoute from './components/PrivateRoute';
 
 const AppRouter = () => {
   return (
@@ -19,14 +22,37 @@ const AppRouter = () => {
         <Route path="/" element={<Home />} />
         <Route path="/shop/:category" element={<Shop />} />
         <Route path="/panier" element={<Cart />} />
-        <Route path="/finaliser-ma-commande" element={<Checkout />} />
         {/* <Route path="/product/:id" element={<ProductDetails />} /> */}
         <Route path="/connexion" element={<Login />} />
         <Route path="/inscription" element={<Signup />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/politique-de-retour" element={<Retour />} />
         <Route path="/livraison" element={<Shipping />} />
-        <Route path="/support-client" element={<Support />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route
+          path="/profil"
+          element={
+            <PrivateRoute>
+              <Profil />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/historique"
+          element={
+            <PrivateRoute>
+              <PurchaseHistory />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/finaliser-ma-commande"
+          element={
+            <PrivateRoute>
+              <Checkout />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );

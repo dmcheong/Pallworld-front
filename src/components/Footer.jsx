@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logos/logo-rect.png';
-import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -66,7 +65,7 @@ const Footer = () => {
             </li>
 
             <li>
-              <Link to="/support-client" className="hover:underline hover:font-semibold transition-colors duration-300">
+              <Link to="/contact" className="hover:underline hover:font-semibold transition-colors duration-300">
                 Nous contacter
               </Link>
             </li>

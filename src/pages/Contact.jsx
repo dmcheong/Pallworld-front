@@ -1,10 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import SupportForm from '../components/SupportForm';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import TextInput from '../components/TextInput';
+import SelectInput from '../components/SelectInput';
+import TextArea from '../components/TextArea';
+import FormButton from '../components/FormButton';
 
-const SupportClient = () => {
+const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    reason: '',
+    message: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Logique d'envoi du formulaire, ex: API call
+    console.log('Form data submitted:', formData);
+  };
+
+  const reasons = [
+    { value: 'commande', label: 'Problème avec une commande' },
+    { value: 'produit', label: 'Question sur un produit' },
+    { value: 'compte', label: 'Problème de compte' },
+    { value: 'autre', label: 'Autre' },
+  ];
+
   return (
     <div>
       <Header />
@@ -29,7 +57,7 @@ const SupportClient = () => {
               <ul className="space-y-4">
                 <li className="flex items-center">
                   <FaEnvelope className="text-sky-600 mr-3" />
-                  <span>support@palworldeshop.com</span>
+                  <span>palworldynov@gmail.com</span>
                 </li>
                 <li className="flex items-center">
                   <FaPhone className="text-sky-600 mr-3" />
@@ -57,7 +85,41 @@ const SupportClient = () => {
 
             {/* Support Form */}
             <div className="lg:w-2/3">
-              <SupportForm />
+              <form className="bg-white shadow-lg rounded-lg p-8" onSubmit={handleSubmit}>
+                <TextInput
+                  label="Nom"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+                <TextInput
+                  label="Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  type="email"
+                  required
+                />
+                <SelectInput
+                  label="Motif"
+                  name="reason"
+                  value={formData.reason}
+                  onChange={handleChange}
+                  options={reasons.map(reason => reason.label)}
+                  required
+                />
+                <TextArea
+                  label="Message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                />
+                <div className="flex justify-center">
+                  <FormButton text="Envoyer" />
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -68,4 +130,4 @@ const SupportClient = () => {
   );
 };
 
-export default SupportClient;
+export default Contact;
