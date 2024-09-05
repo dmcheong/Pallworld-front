@@ -14,10 +14,12 @@ import Contact from './pages/Contact';
 import Profil from './pages/Profile';
 import PurchaseHistory from './pages/PurchaseHistory';
 import PrivateRoute from './components/PrivateRoute';
+import AuthHandler from './components/AuthHandler';
 
 const AppRouter = () => {
   return (
     <Router>
+      <AuthHandler />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop/:category" element={<Shop />} />

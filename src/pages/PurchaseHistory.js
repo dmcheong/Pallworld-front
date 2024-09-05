@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SidebarMenu from '../components/UserSidebar';
 import OrderItem from '../components/OrderItem';
-import { jwtDecode } from 'jwt-decode';  // Assure-toi que l'import est correct
+import { jwtDecode } from 'jwt-decode';
 
 const PurchaseHistory = () => {
   const [orders, setOrders] = useState([]);

@@ -31,6 +31,10 @@ const Login = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:3006/auth/google'; // Redirige vers l'URL d'authentification Google
+  };
+
   return (
     <div>
       <Header />
@@ -68,6 +72,15 @@ const Login = () => {
                 </Link>
                 <FormButton text="SE CONNECTER" />
               </form>
+
+              <div className="flex items-center justify-center mt-4">
+                <button
+                  onClick={handleGoogleLogin}
+                  className="bg-red-600 text-white py-2 px-4 rounded-full text-lg hover:bg-red-700 shadow-md"
+                >
+                  Connexion avec Google
+                </button>
+              </div>
 
               <p className="text-center mt-4 text-sm">
                 Pas encore de compte ?{' '}

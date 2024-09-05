@@ -6,10 +6,9 @@ import Footer from '../components/Footer';
 import SidebarMenu from '../components/UserSidebar';
 import TextInput from '../components/TextInput';
 import FormButton from '../components/FormButton';
-import { jwtDecode } from 'jwt-decode';
 
 const Profile = () => {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(null); // Initialise avec null
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -28,10 +27,8 @@ const Profile = () => {
           throw new Error('Token non disponible');
         }
 
-        const decodedToken = jwtDecode(token);
-        const userId = decodedToken.userId;
-
-        const response = await axios.get(`http://localhost:3005/api/users/${userId}`, {
+        // Effectue une requête API pour récupérer les informations utilisateur à partir du token
+        const response = await axios.get(`http://localhost:3005/api/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -87,6 +84,10 @@ const Profile = () => {
 
   if (loading) {
     return <p className="text-center mt-8">Chargement...</p>;
+  }
+
+  if (!userData) {
+    return <p className="text-center mt-8">Aucune donnée utilisateur disponible.</p>;
   }
 
   return (
