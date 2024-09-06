@@ -8,12 +8,19 @@ const ProfileModal = ({
   setModalIsOpen,
   userData,
   setUserData,
+  setPasswordData,
   handleSubmit,
   passwordData,
-  setPasswordData,
   handlePasswordChange,
   handlePasswordSubmit,
 }) => {
+  const europeanCountries = [
+    "Allemagne", "Autriche", "Belgique", "Bulgarie", "Chypre", "Croatie", "Danemark", 
+    "Espagne", "Estonie", "Finlande", "France", "Grèce", "Hongrie", "Irlande", "Italie", 
+    "Lettonie", "Lituanie", "Luxembourg", "Malte", "Pays-Bas", "Pologne", "Portugal", 
+    "République tchèque", "Roumanie", "Slovaquie", "Slovénie", "Suède"
+  ];
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData((prevData) => ({
@@ -77,13 +84,23 @@ const ProfileModal = ({
               value={userData.codePostal || ''}
               onChange={handleInputChange}
             />
-            <TextInput
-              label="Pays"
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="country">
+              Pays
+            </label>
+            <select
               name="country"
               value={userData.country || ''}
               onChange={handleInputChange}
-            />
-            <div className="form-buttons">
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="">Sélectionnez votre pays</option>
+              {europeanCountries.map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+            <div className="form-buttons mt-4">
               <FormButton text="Enregistrer" />
               <FormButton text="Annuler" type="button" onClick={() => setModalIsOpen(false)} color="gray" />
             </div>
@@ -106,7 +123,7 @@ const ProfileModal = ({
               value={passwordData.confirmPassword}
               onChange={handlePasswordChange}
             />
-            <div className="form-buttons">
+            <div className="form-buttons mt-4">
               <FormButton text="Enregistrer" />
               <FormButton text="Annuler" type="button" onClick={() => setPasswordData({ newPassword: '', confirmPassword: '' })} color="gray" />
             </div>
