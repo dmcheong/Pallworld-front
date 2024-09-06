@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import SideImage from '../components/SideImage';
 import TextInput from '../components/TextInput';
 import FormButton from '../components/FormButton';
+import { FcGoogle } from 'react-icons/fc'; // Importation de l'icône Google
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -39,18 +40,18 @@ const Login = () => {
     <div>
       <Header />
 
-      <section className="container mx-auto py-8">
-        <div className="flex flex-col md:flex-row items-center justify-center">
+      <section className="container mx-auto py-8 flex items-center justify-center">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row w-full max-w-4xl h-full md:h-auto">
           
-          {/* Left: Image */}
+          {/* Section Image */}
           <SideImage />
 
-          {/* Right: Login Form */}
-          <div className="md:w-1/2 p-4">
-            <div className="p-4 md:border md:rounded-lg md:shadow-lg flex flex-col justify-center">
-              <h2 className="text-3xl font-bold mb-4 text-center">CONNEXION</h2>
-              {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-              <form onSubmit={handleSubmit}>
+          {/* Section Formulaire de Connexion */}
+          <div className="md:w-3/4 p-8 flex flex-col justify-center">
+            <h2 className="text-4xl font-extrabold mb-8 text-center">CONNEXION</h2>
+            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
                 <TextInput
                   label="E-mail"
                   name="email"
@@ -59,6 +60,8 @@ const Login = () => {
                   type="email"
                   required
                 />
+              </div>
+              <div className="mb-4">
                 <TextInput
                   label="Mot de passe"
                   name="password"
@@ -67,28 +70,37 @@ const Login = () => {
                   type="password"
                   required
                 />
-                <Link to="/forgot-password" className="text-sm text-sky-600 hover:underline mt-2 block">
+              </div>
+              <div className="text-right mb-6">
+                <Link to="/forgot-password" className="text-sm text-gray-600 hover:underline">
                   Mot de passe oublié ?
                 </Link>
-                <FormButton text="SE CONNECTER" />
-              </form>
+              </div>
+              <FormButton text="SE CONNECTER" />
 
-              <div className="flex items-center justify-center mt-4">
-                <button
-                  onClick={handleGoogleLogin}
-                  className="bg-red-600 text-white py-2 px-4 rounded-full text-lg hover:bg-red-700 shadow-md"
-                >
-                  Connexion avec Google
-                </button>
+              <div className="my-4 flex items-center justify-center">
+                <hr className="border-gray-300 flex-grow" />
+                <span className="text-sm text-gray-500 mx-4">ou</span>
+                <hr className="border-gray-300 flex-grow" />
               </div>
 
-              <p className="text-center mt-4 text-sm">
-                Pas encore de compte ?{' '}
-                <Link to="/inscription" className="text-sky-600 hover:underline">
-                  S'inscrire
-                </Link>
-              </p>
-            </div>
+              <div className="flex items-center justify-center mb-6">
+                <button
+                  onClick={handleGoogleLogin}
+                  className="flex items-center justify-center w-full bg-white border border-gray-300 rounded-lg p-2 text-gray-600 hover:bg-gray-100"
+                >
+                  <FcGoogle className="text-2xl mr-2" />
+                  <span>Se connecter avec Google</span>
+                </button>
+              </div>
+            </form>
+
+            <p className="text-center mt-4 text-sm">
+              Pas encore de compte ?{' '}
+              <Link to="/inscription" className="text-blue-500 hover:underline">
+                S'inscrire
+              </Link>
+            </p>
           </div>
         </div>
       </section>
