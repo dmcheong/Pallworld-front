@@ -37,7 +37,7 @@ const FAQ = () => {
       question: 'Comment puis-je contacter le support client ?',
       answer: (
         <>
-        Vous pouvez contacter notre support client via notre par email à palworldynov@gmail.com ou via notre {' '}
+        Vous pouvez contacter notre support client via notre par email à palworldeshop@gmail.com ou via notre {' '}
         <Link to="/contact" className="text-sky-600 hover:underline">
           formulaire de contact
         </Link>.

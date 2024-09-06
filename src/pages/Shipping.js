@@ -34,7 +34,7 @@ const Shipping = () => {
       question: 'Informations complémentaires',
       answer: (
         <>
-          Si vous avez des questions supplémentaires concernant la livraison, n'hésitez pas à nous contacter par email à palworldynov@gmail.com ou via notre{' '}
+          Si vous avez des questions supplémentaires concernant la livraison, n'hésitez pas à nous contacter par email à palworldeshop@gmail.com ou via notre{' '}
           <a href="/contact" className="text-sky-600 hover:underline">
             formulaire de contact
           </a>.

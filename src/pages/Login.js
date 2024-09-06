@@ -6,13 +6,13 @@ import Footer from '../components/Footer';
 import SideImage from '../components/SideImage';
 import TextInput from '../components/TextInput';
 import FormButton from '../components/FormButton';
-import { FcGoogle } from 'react-icons/fc'; // Importation de l'icône Google
-import Alert from '../components/Alert'; // Importation du composant Alert
+import { FcGoogle } from 'react-icons/fc';
+import Alert from '../components/Alert';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [alertMessage, setAlertMessage] = useState(''); // Message d'alerte
-  const [alertType, setAlertType] = useState(''); // Type d'alerte (success, error)
+  const [alertMessage, setAlertMessage] = useState(''); // Pour le message d'alerte
+  const [alertType, setAlertType] = useState(''); // Pour le type d'alerte (success, error)
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -54,7 +54,7 @@ const Login = () => {
             <h2 className="text-4xl font-extrabold mb-8 text-center">CONNEXION</h2>
             
             {/* Utilisation du composant Alert */}
-            <Alert message={alertMessage} type={alertType} />
+            {alertMessage && <Alert message={alertMessage} type={alertType} />}
 
             <form onSubmit={handleSubmit}>
               <div className="mb-4">

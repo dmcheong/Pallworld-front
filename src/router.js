@@ -15,6 +15,7 @@ import Profil from './pages/Profile';
 import PurchaseHistory from './pages/PurchaseHistory';
 import PrivateRoute from './components/PrivateRoute';
 import AuthHandler from './components/AuthHandler';
+import Verify from './pages/Verify';
 
 const AppRouter = () => {
   return (
@@ -31,6 +32,7 @@ const AppRouter = () => {
         <Route path="/politique-de-retour" element={<Retour />} />
         <Route path="/livraison" element={<Shipping />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/verifier-mon-compte" element={<Verify />} />
         <Route
           path="/profil"
           element={

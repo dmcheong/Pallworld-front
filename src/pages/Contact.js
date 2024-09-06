@@ -79,7 +79,7 @@ const Contact = () => {
               <ul className="space-y-4">
                 <li className="flex items-center">
                   <FaEnvelope className="text-sky-600 mr-3" />
-                  <span>palworldynov@gmail.com</span>
+                  <span>palworldeshop@gmail.com</span>
                 </li>
                 <li className="flex items-center">
                   <FaPhone className="text-sky-600 mr-3" />

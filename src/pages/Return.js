@@ -30,7 +30,7 @@ const ReturnPolicy = () => {
       question: 'Contactez-nous',
       answer: (
         <>
-          Si vous avez des questions supplémentaires concernant notre politique de retours, n'hésitez pas à nous contacter par email à palworldynov@gmail.com ou via notre{' '}
+          Si vous avez des questions supplémentaires concernant notre politique de retours, n'hésitez pas à nous contacter par email à palworldeshop@gmail.com ou via notre{' '}
           <Link to="/contact" className="text-sky-600 hover:underline">
             formulaire de contact
           </Link>.
