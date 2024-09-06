@@ -16,6 +16,8 @@ import PurchaseHistory from './pages/PurchaseHistory';
 import PrivateRoute from './components/PrivateRoute';
 import AuthHandler from './components/AuthHandler';
 import Verify from './pages/Verify';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 const AppRouter = () => {
   return (
@@ -23,16 +25,20 @@ const AppRouter = () => {
       <AuthHandler />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/shop/:category" element={<Shop />} />
-        <Route path="/panier" element={<Cart />} />
+
         {/* <Route path="/product/:id" element={<ProductDetails />} /> */}
         <Route path="/connexion" element={<Login />} />
         <Route path="/inscription" element={<Signup />} />
+        <Route path="/verifier-mon-compte" element={<Verify />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/shop/:category" element={<Shop />} />
+        <Route path="/panier" element={<Cart />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/politique-de-retour" element={<Retour />} />
         <Route path="/livraison" element={<Shipping />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/verifier-mon-compte" element={<Verify />} />
+
         <Route
           path="/profil"
           element={
