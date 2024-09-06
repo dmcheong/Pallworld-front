@@ -7,10 +7,12 @@ import SideImage from '../components/SideImage';
 import TextInput from '../components/TextInput';
 import FormButton from '../components/FormButton';
 import { FcGoogle } from 'react-icons/fc'; // Importation de l'icône Google
+import Alert from '../components/Alert'; // Importation du composant Alert
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
+  const [alertMessage, setAlertMessage] = useState(''); // Message d'alerte
+  const [alertType, setAlertType] = useState(''); // Type d'alerte (success, error)
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,7 +30,8 @@ const Login = () => {
         navigate('/'); // Redirection vers une page protégée
       }
     } catch (error) {
-      setError(error.response?.data?.message || 'Erreur lors de la connexion');
+      setAlertMessage(error.response?.data?.message || 'Erreur lors de la connexion');
+      setAlertType('error');
     }
   };
 
@@ -49,7 +52,10 @@ const Login = () => {
           {/* Section Formulaire de Connexion */}
           <div className="md:w-3/4 p-8 flex flex-col justify-center">
             <h2 className="text-4xl font-extrabold mb-8 text-center">CONNEXION</h2>
-            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+            
+            {/* Utilisation du composant Alert */}
+            <Alert message={alertMessage} type={alertType} />
+
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <TextInput

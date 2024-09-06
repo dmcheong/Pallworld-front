@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import emailjs from 'emailjs-com';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
@@ -6,6 +7,7 @@ import TextInput from '../components/TextInput';
 import SelectInput from '../components/SelectInput';
 import TextArea from '../components/TextArea';
 import FormButton from '../components/FormButton';
+import Alert from '../components/Alert'; // Si tu utilises les alertes pour afficher le succès ou l'échec
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +17,8 @@ const Contact = () => {
     message: '',
   });
 
+  const [alert, setAlert] = useState({ message: '', type: '' });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -22,8 +26,24 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logique d'envoi du formulaire, ex: API call
-    console.log('Form data submitted:', formData);
+
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      reason: formData.reason,
+      message: formData.message,
+    };
+
+    emailjs.send('service_68ok77b', 'template_d8nkxkh', templateParams, 'mlASFtAACngdRLXlp')
+      .then((response) => {
+        console.log('Email envoyé avec succès!', response.status, response.text);
+        setAlert({ message: 'Message envoyé avec succès', type: 'success' });
+        // Réinitialiser le formulaire si besoin
+        setFormData({ name: '', email: '', reason: '', message: '' });
+      }, (err) => {
+        console.error('Erreur lors de l\'envoi du message:', err);
+        setAlert({ message: 'Erreur lors de l\'envoi du message', type: 'error' });
+      });
   };
 
   const reasons = [
@@ -49,6 +69,8 @@ const Contact = () => {
       <section className="bg-gray-100 py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Contactez-nous</h2>
+
+          <Alert message={alert.message} type={alert.type} /> {/* Affiche l'alerte */}
 
           <div className="flex flex-col lg:flex-row lg:space-x-16">
             {/* Contact Information */}

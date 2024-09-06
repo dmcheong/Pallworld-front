@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import FormButton from '../components/FormButton';
 import TextInput from '../components/TextInput';
+import SelectInput from '../components/SelectInput';
 
 const ProfileModal = ({
   modalIsOpen,
@@ -84,22 +85,14 @@ const ProfileModal = ({
               value={userData.codePostal || ''}
               onChange={handleInputChange}
             />
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="country">
-              Pays
-            </label>
-            <select
+            <SelectInput
+              label="Pays"
               name="country"
               value={userData.country || ''}
               onChange={handleInputChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            >
-              <option value="">Sélectionnez votre pays</option>
-              {europeanCountries.map((country) => (
-                <option key={country} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
+              options={europeanCountries}
+              required
+            />
             <div className="form-buttons mt-4">
               <FormButton text="Enregistrer" />
               <FormButton text="Annuler" type="button" onClick={() => setModalIsOpen(false)} color="gray" />

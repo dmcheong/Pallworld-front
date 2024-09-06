@@ -8,14 +8,15 @@ import FormButton from '../components/FormButton';
 import { jwtDecode } from 'jwt-decode';
 import { FaUser, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import ProfileModal from '../modals/ProfileModal';
+import Alert from '../components/Alert';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [passwordData, setPasswordData] = useState({ newPassword: '', confirmPassword: '' });
-  const [alertMessage, setAlertMessage] = useState(''); // Nouvel état pour les messages d'alerte
-  const [alertType, setAlertType] = useState(''); // Type d'alerte (success, error)
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -131,12 +132,7 @@ const Profile = () => {
         <div className="flex-1 mt-6 md:mt-0 md:ml-8">
           <h2 className="text-3xl font-bold mb-6 text-center md:text-left text-sky-600">Mon profil</h2>
 
-          {/* Affichage de l'alerte si un message est présent */}
-          {alertMessage && (
-            <div className={`alert ${alertType === 'success' ? 'alert-success' : 'alert-error'}`}>
-              {alertMessage}
-            </div>
-          )}
+          <Alert message={alertMessage} type={alertType} />
 
           <div className="bg-white p-6 rounded-lg shadow-md mb-6">
             <div className="flex items-center mb-4">

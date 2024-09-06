@@ -7,6 +7,7 @@ import SideImage from '../components/SideImage';
 import TextInput from '../components/TextInput';
 import SelectInput from '../components/SelectInput';
 import FormButton from '../components/FormButton';
+import Alert from '../components/Alert'; // Importation du composant Alert
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,8 @@ const Signup = () => {
     codePostal: '',
   });
 
-  const [error, setError] = useState('');
+  const [alertMessage, setAlertMessage] = useState(''); // Message d'alerte
+  const [alertType, setAlertType] = useState(''); // Type d'alerte (success, error)
   const navigate = useNavigate();
 
   const europeanCountries = [
@@ -47,10 +49,15 @@ const Signup = () => {
       const response = await axios.post('http://localhost:3005/api/users/signup', formData);
 
       if (response.status === 201) {
-        navigate('/connexion'); // Redirection vers la page de connexion
+        setAlertMessage('Inscription réussie. Redirection vers la page de connexion.');
+        setAlertType('success');
+        setTimeout(() => {
+          navigate('/connexion'); // Redirection vers la page de connexion
+        }, 2000); // Redirige après 2 secondes
       }
     } catch (error) {
-      setError(error.response?.data?.message || 'Erreur lors de l\'inscription');
+      setAlertMessage(error.response?.data?.message || 'Erreur lors de l\'inscription');
+      setAlertType('error');
     }
   };
 
@@ -67,7 +74,10 @@ const Signup = () => {
           {/* Section Formulaire d'Inscription */}
           <div className="md:w-3/4 p-8 flex flex-col justify-center">
             <h2 className="text-4xl font-extrabold mb-8 text-center">INSCRIPTION</h2>
-            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+            
+            {/* Utilisation du composant Alert */}
+            <Alert message={alertMessage} type={alertType} />
+
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <TextInput
@@ -112,7 +122,6 @@ const Signup = () => {
                   value={formData.country}
                   onChange={handleChange}
                   options={europeanCountries}
-                  required
                 />
                 <TextInput
                   label="Adresse"
