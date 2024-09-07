@@ -7,7 +7,7 @@ import ScrollToTopButton from '../components/ScrollToTopButton'; // Import du co
 import axios from 'axios';
 
 const Shop = () => {
-  const { category } = useParams(); // Récupère la catégorie à partir de l'URL
+  const { category } = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +17,7 @@ const Shop = () => {
         const response = await axios.get('http://localhost:3005/api/products', {
           params: { category }
         });
-        console.log('Produits récupérés :', response.data); // Ajouter ce log pour voir ce qui est retourné
+        console.log('Produits récupérés :', response.data);
         setProducts(response.data);
         setLoading(false);
       } catch (error) {
@@ -25,9 +25,16 @@ const Shop = () => {
         setLoading(false);
       }
     };
-  
+
     fetchProducts();
-  }, [category]);  
+  }, [category]);
+
+  // Formater le titre de la catégorie pour enlever les tirets et capitaliser les mots
+  const formatCategoryTitle = (category) => {
+    return category
+      .replace(/-/g, ' ')
+      .replace(/^\w/, (c) => c.toUpperCase());
+  };
 
   return (
     <div>
@@ -36,7 +43,7 @@ const Shop = () => {
       {/* Section Hero */}
       <section className="relative bg-sky-600 text-white py-16">
         <div className="container mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold">{category.toUpperCase()}</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold">{formatCategoryTitle(category)}</h1>
         </div>
       </section>
 

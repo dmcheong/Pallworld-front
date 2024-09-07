@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
 import logo from '../assets/logos/logo-rect.png';
@@ -8,10 +8,9 @@ function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [isTextileDropdownOpen, setIsTextileDropdownOpen] = useState(false);
-  const [isGoodiesDropdownOpen, setIsGoodiesDropdownOpen] = useState(false);
-  const [dropdownTimeout, setDropdownTimeout] = useState(null);
+  const [activeDropdown, setActiveDropdown] = useState(null); // Pour suivre quel menu est ouvert
   const navigate = useNavigate();
+  const dropdownRef = useRef(null); // Ref pour détecter les clics en dehors
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +27,20 @@ function Header() {
     };
   }, []);
 
+  // Gestion des clics en dehors du menu
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setActiveDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef]);
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -39,23 +52,12 @@ function Header() {
 
   const isAuthenticated = !!localStorage.getItem('token');
 
-  const handleMouseEnter = (setDropdownOpen) => {
-    if (dropdownTimeout) {
-      clearTimeout(dropdownTimeout);
-      setDropdownTimeout(null);
-    }
-    setDropdownOpen(true);
-  };
-
-  const handleMouseLeave = (setDropdownOpen) => {
-    const timeout = setTimeout(() => {
-      setDropdownOpen(false);
-    }, 200); // Petit délai avant de fermer le dropdown
-    setDropdownTimeout(timeout);
+  const toggleDropdown = (dropdown) => {
+    setActiveDropdown((prevDropdown) => (prevDropdown === dropdown ? null : dropdown));
   };
 
   return (
-    <header className="border-b sticky top-0 bg-white z-50">
+    <header className={`border-b sticky top-0 bg-white z-50 transition-all duration-300 ${isScrolled ? 'shadow-md' : ''}`}>
       <div className="container mx-auto px-4 py-2 flex justify-between items-center">
         {/* Left: Search Icon */}
         <div className="flex items-center flex-1">
@@ -78,29 +80,29 @@ function Header() {
           {isAuthenticated ? (
             <div className="relative">
               <button onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)} className="flex items-center space-x-2">
-                <FaUser className="text-gray-600 hover:text-gray-800" />
+                <FaUser className="text-gray-600 hover:text-gray-800 transition-colors duration-200" />
               </button>
               {isUserDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded shadow-lg z-10">
-                  <Link to="/profil" className="block px-4 py-2 hover:bg-gray-200">Profil</Link>
-                  <Link to="/historique" className="block px-4 py-2 hover:bg-gray-200">Historique de commande</Link>
-                  <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-200">Déconnexion</button>
+                <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg z-10 transition-opacity duration-300">
+                  <Link to="/profil" className="block px-4 py-2 hover:bg-gray-200 transition-colors duration-200">Profil</Link>
+                  <Link to="/historique" className="block px-4 py-2 hover:bg-gray-200 transition-colors duration-200">Historique de commande</Link>
+                  <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-200 transition-colors duration-200">Déconnexion</button>
                 </div>
               )}
             </div>
           ) : (
             <Link to="/connexion">
-              <FaUser className="text-gray-600 hover:text-gray-800" />
+              <FaUser className="text-gray-600 hover:text-gray-800 transition-colors duration-200" />
             </Link>
           )}
 
           <Link to="/panier">
-            <FaShoppingCart className="text-gray-600 hover:text-gray-800" />
+            <FaShoppingCart className="text-gray-600 hover:text-gray-800 transition-colors duration-200" />
           </Link>
 
           {/* Hamburger Menu Icon */}
           <button
-            className="sm:hidden text-gray-600 hover:text-gray-800 focus:outline-none"
+            className="sm:hidden text-gray-600 hover:text-gray-800 focus:outline-none duration-200"
             onClick={toggleMobileMenu}
           >
             {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
@@ -109,55 +111,45 @@ function Header() {
       </div>
 
       {/* Navigation Links - Hidden on small screens */}
-      <nav className={`border-t ${isMobileMenuOpen ? 'block' : 'hidden'} sm:block`}>
+      <nav ref={dropdownRef} className={`border-t ${isMobileMenuOpen ? 'block' : 'hidden'} sm:block transition-all duration-300`}>
         <div className="container mx-auto px-4 py-2 flex flex-col sm:flex-row sm:justify-center space-y-2 sm:space-y-0 sm:space-x-8">
           <Link to="/" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600">
             ACCUEIL
           </Link>
 
           {/* Textile Dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={() => handleMouseEnter(setIsTextileDropdownOpen)}
-            onMouseLeave={() => handleMouseLeave(setIsTextileDropdownOpen)}
-          >
-            <button className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600 focus:outline-none">
+          <div className="relative">
+            <button
+              className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600 focus:outline-none"
+              onClick={() => toggleDropdown('textile')}
+            >
               TEXTILE
             </button>
-            {isTextileDropdownOpen && (
-              <div 
-                className="absolute bg-white border rounded shadow-lg mt-2 w-48 z-10"
-                onMouseEnter={() => handleMouseEnter(setIsTextileDropdownOpen)}
-                onMouseLeave={() => handleMouseLeave(setIsTextileDropdownOpen)}
-              >
-                <Link to="/shop/t-shirts" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">T-shirts</Link>
-                <Link to="/shop/pulls" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Pulls</Link>
-                <Link to="/shop/hoodies" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Hoodies</Link>
-                <Link to="/shop/debardeurs" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Débardeurs</Link>
+            {activeDropdown === 'textile' && (
+              <div className="absolute bg-white border rounded-lg shadow-lg mt-2 w-48 z-10">
+                <Link to="/shop/t-shirts" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">T-shirts</Link>
+                <Link to="/shop/pulls" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">Pulls</Link>
+                <Link to="/shop/hoodies" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">Hoodies</Link>
+                <Link to="/shop/debardeurs" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">Débardeurs</Link>
               </div>
             )}
           </div>
 
           {/* Goodies Dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={() => handleMouseEnter(setIsGoodiesDropdownOpen)}
-            onMouseLeave={() => handleMouseLeave(setIsGoodiesDropdownOpen)}
-          >
-            <button className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600 focus:outline-none">
+          <div className="relative">
+            <button
+              className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600 focus:outline-none"
+              onClick={() => toggleDropdown('goodies')}
+            >
               GOODIES
             </button>
-            {isGoodiesDropdownOpen && (
-              <div 
-                className="absolute bg-white border rounded shadow-lg mt-2 w-48 z-10"
-                onMouseEnter={() => handleMouseEnter(setIsGoodiesDropdownOpen)}
-                onMouseLeave={() => handleMouseLeave(setIsGoodiesDropdownOpen)}
-              >
-                <Link to="/shop/coque-pour-telephone" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Coques pour téléphone</Link>
-                <Link to="/shop/stylos" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Stylos</Link>
-                <Link to="/shop/gourdes" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Gourdes</Link>
-                <Link to="/shop/porte-clés" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Porte-clés</Link>
-                <Link to="/shop/carnets" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Carnets</Link>
+            {activeDropdown === 'goodies' && (
+              <div className="absolute bg-white border rounded-lg shadow-lg mt-2 w-48 z-10">
+                <Link to="/shop/coques-pour-telephone" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-color">Coques pour téléphone</Link>
+                <Link to="/shop/stylos" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">Stylos</Link>
+                <Link to="/shop/gourdes" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">Gourdes</Link>
+                <Link to="/shop/porte-cles" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">Porte-clés</Link>
+                <Link to="/shop/carnets" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">Carnets</Link>
               </div>
             )}
           </div>

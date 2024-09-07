@@ -76,7 +76,7 @@ const Home = () => {
             </div>
           </Link>
 
-          <Link to="/shop/coque-pour-telephone" className="relative group transform transition-transform hover:scale-105">
+          <Link to="/shop/coques-pour-telephone" className="relative group transform transition-transform hover:scale-105">
             <div className="overflow-hidden rounded-lg shadow-lg">
               <img src={phoneCases} alt="Coques pour téléphone" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
             </div>
@@ -106,7 +106,7 @@ const Home = () => {
             </div>
           </Link>
 
-          <Link to="/shop/porte-clés" className="relative group transform transition-transform hover:scale-105">
+          <Link to="/shop/porte-cles" className="relative group transform transition-transform hover:scale-105">
             <div className="overflow-hidden rounded-lg shadow-lg">
               <img src={porteCles} alt="Porte-clés" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
             </div>
@@ -177,7 +177,7 @@ const Home = () => {
             </div>
           </div>
 
-          <Link to="/shop/textile" className="inline-block mt-12">
+          <Link to="/shop/t-shirts" className="inline-block mt-12">
             <button className="bg-sky-600 text-white py-3 px-8 rounded-full text-lg sm:text-xl font-semibold hover:bg-sky-800 shadow-md transform transition-transform duration-300 hover:scale-105">
               Utilisez notre outil dès maintenant !
             </button>
