@@ -4,7 +4,6 @@ import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
-// import ProductDetails from './pages/ProductDetails';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Faq from './pages/Faq';
@@ -18,6 +17,7 @@ import AuthHandler from './components/AuthHandler';
 import Verify from './pages/Verify';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import ProductDetails from './pages/ProductDetails';
 
 const AppRouter = () => {
   return (
@@ -25,14 +25,13 @@ const AppRouter = () => {
       <AuthHandler />
       <Routes>
         <Route path="/" element={<Home />} />
-
-        {/* <Route path="/product/:id" element={<ProductDetails />} /> */}
         <Route path="/connexion" element={<Login />} />
         <Route path="/inscription" element={<Signup />} />
         <Route path="/verifier-mon-compte" element={<Verify />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/shop/:category" element={<Shop />} />
+        <Route path="/product/:id" element={<ProductDetails />} /> {/* Route pour la fiche produit */}
         <Route path="/panier" element={<Cart />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/politique-de-retour" element={<Retour />} />

@@ -4,10 +4,16 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 import hero from '../assets/hero.jpg';
-import goodies from '../assets/categories/goodies.jpg';
-import promos from '../assets/categories/promos.jpg';
-import textile from '../assets/categories/textile.jpg';
-import tokens from '../assets/categories/tokens.jpg';
+import tshirts from '../assets/categories/tshirts.webp';
+import pulls from '../assets/categories/sweaters.webp';
+import hoodies from '../assets/categories/hoodies.webp';
+import debardeurs from '../assets/categories/tanktops.webp';
+import phoneCases from '../assets/categories/phonecases.webp';
+import stylos from '../assets/categories/pens.webp';
+import gourdes from '../assets/categories/bottles.webp';
+import porteCles from '../assets/categories/keyrings.webp';
+import carnets from '../assets/categories/notebooks.webp';
+import promos from '../assets/categories/promos.webp';
 
 import ProductCarousel from '../components/ProductCarousel';
 
@@ -29,44 +35,104 @@ const Home = () => {
       <section className="bg-sky-600 text-white py-12">
         <h2 className="text-center text-3xl sm:text-4xl font-bold mb-10">NOS CATEGORIES</h2>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 container mx-auto">
-          <Link to="/shop/textile" className="relative group transform transition-transform hover:scale-105">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12 container mx-auto">
+          <Link to="/shop/t-shirts" className="relative group transform transition-transform hover:scale-105">
             <div className="overflow-hidden rounded-lg shadow-lg">
-              <img src={textile} alt="Textile" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" />
+              <img src={tshirts} alt="T-shirts" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
             </div>
             <div className="text-center mt-4">
-              <h3 className="text-lg font-semibold">TEXTILE</h3>
-              <p className="text-sm">T-shirts, hoodies, et plus</p>
+              <h3 className="text-lg font-semibold">T-SHIRTS</h3>
+              <p className="text-sm">T-shirts pour toutes les occasions</p>
             </div>
           </Link>
 
-          <Link to="/shop/goodies" className="relative group transform transition-transform hover:scale-105">
+          <Link to="/shop/pulls" className="relative group transform transition-transform hover:scale-105">
             <div className="overflow-hidden rounded-lg shadow-lg">
-              <img src={goodies} alt="Goodies" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" />
+              <img src={pulls} alt="Pulls" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
             </div>
             <div className="text-center mt-4">
-              <h3 className="text-lg font-semibold">GOODIES</h3>
-              <p className="text-sm">Accessoires, gadgets, et plus</p>
+              <h3 className="text-lg font-semibold">PULLS</h3>
+              <p className="text-sm">Restez au chaud avec style</p>
+            </div>
+          </Link>
+
+          <Link to="/shop/hoodies" className="relative group transform transition-transform hover:scale-105">
+            <div className="overflow-hidden rounded-lg shadow-lg">
+              <img src={hoodies} alt="Hoodies" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy"/>
+            </div>
+            <div className="text-center mt-4">
+              <h3 className="text-lg font-semibold">HOODIES</h3>
+              <p className="text-sm">Hoodies pour toutes les saisons</p>
+            </div>
+          </Link>
+
+          <Link to="/shop/debardeurs" className="relative group transform transition-transform hover:scale-105">
+            <div className="overflow-hidden rounded-lg shadow-lg">
+              <img src={debardeurs} alt="Débardeurs" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
+            </div>
+            <div className="text-center mt-4">
+              <h3 className="text-lg font-semibold">DÉBARDEURS</h3>
+              <p className="text-sm">Parfait pour l'été</p>
+            </div>
+          </Link>
+
+          <Link to="/shop/coque-pour-telephone" className="relative group transform transition-transform hover:scale-105">
+            <div className="overflow-hidden rounded-lg shadow-lg">
+              <img src={phoneCases} alt="Coques pour téléphone" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
+            </div>
+            <div className="text-center mt-4">
+              <h3 className="text-lg font-semibold">COQUES POUR TÉLÉPHONE</h3>
+              <p className="text-sm">Protégez votre téléphone avec style</p>
+            </div>
+          </Link>
+
+          <Link to="/shop/stylos" className="relative group transform transition-transform hover:scale-105">
+            <div className="overflow-hidden rounded-lg shadow-lg">
+              <img src={stylos} alt="Stylos" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
+            </div>
+            <div className="text-center mt-4">
+              <h3 className="text-lg font-semibold">STYLOS</h3>
+              <p className="text-sm">Stylos élégants pour votre bureau</p>
+            </div>
+          </Link>
+
+          <Link to="/shop/gourdes" className="relative group transform transition-transform hover:scale-105">
+            <div className="overflow-hidden rounded-lg shadow-lg">
+              <img src={gourdes} alt="Gourdes" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
+            </div>
+            <div className="text-center mt-4">
+              <h3 className="text-lg font-semibold">GOURDES</h3>
+              <p className="text-sm">Restez hydraté où que vous soyez</p>
+            </div>
+          </Link>
+
+          <Link to="/shop/porte-clés" className="relative group transform transition-transform hover:scale-105">
+            <div className="overflow-hidden rounded-lg shadow-lg">
+              <img src={porteCles} alt="Porte-clés" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
+            </div>
+            <div className="text-center mt-4">
+              <h3 className="text-lg font-semibold">PORTE-CLÉS</h3>
+              <p className="text-sm">Emportez votre style partout</p>
+            </div>
+          </Link>
+
+          <Link to="/shop/carnets" className="relative group transform transition-transform hover:scale-105">
+            <div className="overflow-hidden rounded-lg shadow-lg">
+              <img src={carnets} alt="Carnets" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
+            </div>
+            <div className="text-center mt-4">
+              <h3 className="text-lg font-semibold">CARNETS</h3>
+              <p className="text-sm">Prenez des notes avec classe</p>
             </div>
           </Link>
 
           <Link to="/shop/promos" className="relative group transform transition-transform hover:scale-105">
             <div className="overflow-hidden rounded-lg shadow-lg">
-              <img src={promos} alt="Promos" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" />
+              <img src={promos} alt="Promos" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
             </div>
             <div className="text-center mt-4">
               <h3 className="text-lg font-semibold">PROMOS</h3>
               <p className="text-sm">Offres spéciales et réductions</p>
-            </div>
-          </Link>
-
-          <Link to="/shop/tokens" className="relative group transform transition-transform hover:scale-105">
-            <div className="overflow-hidden rounded-lg shadow-lg">
-              <img src={tokens} alt="Tokens" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" />
-            </div>
-            <div className="text-center mt-4">
-              <h3 className="text-lg font-semibold">TOKENS</h3>
-              <p className="text-sm">Achetez des tokens pour générer des images</p>
             </div>
           </Link>
         </div>

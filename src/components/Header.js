@@ -7,7 +7,10 @@ import SearchBar from './SearchBar';
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [isTextileDropdownOpen, setIsTextileDropdownOpen] = useState(false);
+  const [isGoodiesDropdownOpen, setIsGoodiesDropdownOpen] = useState(false);
+  const [dropdownTimeout, setDropdownTimeout] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,13 +33,26 @@ function Header() {
   };
 
   const handleLogout = () => {
-    // Supprimer le token de l'utilisateur et rediriger vers la page de connexion
     localStorage.removeItem('token');
     navigate('/connexion');
   };
 
-  // Vérifiez si l'utilisateur est connecté en regardant le token
   const isAuthenticated = !!localStorage.getItem('token');
+
+  const handleMouseEnter = (setDropdownOpen) => {
+    if (dropdownTimeout) {
+      clearTimeout(dropdownTimeout);
+      setDropdownTimeout(null);
+    }
+    setDropdownOpen(true);
+  };
+
+  const handleMouseLeave = (setDropdownOpen) => {
+    const timeout = setTimeout(() => {
+      setDropdownOpen(false);
+    }, 200); // Petit délai avant de fermer le dropdown
+    setDropdownTimeout(timeout);
+  };
 
   return (
     <header className="border-b sticky top-0 bg-white z-50">
@@ -61,10 +77,10 @@ function Header() {
         <div className="flex items-center justify-end flex-1 space-x-4">
           {isAuthenticated ? (
             <div className="relative">
-              <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center space-x-2">
+              <button onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)} className="flex items-center space-x-2">
                 <FaUser className="text-gray-600 hover:text-gray-800" />
               </button>
-              {isDropdownOpen && (
+              {isUserDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded shadow-lg z-10">
                   <Link to="/profil" className="block px-4 py-2 hover:bg-gray-200">Profil</Link>
                   <Link to="/historique" className="block px-4 py-2 hover:bg-gray-200">Historique de commande</Link>
@@ -99,13 +115,52 @@ function Header() {
             ACCUEIL
           </Link>
 
-          <Link to="/shop/textile" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600">
-            TEXTILE
-          </Link>
+          {/* Textile Dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => handleMouseEnter(setIsTextileDropdownOpen)}
+            onMouseLeave={() => handleMouseLeave(setIsTextileDropdownOpen)}
+          >
+            <button className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600 focus:outline-none">
+              TEXTILE
+            </button>
+            {isTextileDropdownOpen && (
+              <div 
+                className="absolute bg-white border rounded shadow-lg mt-2 w-48 z-10"
+                onMouseEnter={() => handleMouseEnter(setIsTextileDropdownOpen)}
+                onMouseLeave={() => handleMouseLeave(setIsTextileDropdownOpen)}
+              >
+                <Link to="/shop/t-shirts" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">T-shirts</Link>
+                <Link to="/shop/pulls" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Pulls</Link>
+                <Link to="/shop/hoodies" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Hoodies</Link>
+                <Link to="/shop/debardeurs" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Débardeurs</Link>
+              </div>
+            )}
+          </div>
 
-          <Link to="/shop/goodies" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600">
-            GOODIES
-          </Link>
+          {/* Goodies Dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => handleMouseEnter(setIsGoodiesDropdownOpen)}
+            onMouseLeave={() => handleMouseLeave(setIsGoodiesDropdownOpen)}
+          >
+            <button className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600 focus:outline-none">
+              GOODIES
+            </button>
+            {isGoodiesDropdownOpen && (
+              <div 
+                className="absolute bg-white border rounded shadow-lg mt-2 w-48 z-10"
+                onMouseEnter={() => handleMouseEnter(setIsGoodiesDropdownOpen)}
+                onMouseLeave={() => handleMouseLeave(setIsGoodiesDropdownOpen)}
+              >
+                <Link to="/shop/coque-pour-telephone" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Coques pour téléphone</Link>
+                <Link to="/shop/stylos" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Stylos</Link>
+                <Link to="/shop/gourdes" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Gourdes</Link>
+                <Link to="/shop/porte-clés" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Porte-clés</Link>
+                <Link to="/shop/carnets" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Carnets</Link>
+              </div>
+            )}
+          </div>
 
           <Link to="/shop/promos" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600">
             PROMOS
