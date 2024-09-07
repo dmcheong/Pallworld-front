@@ -32,7 +32,7 @@ function SearchBar() {
     const query = e.target.value;
     setSearchQuery(query);
 
-    if (query.trim() === '') {
+    if (query.trim().length < 2) {
       setSearchResults([]);
       return;
     }
@@ -94,7 +94,7 @@ function SearchBar() {
                   {searchResults.map((product) => (
                     <div
                       key={product._id}
-                      className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"
+                      className="flex items-center p-2 hover:bg-gray-200 hover:rounded-lg cursor-pointer"
                       onClick={() => handleProductClick(product._id)}
                     >
                       <img

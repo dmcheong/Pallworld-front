@@ -3,21 +3,21 @@ import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductList from '../components/ProductList';
+import ScrollToTopButton from '../components/ScrollToTopButton'; // Import du composant
 import axios from 'axios';
 
 const Shop = () => {
-  const { category } = useParams();
+  const { category } = useParams(); // Récupère la catégorie à partir de l'URL
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 10; // Limite des produits par page
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`http://localhost:3005/api/products`, {
-          params: { category, page: currentPage, limit: productsPerPage }
+        const response = await axios.get('http://localhost:3005/api/products', {
+          params: { category }
         });
+        console.log('Produits récupérés :', response.data); // Ajouter ce log pour voir ce qui est retourné
         setProducts(response.data);
         setLoading(false);
       } catch (error) {
@@ -25,52 +25,32 @@ const Shop = () => {
         setLoading(false);
       }
     };
-
+  
     fetchProducts();
-  }, [category, currentPage]);
-
-  const totalPages = Math.ceil(products.totalCount / productsPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  }, [category]);  
 
   return (
     <div>
       <Header />
 
-      {/* Hero */}
+      {/* Section Hero */}
       <section className="relative bg-sky-600 text-white py-16">
-        <div className="text-center">
+        <div className="container mx-auto text-center">
           <h1 className="text-3xl sm:text-4xl font-bold">{category.toUpperCase()}</h1>
         </div>
       </section>
 
-      {/* Filters and Products */}
+      {/* Section des produits */}
       <section className="container mx-auto py-8">
         {loading ? (
           <p>Chargement des produits...</p>
         ) : (
-          <>
-            <ProductList products={products.items} />
-            
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="flex justify-center mt-8">
-                {[...Array(totalPages)].map((_, index) => (
-                  <button
-                    key={index + 1}
-                    onClick={() => handlePageChange(index + 1)}
-                    className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-              </div>
-            )}
-          </>
+          <ProductList products={products} /> // Passer les produits filtrés au composant ProductList
         )}
       </section>
+
+      {/* Bouton Retour en haut */}
+      <ScrollToTopButton />
 
       <Footer />
     </div>
