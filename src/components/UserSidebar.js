@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaUser, FaHistory, FaBars, FaSignOutAlt } from 'react-icons/fa';
+import { CartContext } from '../context/CartContext';
 
 const UserSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const { cart } = useContext(CartContext);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const handleLogout = () => {
-    // Supprimer le token du localStorage pour déconnecter l'utilisateur
+    localStorage.setItem('cart', JSON.stringify(cart));
     localStorage.removeItem('token');
-    // Rediriger l'utilisateur vers la page de connexion
-    navigate('/connexion');
+    navigate('/');
   };
 
   return (

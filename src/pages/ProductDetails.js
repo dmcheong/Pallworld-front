@@ -16,9 +16,10 @@ const ProductDetails = () => {
   const [selectedPosition, setSelectedPosition] = useState('');
   const [selectedCustomizationSize, setSelectedCustomizationSize] = useState(''); 
   const [selectedImage, setSelectedImage] = useState('');
+  const [quantity, setQuantity] = useState(1);
   const [showCharacteristics, setShowCharacteristics] = useState(false);
   const [notification, setNotification] = useState('');
-  const { cart, updateCart } = useContext(CartContext);
+  const { updateCart } = useContext(CartContext);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -72,7 +73,7 @@ const ProductDetails = () => {
         productId: product._id,
         name: product.name,
         price: product.price,
-        quantity: 1,
+        quantity, // Utiliser l'état de quantité
         color: selectedColor,
         size: selectedProductSize,
         customization: {
@@ -95,7 +96,7 @@ const ProductDetails = () => {
     );
 
     if (existingProductIndex >= 0) {
-        cart[existingProductIndex].quantity += 1;
+        cart[existingProductIndex].quantity += quantity; // Ajouter la quantité sélectionnée
     } else {
         cart.push(productDetails);
     }
@@ -113,8 +114,11 @@ const ProductDetails = () => {
     setTimeout(() => {
         setNotification('');
     }, 3000);
-};
+  };
 
+  const handleQuantityChange = (event) => {
+    setQuantity(parseInt(event.target.value)); // Mettre à jour la quantité
+  };
 
   if (loading) {
     return <p>Chargement...</p>;
@@ -216,8 +220,8 @@ const ProductDetails = () => {
               <label className="block text-gray-700 text-lg mb-2">Quantité :</label>
               <select 
                 className="p-2 border rounded mb-4 w-20" 
-                value={1} 
-                onChange={(e) => console.log(`Quantité sélectionnée : ${e.target.value}`)}
+                value={quantity} // Lier la quantité à l'état
+                onChange={handleQuantityChange} 
               >
                 {[...Array(10).keys()].map((i) => (
                   <option key={i} value={i+1}>{i+1}</option>

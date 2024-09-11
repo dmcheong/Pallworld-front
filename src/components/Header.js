@@ -6,7 +6,7 @@ import logo from '../assets/logos/logo-rect.png';
 import SearchBar from './SearchBar';
 
 function Header() {
-  const { cartCount, updateCart } = useContext(CartContext);
+  const { cart, cartCount } = useContext(CartContext);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -29,7 +29,6 @@ function Header() {
     };
   }, []);
 
-  // Gestion des clics en dehors du menu
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -48,10 +47,9 @@ function Header() {
   };
 
   const handleLogout = () => {
+    localStorage.setItem('cart', JSON.stringify(cart));
     localStorage.removeItem('token');
-    localStorage.removeItem('cart');
-    updateCart([]); 
-    navigate('/connexion');
+    navigate('/');
   };
 
   const isAuthenticated = !!localStorage.getItem('token');
