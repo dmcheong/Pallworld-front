@@ -83,61 +83,25 @@ const ProductDetails = () => {
 
     console.log('Produit ajouté au panier : ', productDetails);
 
-    let cart;
+    // Stocker le panier dans le localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingProductIndex = cart.findIndex(
+        (item) =>
+            item.productId === productDetails.productId &&
+            item.color === productDetails.color &&
+            item.size === productDetails.size &&
+            item.customization.position === productDetails.position &&
+            item.customization.customizationSize === productDetails.customization.customizationSize
+    );
 
-    // Vérifier si l'utilisateur est connecté
-    const isUserLoggedIn = false; // Vérification de connexion
- 
-    if (!isUserLoggedIn) {
-        // Stocker le panier dans le localStorage
-        cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const existingProductIndex = cart.findIndex(
-            (item) =>
-                item.productId === productDetails.productId &&
-                item.color === productDetails.color &&
-                item.size === productDetails.size &&
-                item.customization.position === productDetails.customization.position &&
-                item.customization.customizationSize === productDetails.customization.customizationSize
-        );
-
-        if (existingProductIndex >= 0) {
-            cart[existingProductIndex].quantity += 1;
-        } else {
-            cart.push(productDetails);
-        }
-
-        localStorage.setItem('cart', JSON.stringify(cart));
-        console.log('Produit ajouté au panier local:', cart);
+    if (existingProductIndex >= 0) {
+        cart[existingProductIndex].quantity += 1;
     } else {
-        // Logique pour ajouter au panier sur le backend
-        try {
-            cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const existingProductIndex = cart.findIndex(
-                (item) =>
-                    item.productId === productDetails.productId &&
-                    item.color === productDetails.color &&
-                    item.size === productDetails.size &&
-                    item.customization.position === productDetails.customization.position &&
-                    item.customization.customizationSize === productDetails.customization.customizationSize
-            );
-
-            if (existingProductIndex >= 0) {
-                cart[existingProductIndex].quantity += 1;
-            } else {
-                cart.push(productDetails);
-            }
-
-            const response = await axios.post('http://localhost:3005/api/paniers', {
-                totalPrice: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
-                totalQuantity: cart.reduce((sum, item) => sum + item.quantity, 0),
-                tabProducts: cart,
-            });
-
-            console.log('Produit ajouté au panier:', response.data);
-        } catch (error) {
-            console.error('Erreur lors de l\'ajout au panier:', error);
-        }
+        cart.push(productDetails);
     }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    console.log('Produit ajouté au panier local:', cart);
 
     // Mettre à jour le contexte avec le nouveau panier
     updateCart(cart);
@@ -149,7 +113,8 @@ const ProductDetails = () => {
     setTimeout(() => {
         setNotification('');
     }, 3000);
-  };
+};
+
 
   if (loading) {
     return <p>Chargement...</p>;

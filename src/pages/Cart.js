@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState, useCallback } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FaTrashAlt } from 'react-icons/fa';
 import Header from '../components/Header';
@@ -14,24 +13,10 @@ const Cart = () => {
   const [alertType, setAlertType] = useState('');
   const [cartLoaded, setCartLoaded] = useState(false);
 
-  const fetchCart = useCallback(async () => {
-    const isUserLoggedIn = false;
-
-    if (!isUserLoggedIn) {
-      const localCart = JSON.parse(localStorage.getItem('cart')) || [];
-      console.log('Panier récupéré du localStorage :', localCart);
-      updateCart(localCart);
-    } else {
-      try {
-        const response = await axios.get('http://localhost:3005/api/paniers/{userId}');
-        console.log('Panier récupéré du backend :', response.data);
-        updateCart(response.data.tabProducts);
-      } catch (error) {
-        console.error('Erreur lors de la récupération du panier:', error);
-        setAlertMessage('Erreur lors de la récupération du panier.');
-        setAlertType('error');
-      }
-    }
+  const fetchCart = useCallback(() => {
+    const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+    console.log('Panier récupéré du localStorage :', localCart);
+    updateCart(localCart);
     setCartLoaded(true); // Marque le panier comme chargé
   }, [updateCart]);
 
@@ -41,64 +26,20 @@ const Cart = () => {
     }
   }, [cartLoaded, fetchCart]);
 
-  const handleRemoveItem = async (productId) => {
-    const isUserLoggedIn = false;
-
-    let updatedCart;
-    if (!isUserLoggedIn) {
-      updatedCart = cart.filter(item => item.productId !== productId);
-      updateCart(updatedCart);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
-      setAlertMessage('Article supprimé du panier.');
-      setAlertType('success');
-    } else {
-      try {
-        updatedCart = cart.filter(item => item.productId !== productId);
-        const updatedData = {
-          tabProducts: updatedCart,
-          totalPrice: updatedCart.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        };
-
-        await axios.put(`http://localhost:3005/api/paniers/${cart._id}`, updatedData);
-        updateCart(updatedCart);
-        setAlertMessage('Article supprimé du panier.');
-        setAlertType('success');
-      } catch (error) {
-        console.error('Erreur lors de la suppression de l\'article:', error);
-        setAlertMessage('Erreur lors de la suppression de l\'article.');
-        setAlertType('error');
-      }
-    }
+  const handleRemoveItem = (productId) => {
+    const updatedCart = cart.filter(item => item.productId !== productId);
+    updateCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    setAlertMessage('Article supprimé du panier.');
+    setAlertType('success');
   };
 
-  const handleQuantityChange = async (productId, newQuantity) => {
-    const isUserLoggedIn = false;
-
-    let updatedCart;
-    if (!isUserLoggedIn) {
-      updatedCart = cart.map(item =>
-        item.productId === productId ? { ...item, quantity: newQuantity } : item
-      );
-      updateCart(updatedCart);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
-    } else {
-      try {
-        updatedCart = cart.map(item =>
-          item.productId === productId ? { ...item, quantity: newQuantity } : item
-        );
-        const updatedData = {
-          tabProducts: updatedCart,
-          totalPrice: updatedCart.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        };
-
-        await axios.put(`http://localhost:3005/api/paniers/${cart._id}`, updatedData);
-        updateCart(updatedCart);
-      } catch (error) {
-        console.error('Erreur lors de la mise à jour de la quantité:', error);
-        setAlertMessage('Erreur lors de la mise à jour de la quantité.');
-        setAlertType('error');
-      }
-    }
+  const handleQuantityChange = (productId, newQuantity) => {
+    const updatedCart = cart.map(item =>
+      item.productId === productId ? { ...item, quantity: newQuantity } : item
+    );
+    updateCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   if (!cartLoaded) {
@@ -175,7 +116,7 @@ const Cart = () => {
             </div>
 
             <Link to="/finaliser-ma-commande">
-              <button className="w-full mt-6 bg-sky-600 text-white py-2 px-4 rounded hover:bg-sky-800 transition-colors duration-300">
+              <button className="w-full mt-6 bg-sky-600 text-white py-2 px-4 rounded hover:bg-sky-800 transition-colors durée-300">
                 FINALISER MA COMMANDE
               </button>
             </Link>
