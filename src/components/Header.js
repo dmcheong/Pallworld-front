@@ -1,16 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
+import { CartContext } from '../context/CartContext'; // Import du contexte du panier
 import logo from '../assets/logos/logo-rect.png';
 import SearchBar from './SearchBar';
 
 function Header() {
+  const { cartCount, updateCart } = useContext(CartContext);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null); // Pour suivre quel menu est ouvert
+  const [activeDropdown, setActiveDropdown] = useState(null); 
   const navigate = useNavigate();
-  const dropdownRef = useRef(null); // Ref pour détecter les clics en dehors
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,6 +49,8 @@ function Header() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('cart');
+    updateCart([]); 
     navigate('/connexion');
   };
 
@@ -96,8 +100,13 @@ function Header() {
             </Link>
           )}
 
-          <Link to="/panier">
+          <Link to="/panier" className="relative">
             <FaShoppingCart className="text-gray-600 hover:text-gray-800 transition-colors duration-200" />
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-1 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                {cartCount}
+              </span>
+            )}
           </Link>
 
           {/* Hamburger Menu Icon */}
@@ -110,7 +119,7 @@ function Header() {
         </div>
       </div>
 
-      {/* Navigation Links - Hidden on small screens */}
+      {/* Navigation Links */}
       <nav ref={dropdownRef} className={`border-t ${isMobileMenuOpen ? 'block' : 'hidden'} sm:block transition-all duration-300`}>
         <div className="container mx-auto px-4 py-2 flex flex-col sm:flex-row sm:justify-center space-y-2 sm:space-y-0 sm:space-x-8">
           <Link to="/" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600">
