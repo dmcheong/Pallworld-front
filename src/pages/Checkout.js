@@ -8,7 +8,7 @@ const Checkout = () => {
 
   const handleOrderConfirmation = () => {
     // Logique pour finaliser la commande
-    // Après confirmation, vous pouvez rediriger l'utilisateur vers la page de l'historique des commandes
+    // Après confirmation, rediriger l'utilisateur vers la page de l'historique des commandes
     navigate('/historique');
   };
 

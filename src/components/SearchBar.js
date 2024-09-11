@@ -12,14 +12,14 @@ function SearchBar() {
 
   const openSearch = () => {
     setIsSearchOpen(true);
-    document.body.style.overflow = 'hidden'; // Disable scroll
+    document.body.style.overflow = 'hidden';
   };
 
   const closeSearch = () => {
     setIsSearchOpen(false);
-    document.body.style.overflow = 'auto'; // Enable scroll
-    setSearchQuery(''); // Réinitialise la recherche lors de la fermeture
-    setSearchResults([]); // Réinitialise les résultats de recherche
+    document.body.style.overflow = 'auto'; 
+    setSearchQuery(''); 
+    setSearchResults([]); 
   };
 
   useEffect(() => {
@@ -53,7 +53,7 @@ function SearchBar() {
 
   const handleProductClick = (id) => {
     navigate(`/product/${id}`);
-    closeSearch(); // Ferme la recherche après la sélection
+    closeSearch(); 
   };
 
   return (
@@ -70,7 +70,7 @@ function SearchBar() {
         >
           <div
             className="relative w-full max-w-2xl bg-transparent px-4"
-            onClick={(e) => e.stopPropagation()} // Prevents closing modal when clicking inside the input
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="relative">
               <FaSearch className="absolute left-3 top-2/4 transform -translate-y-2/4 text-gray-600 " />

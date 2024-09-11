@@ -31,7 +31,7 @@ const AppRouter = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/shop/:category" element={<Shop />} />
-        <Route path="/product/:id" element={<ProductDetails />} /> {/* Route pour la fiche produit */}
+        <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/panier" element={<Cart />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/politique-de-retour" element={<Retour />} />

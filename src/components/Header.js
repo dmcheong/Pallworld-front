@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
-import { CartContext } from '../context/CartContext'; // Import du contexte du panier
+import { CartContext } from '../context/CartContext';
 import logo from '../assets/logos/logo-rect.png';
 import SearchBar from './SearchBar';
 

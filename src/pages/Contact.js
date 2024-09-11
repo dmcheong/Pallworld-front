@@ -7,7 +7,7 @@ import TextInput from '../components/TextInput';
 import SelectInput from '../components/SelectInput';
 import TextArea from '../components/TextArea';
 import FormButton from '../components/FormButton';
-import Alert from '../components/Alert'; // Si tu utilises les alertes pour afficher le succès ou l'échec
+import Alert from '../components/Alert';
 
 const Contact = () => {
   const [formData, setFormData] = useState({

@@ -9,7 +9,7 @@ const AuthHandler = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('access_token');
     if (token) {
-      console.log("Token récupéré:", token); // Affiche le token dans la console
+      console.log("Token récupéré:", token);
 
       const localCart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -20,9 +20,9 @@ const AuthHandler = () => {
       })
       .then(response => {
         console.log("Panier synchronisé:", response.data);
-        localStorage.removeItem('cart'); // Supprimer le panier local après la synchronisation
+        localStorage.removeItem('cart'); 
         localStorage.setItem('token', token);
-        navigate('/'); // Redirige vers la page d'accueil après la connexion
+        navigate('/');
       })
       .catch(error => {
         console.error("Erreur lors de la synchronisation du panier:", error);

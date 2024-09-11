@@ -17,7 +17,7 @@ const Cart = () => {
     const localCart = JSON.parse(localStorage.getItem('cart')) || [];
     console.log('Panier récupéré du localStorage :', localCart);
     updateCart(localCart);
-    setCartLoaded(true); // Marque le panier comme chargé
+    setCartLoaded(true);
   }, [updateCart]);
 
   useEffect(() => {

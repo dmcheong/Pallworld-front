@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductList from '../components/ProductList';
-import ScrollToTopButton from '../components/ScrollToTopButton'; // Import du composant
+import ScrollToTopButton from '../components/ScrollToTopButton';
 import axios from 'axios';
 
 const Shop = () => {
@@ -52,7 +52,7 @@ const Shop = () => {
         {loading ? (
           <p>Chargement des produits...</p>
         ) : (
-          <ProductList products={products} /> // Passer les produits filtrés au composant ProductList
+          <ProductList products={products} /> 
         )}
       </section>
 

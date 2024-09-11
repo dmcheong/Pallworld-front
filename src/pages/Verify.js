@@ -17,7 +17,7 @@ const Verify = () => {
         const response = await axios.post('http://localhost:3005/api/users/verify', { token });
         setMessage(response.data.message);
         setTimeout(() => {
-          navigate('/connexion'); // Redirige vers la page de connexion après un délai
+          navigate('/connexion');
         }, 3000);
       } catch (error) {
         setMessage(error.response?.data?.message || 'Échec de la vérification.');

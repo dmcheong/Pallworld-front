@@ -11,8 +11,8 @@ import Alert from '../components/Alert';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [alertMessage, setAlertMessage] = useState(''); // Pour le message d'alerte
-  const [alertType, setAlertType] = useState(''); // Pour le type d'alerte (success, error)
+  const [alertMessage, setAlertMessage] = useState(''); 
+  const [alertType, setAlertType] = useState(''); 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -27,7 +27,7 @@ const Login = () => {
 
       if (response.status === 200) {
         localStorage.setItem('token', response.data.token);
-        navigate('/'); // Redirection vers une page protégée
+        navigate('/'); 
       }
     } catch (error) {
       setAlertMessage(error.response?.data?.message || 'Erreur lors de la connexion');
@@ -36,7 +36,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:3006/auth/google'; // Redirige vers l'URL d'authentification Google
+    window.location.href = 'http://localhost:3006/auth/google'; 
   };
 
   return (

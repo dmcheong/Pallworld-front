@@ -7,7 +7,7 @@ import SideImage from '../components/SideImage';
 import TextInput from '../components/TextInput';
 import SelectInput from '../components/SelectInput';
 import FormButton from '../components/FormButton';
-import Alert from '../components/Alert'; // Importation du composant Alert
+import Alert from '../components/Alert';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -22,8 +22,8 @@ const Signup = () => {
     codePostal: '',
   });
 
-  const [alertMessage, setAlertMessage] = useState(''); // Message d'alerte
-  const [alertType, setAlertType] = useState(''); // Type d'alerte (success, error)
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState('');
   const navigate = useNavigate();
 
   const europeanCountries = [
@@ -52,8 +52,8 @@ const Signup = () => {
         setAlertMessage('Inscription réussie. Redirection vers la page de connexion.');
         setAlertType('success');
         setTimeout(() => {
-          navigate('/connexion'); // Redirection vers la page de connexion
-        }, 2000); // Redirige après 2 secondes
+          navigate('/connexion'); 
+        }, 2000);
       }
     } catch (error) {
       setAlertMessage(error.response?.data?.message || 'Erreur lors de l\'inscription');

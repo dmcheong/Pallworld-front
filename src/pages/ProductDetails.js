@@ -96,7 +96,7 @@ const ProductDetails = () => {
     );
 
     if (existingProductIndex >= 0) {
-        cart[existingProductIndex].quantity += quantity; // Ajouter la quantité sélectionnée
+        cart[existingProductIndex].quantity += quantity;
     } else {
         cart.push(productDetails);
     }
@@ -107,17 +107,15 @@ const ProductDetails = () => {
     // Mettre à jour le contexte avec le nouveau panier
     updateCart(cart);
 
-    // Affichage de la notification
     setNotification('Produit ajouté au panier !');
 
-    // Masquer la notification après 3 secondes
     setTimeout(() => {
         setNotification('');
     }, 3000);
   };
 
   const handleQuantityChange = (event) => {
-    setQuantity(parseInt(event.target.value)); // Mettre à jour la quantité
+    setQuantity(parseInt(event.target.value));
   };
 
   if (loading) {
