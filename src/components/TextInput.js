@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-const TextInput = ({ label, name, value, onChange, type = "text", required = false, className = "" }) => {
+const TextInput = ({ label, name, value, onChange, type = "text", required = false, className = "", disabled = false}) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -21,6 +21,7 @@ const TextInput = ({ label, name, value, onChange, type = "text", required = fal
           onChange={onChange}
           className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-sky-600"
           required={required}
+          disabled={disabled}
         />
         {type === "password" && (
           <button

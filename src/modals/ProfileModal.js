@@ -60,6 +60,7 @@ const ProfileModal = ({
               value={userData.email || ''}
               onChange={handleInputChange}
               type="email"
+              disabled
             />
             <TextInput
               label="Téléphone"
@@ -118,7 +119,7 @@ const ProfileModal = ({
             />
             <div className="form-buttons mt-4">
               <FormButton text="Enregistrer" />
-              <FormButton text="Annuler" type="button" onClick={() => setPasswordData({ newPassword: '', confirmPassword: '' })} color="gray" />
+              <FormButton text="Annuler" type="button" onClick={() => setModalIsOpen(false)} color="gray"  />
             </div>
           </form>
         </div>
