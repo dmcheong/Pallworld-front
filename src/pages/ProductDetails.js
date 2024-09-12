@@ -370,7 +370,7 @@ const ProductDetails = () => {
                 {generatedImageUrl ? (
                 <img 
                   src={generatedImageUrl} 
-                  alt="Pal générée" 
+                  alt="Mon pal" 
                   className="w-full h-56 rounded-lg object-contain" 
                   onError={() => setNotification('Impossible de charger l\'image générée.')}
                 />

@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import Success from './pages/Success';
+import Cancel from './pages/Cancel'; 
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Faq from './pages/Faq';
@@ -33,6 +35,8 @@ const AppRouter = () => {
         <Route path="/shop/:category" element={<Shop />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/panier" element={<Cart />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} /> 
         <Route path="/faq" element={<Faq />} />
         <Route path="/politique-de-retour" element={<Retour />} />
         <Route path="/livraison" element={<Shipping />} />

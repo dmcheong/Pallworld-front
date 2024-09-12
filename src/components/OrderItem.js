@@ -13,6 +13,11 @@ const OrderItem = ({ order }) => {
           </li>
         ))}
       </ul>
+      {order.imageGenerated && (
+        <div className="mt-4">
+          <img src={order.imageGenerated} alt="Pal générée" className="w-full h-auto rounded-md" />
+        </div>
+      )}
     </div>
   );
 };

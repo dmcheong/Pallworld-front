@@ -21,7 +21,7 @@ const PurchaseHistory = () => {
         const decodedToken = jwtDecode(token);
         const userId = decodedToken.userId;
 
-        const response = await axios.get(`http://localhost:3005/api/users/${userId}/orders`, {
+        const response = await axios.get(`http://localhost:3005/api/orders/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

@@ -85,7 +85,7 @@ const Cart = () => {
                             <div className="mt-2">
                               <img
                                 src={product.customization.imageUrl}
-                                alt="Pal personnalisée"
+                                alt="Mon pal"
                                 className="w-16 h-16 object-contain border border-gray-300 rounded-lg"
                               />
                             </div>
