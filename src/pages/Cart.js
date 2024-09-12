@@ -26,13 +26,16 @@ const Cart = () => {
     }
   }, [cartLoaded, fetchCart]);
 
-  const handleRemoveItem = (productId) => {
-    const updatedCart = cart.filter(item => item.productId !== productId);
+  const handleRemoveItem = (productId, imageUrl) => {
+    const updatedCart = cart.filter(item => {
+      return !(item.productId === productId && item.customization?.imageUrl === imageUrl);
+    });
     updateCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     setAlertMessage('Article supprimé du panier.');
     setAlertType('success');
   };
+  
 
   const handleQuantityChange = (productId, newQuantity) => {
     const updatedCart = cart.map(item =>
@@ -118,7 +121,7 @@ const Cart = () => {
                   <div className="flex items-center">
                     <span className="text-gray-700 font-semibold mr-4">€{product.price.toFixed(2)}</span>
                     <button 
-                      onClick={() => handleRemoveItem(product.productId)} 
+                      onClick={() => handleRemoveItem(product.productId, product.customization?.imageUrl)} 
                       className="text-red-600 hover:text-red-800 transition-colors duration-300"
                     >
                       <FaTrashAlt />

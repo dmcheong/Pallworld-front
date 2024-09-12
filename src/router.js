@@ -14,6 +14,7 @@ import Shipping from './pages/Shipping';
 import Contact from './pages/Contact';
 import Profil from './pages/Profile';
 import PurchaseHistory from './pages/PurchaseHistory';
+import GeneratedImagesHistory from './pages/GeneratedImagesHistory';
 import PrivateRoute from './components/PrivateRoute';
 import AuthHandler from './components/AuthHandler';
 import Verify from './pages/Verify';
@@ -55,6 +56,14 @@ const AppRouter = () => {
           element={
             <PrivateRoute>
               <PurchaseHistory />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/mes-images"
+          element={
+            <PrivateRoute>
+              <GeneratedImagesHistory />
             </PrivateRoute>
           }
         />

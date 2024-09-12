@@ -94,6 +94,23 @@ const ProductDetails = () => {
     }
   };
 
+  const saveGeneratedImage = async (imageUrl) => {
+    try {
+      const decoded = jwtDecode(token);
+      const userId = decoded.userId;
+  
+      await axios.post('http://localhost:3005/api/generatedImages', {
+        userId,
+        imageUrl,
+        promptUsed: promptText, // Optionnel, selon si tu veux enregistrer le prompt aussi
+      });
+  
+      console.log('Image générée enregistrée avec succès dans l\'historique.');
+    } catch (error) {
+      console.error('Erreur lors de l\'enregistrement de l\'image générée:', error);
+    }
+  };
+  
   const handleGenerateImage = async () => {
     try {
       if (!promptText) {
@@ -123,6 +140,10 @@ const ProductDetails = () => {
   
       setImageNotification('Image générée avec succès !');
       setImageNotificationType('success');
+  
+      // Enregistrer l'image générée dans l'historique
+      saveGeneratedImage(imageUrl);
+  
     } catch (error) {
       console.error('Erreur lors de la génération de l\'image:', error);
   
@@ -139,7 +160,6 @@ const ProductDetails = () => {
     }
   };
   
-
   const handleQuantityChange = (event) => {
     setQuantity(parseInt(event.target.value));
   };
