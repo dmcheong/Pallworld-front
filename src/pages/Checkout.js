@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CartContext } from '../context/CartContext';
 import Header from '../components/Header';
@@ -18,6 +18,13 @@ const Checkout = () => {
     postalCode: '',
     phone: '',
   });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (cart.length === 0) {
+      navigate('/panier');
+    }
+  }, [cart, navigate]);
 
   useEffect(() => {
     const fetchUserData = async () => {

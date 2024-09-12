@@ -26,6 +26,7 @@ const ProductDetails = () => {
   const [generatedImageUrl, setGeneratedImageUrl] = useState(null);
   const [remainingTokens, setRemainingTokens] = useState(null); 
   const { updateCart } = useContext(CartContext);
+  const [loadingImageGeneration, setLoadingImageGeneration] = useState(false);
 
   // Vérifier si l'utilisateur est authentifié
   const token = localStorage.getItem('token');
@@ -100,29 +101,31 @@ const ProductDetails = () => {
         setImageNotificationType('error');
         return;
       }
-
+  
       if (!token) {
         setImageNotification("Vous devez être connecté pour générer une image.");
         setImageNotificationType('error');
         return;
       }
-
+  
+      setLoadingImageGeneration(true); 
+  
       const decoded = jwtDecode(token);
       const userId = decoded.userId;
-
+  
       const response = await axios.get('http://localhost:3009/generate-image', {
         params: { text: promptText, userId: userId }
       });
-
+  
       const imageUrl = response.data.imageUrl;
       setGeneratedImageUrl(imageUrl);
       setRemainingTokens(response.data.remainingTokens); // Mise à jour des tokens restants
-
+  
       setImageNotification('Image générée avec succès !');
       setImageNotificationType('success');
     } catch (error) {
       console.error('Erreur lors de la génération de l\'image:', error);
-
+  
       if (error.response && error.response.status === 400 && error.response.data.error.includes("tokens")) {
         setImageNotification("Vous n'avez pas assez de tokens pour générer une image.");
       } else if (error.response && error.response.status === 400 && error.response.data.error.includes("safety system")) {
@@ -131,8 +134,11 @@ const ProductDetails = () => {
         setImageNotification("Erreur lors de la génération de l'image. Veuillez réessayer.");
       }
       setImageNotificationType('error');
+    } finally {
+      setLoadingImageGeneration(false); 
     }
   };
+  
 
   const handleQuantityChange = (event) => {
     setQuantity(parseInt(event.target.value));
@@ -367,22 +373,34 @@ const ProductDetails = () => {
               </div>
               {/* Colonne droite : Affichage de l'image générée */}
               <div className="flex justify-center items-center">
-                {generatedImageUrl ? (
-                <img 
-                  src={generatedImageUrl} 
-                  alt="Mon pal" 
-                  className="w-full h-56 rounded-lg object-contain" 
-                  onError={() => setNotification('Impossible de charger l\'image générée.')}
-                />
+                {loadingImageGeneration ? (
+                  <div className="flex flex-col items-center">
+                    <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+                    <p className="text-gray-600">Génération de l'image...</p>
+                  </div>
                 ) : (
-                  <p className="text-gray-600">L'image générée apparaîtra ici.</p>
+                  generatedImageUrl ? (
+                    <img 
+                      src={generatedImageUrl} 
+                      alt="Mon pal" 
+                      className="w-full h-56 rounded-lg object-contain" 
+                      onError={() => setNotification('Impossible de charger l\'image générée.')}
+                    />
+                  ) : (
+                    <p className="text-gray-600">L'image générée apparaîtra ici.</p>
+                  )
                 )}
               </div>
             </div>
           </section>
         ) : (
           <section id="login-prompt-section" className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-4">
-            <p className='text-lg font-semibold text-gray-700'>Connectez-vous pour personnaliser votre produit.</p>
+            <p className='text-lg font-semibold text-gray-700'>
+              <Link to="/connexion" className="text-sky-600 hover:underline">
+                Connectez-vous
+              </Link>
+              {' '}pour personnaliser votre produit.
+            </p>
           </section>
         )}
 

@@ -5,11 +5,11 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SideImage from '../components/SideImage';
 import Alert from '../components/Alert';
-import { CartContext } from '../context/CartContext'; 
+import { CartContext } from '../context/CartContext';
 
 const Cart = () => {
   const { cart, updateCart } = useContext(CartContext);
-  const [alertMessage, setAlertMessage] = useState(''); 
+  const [alertMessage, setAlertMessage] = useState('');
   const [alertType, setAlertType] = useState('');
   const [cartLoaded, setCartLoaded] = useState(false);
 
@@ -135,8 +135,13 @@ const Cart = () => {
               <span>€{cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}</span>
             </div>
 
-            <Link to="/finaliser-ma-commande">
-              <button className="w-full mt-6 bg-sky-600 text-white py-2 px-4 rounded hover:bg-sky-800 transition-colors durée-300">
+            <Link to={cart.length > 0 ? "/finaliser-ma-commande" : "#"}>
+              <button
+                className={`w-full mt-6 py-2 px-4 rounded transition-colors durée-300 ${
+                  cart.length > 0 ? 'bg-sky-600 text-white hover:bg-sky-800' : 'bg-gray-400 text-gray-700 cursor-not-allowed'
+                }`}
+                disabled={cart.length === 0}
+              >
                 FINALISER MA COMMANDE
               </button>
             </Link>

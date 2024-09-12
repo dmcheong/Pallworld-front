@@ -6,12 +6,14 @@ import logo from '../assets/logos/logo-rect.png';
 import SearchBar from './SearchBar';
 
 function Header() {
-  const { cart, cartCount } = useContext(CartContext);
+  const { cartCount, updateCart } = useContext(CartContext);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+
+  const isAuthenticated = !!localStorage.getItem('token');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,26 +42,13 @@ function Header() {
   };
 
   const handleLogout = () => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    const cart = localStorage.getItem('cart');
+    localStorage.setItem('savedCart', cart);
     localStorage.removeItem('token');
+    localStorage.removeItem('cart');
+    updateCart([]);
     navigate('/');
   };
-
-  const isAuthenticated = !!localStorage.getItem('token');
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 640 && isMobileMenuOpen) {
-        setIsMobileMenuOpen(false);
-        setActiveDropdown(null);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [isMobileMenuOpen]);
 
   const handleClickOutside = (event) => {
     if (
@@ -125,14 +114,16 @@ function Header() {
                 </Link>
               )}
 
-              <Link to="/panier" className="relative hidden sm:block" onClick={handleLinkClick}>
-                <FaShoppingCart className="text-gray-600 hover:text-black transition-colors duration-200" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-1 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
+              {isAuthenticated && (
+                <Link to="/panier" className="relative hidden sm:block" onClick={handleLinkClick}>
+                  <FaShoppingCart className="text-gray-600 hover:text-black transition-colors duration-200" />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-1 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
+              )}
             </>
           )}
 
