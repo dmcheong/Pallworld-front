@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext  } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScrolltoTopButton from '../components/ScrollToTopButton';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-import { CartContext } from '../context/CartContext'; 
+import { CartContext } from '../context/CartContext';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -14,11 +14,15 @@ const ProductDetails = () => {
   const [selectedProductSize, setSelectedProductSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedPosition, setSelectedPosition] = useState('');
-  const [selectedCustomizationSize, setSelectedCustomizationSize] = useState(''); 
+  const [selectedCustomizationSize, setSelectedCustomizationSize] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [showCharacteristics, setShowCharacteristics] = useState(false);
-  const [notification, setNotification] = useState('');
+  const [notification, setNotification] = useState(''); // Notification pour le panier
+  const [imageNotification, setImageNotification] = useState(''); // Notification pour la génération d'image
+  const [imageNotificationType, setImageNotificationType] = useState(''); // Type de notification pour l'image (success/error)
+  const [promptText, setPromptText] = useState('');
+  const [generatedImageUrl, setGeneratedImageUrl] = useState(null);
   const { updateCart } = useContext(CartContext);
 
   useEffect(() => {
@@ -26,7 +30,7 @@ const ProductDetails = () => {
       try {
         const response = await axios.get(`http://localhost:3005/api/products/${id}`);
         setProduct(response.data);
-        setSelectedImage(response.data.images[0]); 
+        setSelectedImage(response.data.images[0]);
         setLoading(false);
         if (response.data.sizes && response.data.sizes.length > 0) {
           setSelectedProductSize(response.data.sizes[0]);
@@ -36,7 +40,7 @@ const ProductDetails = () => {
         }
         if (response.data.customizationOptions && response.data.customizationOptions.length > 0) {
           setSelectedPosition(response.data.customizationOptions[0].position);
-          setSelectedCustomizationSize(response.data.customizationOptions[0].customizationSize[0]); 
+          setSelectedCustomizationSize(response.data.customizationOptions[0].customizationSize[0]);
         }
       } catch (error) {
         console.error('Erreur lors de la récupération du produit:', error);
@@ -54,7 +58,7 @@ const ProductDetails = () => {
   };
 
   const handleImageClick = (img) => {
-    setSelectedImage(img); 
+    setSelectedImage(img);
   };
 
   const toggleCharacteristics = () => {
@@ -67,55 +71,82 @@ const ProductDetails = () => {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
-  
+
+  const handleGenerateImage = async () => {
+    try {
+      if (!promptText) {
+        setImageNotification('Veuillez entrer une description pour générer une image.');
+        setImageNotificationType('error');
+        return;
+      }
+
+      const response = await axios.get('http://localhost:3009/generate-image', {
+        params: { text: promptText }
+      });
+
+      const imageUrl = response.data.imageUrl;
+      setGeneratedImageUrl(imageUrl);
+
+      setImageNotification('Image générée avec succès !');
+      setImageNotificationType('success');
+    } catch (error) {
+      console.error('Erreur lors de la génération de l\'image:', error);
+
+      if (error.response && error.response.status === 400 && error.response.data.error.includes("safety system")) {
+        setImageNotification("Votre description a été rejetée par notre système de sécurité. Veuillez reformuler votre description.");
+      } else {
+        setImageNotification("Erreur lors de la génération de l'image. Veuillez réessayer.");
+      }
+      setImageNotificationType('error');
+    }
+  };
+
+  const handleQuantityChange = (event) => {
+    setQuantity(parseInt(event.target.value));
+  };
+
   const handleAddToCart = async () => {
     const productDetails = {
-        productId: product._id,
-        name: product.name,
-        price: product.price,
-        quantity, // Utiliser l'état de quantité
-        color: selectedColor,
-        size: selectedProductSize,
-        customization: {
-            position: selectedPosition,
-            customizationSize: selectedCustomizationSize,
-        },
+      productId: product._id,
+      name: product.name,
+      price: product.price,
+      quantity,
+      color: selectedColor,
+      size: selectedProductSize,
+      customization: {
+        position: selectedPosition,
+        customizationSize: selectedCustomizationSize,
+      },
     };
 
     console.log('Produit ajouté au panier : ', productDetails);
 
-    // Stocker le panier dans le localStorage
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existingProductIndex = cart.findIndex(
-        (item) =>
-            item.productId === productDetails.productId &&
-            item.color === productDetails.color &&
-            item.size === productDetails.size &&
-            item.customization.position === productDetails.position &&
-            item.customization.customizationSize === productDetails.customization.customizationSize
+      (item) =>
+        item.productId === productDetails.productId &&
+        item.color === productDetails.color &&
+        item.size === productDetails.size &&
+        item.customization.position === productDetails.position &&
+        item.customization.customizationSize === productDetails.customization.customizationSize
     );
 
     if (existingProductIndex >= 0) {
-        cart[existingProductIndex].quantity += quantity;
+      cart[existingProductIndex].quantity += quantity;
     } else {
-        cart.push(productDetails);
+      cart.push(productDetails);
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
     console.log('Produit ajouté au panier local:', cart);
 
-    // Mettre à jour le contexte avec le nouveau panier
     updateCart(cart);
 
     setNotification('Produit ajouté au panier !');
 
     setTimeout(() => {
-        setNotification('');
+      setNotification('');
     }, 3000);
-  };
-
-  const handleQuantityChange = (event) => {
-    setQuantity(parseInt(event.target.value));
   };
 
   if (loading) {
@@ -126,7 +157,6 @@ const ProductDetails = () => {
     return <p>Produit non trouvé.</p>;
   }
 
-  // Formatage de la première lettre de la catégorie en majuscule
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
@@ -218,11 +248,11 @@ const ProductDetails = () => {
               <label className="block text-gray-700 text-lg mb-2">Quantité :</label>
               <select 
                 className="p-2 border rounded mb-4 w-20" 
-                value={quantity} // Lier la quantité à l'état
+                value={quantity} 
                 onChange={handleQuantityChange} 
               >
                 {[...Array(10).keys()].map((i) => (
-                  <option key={i} value={i+1}>{i+1}</option>
+                  <option key={i+1} value={i+1}>{i+1}</option>
                 ))}
               </select>
             </section>
@@ -239,8 +269,8 @@ const ProductDetails = () => {
           </section>
         </section>
 
-        {/* Section Caractéristiques avec Accordéon */}
-        {product.characteristics && (
+         {/* Section Caractéristiques avec Accordéon */}
+         {product.characteristics && (
           <section className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-4">
             <button 
               onClick={toggleCharacteristics}
@@ -258,6 +288,50 @@ const ProductDetails = () => {
             )}
           </section>
         )}
+
+        {/* Section Génération d'image */}
+        <section id="image-generation-section" className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-8">
+          <h2 className="text-2xl font-bold mb-4">Génération d'image</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Colonne gauche : Champ texte et bouton */}
+            <div>
+              <label className="block text-gray-700 text-lg mb-2">Description pour générer l'image :</label>
+              <textarea 
+                className="w-full p-2 border rounded mb-4" 
+                rows="4" 
+                placeholder="Entrez une description pour générer une image"
+                value={promptText}
+                onChange={(e) => setPromptText(e.target.value)}
+              />
+              <button 
+                onClick={handleGenerateImage}
+                className="mt-2 bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 transition-colors duration-300"
+              >
+                Générer l'image
+              </button>
+
+              {/* Notification pour la génération d'image */}
+              {imageNotification && (
+                <div className={`p-4 rounded mt-4 text-center ${imageNotificationType === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}>
+                  {imageNotification}
+                </div>
+              )}
+            </div>
+            {/* Colonne droite : Affichage de l'image générée */}
+            <div className="flex justify-center items-center">
+              {generatedImageUrl ? (
+              <img 
+                src={generatedImageUrl} 
+                alt="Pal générée" 
+                className="w-full h-56 rounded-lg object-contain" 
+                onError={() => setNotification('Impossible de charger l\'image générée.')}
+              />
+              ) : (
+                <p className="text-gray-600">L'image générée apparaîtra ici.</p>
+              )}
+            </div>
+          </div>
+        </section>
 
         {/* Section de personnalisation */}
         {product.customizationOptions && product.customizationOptions.length > 0 && (
@@ -297,7 +371,7 @@ const ProductDetails = () => {
               Ajouter au panier
             </button>
 
-            {/* Notification */}
+            {/* Notification pour l'ajout au panier */}
             {notification && (
               <div className="bg-green-500 text-white p-4 rounded mt-4 text-center">
                 {notification}
