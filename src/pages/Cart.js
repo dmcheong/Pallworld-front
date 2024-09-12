@@ -66,32 +66,52 @@ const Cart = () => {
             <ul className="space-y-4">
               {cart.map((product, index) => (
                 <li key={index} className="flex justify-between items-center">
-                  <div className="flex flex-col">
-                    <span className="text-gray-700 font-semibold">{product.name}</span>
-                    <span className="text-gray-500 text-sm">{product.color} - {product.size}</span>
-                    {product.customization && (
-                      <span className="text-gray-500 text-sm">
-                        Personnalisation : {product.customization.position} - {product.customization.customizationSize}
-                      </span>
-                    )}
-                    <div className="flex items-center mt-2">
-                      <span className="text-black text-md mr-2">Qté :</span>
-                      <div className="relative">
-                        <select
-                          value={product.quantity}
-                          onChange={(e) => handleQuantityChange(product.productId, parseInt(e.target.value))}
-                          className="p-2 pl-4 pr-8 border rounded bg-gray-100 text-gray-700 appearance-none cursor-pointer"
-                          style={{
-                            backgroundImage: 'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2htIj0iNCIgdmlld0JveD0iMCAwIDYgNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAxbDIgMiAyLjUtMiIgc3Ryb2tlPSIjOEE4QjgwIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+)',
-                            backgroundRepeat: 'no-repeat',
-                            backgroundPosition: 'right 0.5rem center',
-                            backgroundSize: '0.65rem auto'
-                          }}
-                        >
-                          {[...Array(10).keys()].map(n => (
-                            <option key={n + 1} value={n + 1}>{n + 1}</option>
-                          ))}
-                        </select>
+                  <div className="flex items-center">
+                    <div className="flex flex-col">
+                      {/* Lien vers la page produit */}
+                      <Link to={`/product/${product.productId}`} className="text-gray-700 font-semibold hover:underline">
+                        {product.name}
+                      </Link>
+                      <span className="text-gray-500 text-sm">{product.color} - {product.size}</span>
+                      {product.customization && (
+                        <>
+                          <span className="text-gray-500 text-sm">
+                            Personnalisation : {product.customization.position} - {product.customization.customizationSize}
+                          </span>
+
+                          <span className="text-gray-500 text-sm">
+                            Image générée :
+                            {product.customization.imageUrl && (
+                            <div className="mt-2">
+                              <img
+                                src={product.customization.imageUrl}
+                                alt="Pal personnalisée"
+                                className="w-16 h-16 object-contain border border-gray-300 rounded-lg"
+                              />
+                            </div>
+                          )}
+                          </span>
+                        </>
+                      )}
+                      <div className="flex items-center mt-2">
+                        <span className="text-black text-md mr-2">Qté :</span>
+                        <div className="relative">
+                          <select
+                            value={product.quantity}
+                            onChange={(e) => handleQuantityChange(product.productId, parseInt(e.target.value))}
+                            className="p-2 pl-4 pr-8 border rounded bg-gray-100 text-gray-700 appearance-none cursor-pointer"
+                            style={{
+                              backgroundImage: 'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2htIj0iNCIgdmlld0JveD0iMCAwIDYgNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAxbDIgMiAyLjUtMiIgc3Ryb2tlPSIjOEE4QjgwIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+)',
+                              backgroundRepeat: 'no-repeat',
+                              backgroundPosition: 'right 0.5rem center',
+                              backgroundSize: '0.65rem auto'
+                            }}
+                          >
+                            {[...Array(10).keys()].map(n => (
+                              <option key={n + 1} value={n + 1}>{n + 1}</option>
+                            ))}
+                          </select>
+                        </div>
                       </div>
                     </div>
                   </div>

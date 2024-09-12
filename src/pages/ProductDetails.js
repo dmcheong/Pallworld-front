@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import ScrolltoTopButton from '../components/ScrollToTopButton';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { CartContext } from '../context/CartContext';
+import { jwtDecode } from 'jwt-decode';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -18,12 +19,26 @@ const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [showCharacteristics, setShowCharacteristics] = useState(false);
-  const [notification, setNotification] = useState(''); // Notification pour le panier
-  const [imageNotification, setImageNotification] = useState(''); // Notification pour la génération d'image
-  const [imageNotificationType, setImageNotificationType] = useState(''); // Type de notification pour l'image (success/error)
+  const [notification, setNotification] = useState('');
+  const [imageNotification, setImageNotification] = useState('');
+  const [imageNotificationType, setImageNotificationType] = useState(''); 
   const [promptText, setPromptText] = useState('');
   const [generatedImageUrl, setGeneratedImageUrl] = useState(null);
+  const [remainingTokens, setRemainingTokens] = useState(null); 
   const { updateCart } = useContext(CartContext);
+
+  // Vérifier si l'utilisateur est authentifié
+  const token = localStorage.getItem('token');
+  const isAuthenticated = !!token;
+
+  const fetchUserCredits = async (userId) => {
+    try {
+      const response = await axios.get(`http://localhost:3005/api/users/${userId}/credits`);
+      setRemainingTokens(response.data.credits);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des crédits:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -42,6 +57,11 @@ const ProductDetails = () => {
           setSelectedPosition(response.data.customizationOptions[0].position);
           setSelectedCustomizationSize(response.data.customizationOptions[0].customizationSize[0]);
         }
+
+        if (token) {
+          const decoded = jwtDecode(token);
+          fetchUserCredits(decoded.userId);  // Récupération des crédits de l'utilisateur
+        }
       } catch (error) {
         console.error('Erreur lors de la récupération du produit:', error);
         setLoading(false);
@@ -49,7 +69,7 @@ const ProductDetails = () => {
     };
 
     fetchProduct();
-  }, [id]);
+  }, [id, token]);
 
   const handlePositionChange = (position) => {
     setSelectedPosition(position);
@@ -65,8 +85,9 @@ const ProductDetails = () => {
     setShowCharacteristics(!showCharacteristics);
   };
 
-  const scrollToCustomization = () => {
-    const element = document.getElementById("customization-section");
+  const scrollToSection = () => {
+    const sectionId = isAuthenticated ? "image-generation-section" : "login-prompt-section";
+    const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
@@ -80,19 +101,31 @@ const ProductDetails = () => {
         return;
       }
 
+      if (!token) {
+        setImageNotification("Vous devez être connecté pour générer une image.");
+        setImageNotificationType('error');
+        return;
+      }
+
+      const decoded = jwtDecode(token);
+      const userId = decoded.userId;
+
       const response = await axios.get('http://localhost:3009/generate-image', {
-        params: { text: promptText }
+        params: { text: promptText, userId: userId }
       });
 
       const imageUrl = response.data.imageUrl;
       setGeneratedImageUrl(imageUrl);
+      setRemainingTokens(response.data.remainingTokens); // Mise à jour des tokens restants
 
       setImageNotification('Image générée avec succès !');
       setImageNotificationType('success');
     } catch (error) {
       console.error('Erreur lors de la génération de l\'image:', error);
 
-      if (error.response && error.response.status === 400 && error.response.data.error.includes("safety system")) {
+      if (error.response && error.response.status === 400 && error.response.data.error.includes("tokens")) {
+        setImageNotification("Vous n'avez pas assez de tokens pour générer une image.");
+      } else if (error.response && error.response.status === 400 && error.response.data.error.includes("safety system")) {
         setImageNotification("Votre description a été rejetée par notre système de sécurité. Veuillez reformuler votre description.");
       } else {
         setImageNotification("Erreur lors de la génération de l'image. Veuillez réessayer.");
@@ -106,6 +139,11 @@ const ProductDetails = () => {
   };
 
   const handleAddToCart = async () => {
+    if (!generatedImageUrl) { // Vérifie si une image a été générée
+      setNotification('Veuillez générer une image avant d\'ajouter le produit au panier.');
+      return;
+    }
+  
     const productDetails = {
       productId: product._id,
       name: product.name,
@@ -116,11 +154,12 @@ const ProductDetails = () => {
       customization: {
         position: selectedPosition,
         customizationSize: selectedCustomizationSize,
+        imageUrl: generatedImageUrl,
       },
     };
-
+  
     console.log('Produit ajouté au panier : ', productDetails);
-
+  
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existingProductIndex = cart.findIndex(
       (item) =>
@@ -128,26 +167,27 @@ const ProductDetails = () => {
         item.color === productDetails.color &&
         item.size === productDetails.size &&
         item.customization.position === productDetails.position &&
-        item.customization.customizationSize === productDetails.customization.customizationSize
+        item.customization.customizationSize === productDetails.customization.customizationSize &&
+        item.customization.imageUrl === productDetails.customization.imageUrl
     );
-
+  
     if (existingProductIndex >= 0) {
       cart[existingProductIndex].quantity += quantity;
     } else {
       cart.push(productDetails);
     }
-
+  
     localStorage.setItem('cart', JSON.stringify(cart));
     console.log('Produit ajouté au panier local:', cart);
-
+  
     updateCart(cart);
-
+  
     setNotification('Produit ajouté au panier !');
-
+  
     setTimeout(() => {
       setNotification('');
     }, 3000);
-  };
+  };  
 
   if (loading) {
     return <p>Chargement...</p>;
@@ -260,7 +300,7 @@ const ProductDetails = () => {
             {/* Bouton Personnaliser */}
             {product.customizationOptions && product.customizationOptions.length > 0 && (
               <button 
-                onClick={scrollToCustomization}
+                onClick={scrollToSection}
                 className="mt-4 bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 transition-colors duration-300"
               >
                 Personnaliser
@@ -290,51 +330,64 @@ const ProductDetails = () => {
         )}
 
         {/* Section Génération d'image */}
-        <section id="image-generation-section" className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-8">
-          <h2 className="text-2xl font-bold mb-4">Génération d'image</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Colonne gauche : Champ texte et bouton */}
-            <div>
-              <label className="block text-gray-700 text-lg mb-2">Description pour générer l'image :</label>
-              <textarea 
-                className="w-full p-2 border rounded mb-4" 
-                rows="4" 
-                placeholder="Entrez une description pour générer une image"
-                value={promptText}
-                onChange={(e) => setPromptText(e.target.value)}
-              />
-              <button 
-                onClick={handleGenerateImage}
-                className="mt-2 bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 transition-colors duration-300"
-              >
-                Générer l'image
-              </button>
+        {isAuthenticated ? (
+          <section id="image-generation-section" className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-8">
+            <h2 className="text-2xl font-bold mb-4">Génération d'image</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Colonne gauche : Champ texte et bouton */}
+              <div>
+                <label className="block text-gray-700 text-lg mb-2">Description pour générer l'image :</label>
+                <textarea 
+                  className="w-full p-2 border rounded mb-4" 
+                  rows="4" 
+                  placeholder="Entrez une description pour générer une image"
+                  value={promptText}
+                  onChange={(e) => setPromptText(e.target.value)}
+                />
 
-              {/* Notification pour la génération d'image */}
-              {imageNotification && (
-                <div className={`p-4 rounded mt-4 text-center ${imageNotificationType === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}>
-                  {imageNotification}
-                </div>
-              )}
+                {/* Affichage des tokens restants */}
+                {remainingTokens !== null && (
+                  <p className="mb-4 text-gray-700">Tokens restants : <span className="font-bold">{remainingTokens}</span></p>
+                )}
+
+                <button 
+                  onClick={handleGenerateImage}
+                  className="mt-2 bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 transition-colors duration-300"
+                >
+                  Générer l'image
+                </button>
+
+                {/* Notification pour la génération d'image */}
+                {imageNotification && (
+                  <div className={`p-4 rounded mt-4 text-center ${imageNotificationType === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}>
+                    {imageNotification}
+                  </div>
+                )}
+
+              </div>
+              {/* Colonne droite : Affichage de l'image générée */}
+              <div className="flex justify-center items-center">
+                {generatedImageUrl ? (
+                <img 
+                  src={generatedImageUrl} 
+                  alt="Pal générée" 
+                  className="w-full h-56 rounded-lg object-contain" 
+                  onError={() => setNotification('Impossible de charger l\'image générée.')}
+                />
+                ) : (
+                  <p className="text-gray-600">L'image générée apparaîtra ici.</p>
+                )}
+              </div>
             </div>
-            {/* Colonne droite : Affichage de l'image générée */}
-            <div className="flex justify-center items-center">
-              {generatedImageUrl ? (
-              <img 
-                src={generatedImageUrl} 
-                alt="Pal générée" 
-                className="w-full h-56 rounded-lg object-contain" 
-                onError={() => setNotification('Impossible de charger l\'image générée.')}
-              />
-              ) : (
-                <p className="text-gray-600">L'image générée apparaîtra ici.</p>
-              )}
-            </div>
-          </div>
-        </section>
+          </section>
+        ) : (
+          <section id="login-prompt-section" className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-4">
+            <p className='text-lg font-semibold text-gray-700'>Connectez-vous pour personnaliser votre produit.</p>
+          </section>
+        )}
 
         {/* Section de personnalisation */}
-        {product.customizationOptions && product.customizationOptions.length > 0 && (
+        {isAuthenticated && product.customizationOptions && product.customizationOptions.length > 0 && (
           <section id="customization-section" className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-8">
             <h2 className="text-2xl font-bold mb-4">Personnalisation</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
