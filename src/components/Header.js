@@ -30,6 +30,19 @@ function Header() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && isMobileMenuOpen) { // 768px correspond à la largeur des tablettes en général
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isMobileMenuOpen]);
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
     if (!isMobileMenuOpen) {
@@ -47,7 +60,7 @@ function Header() {
     localStorage.removeItem('token');
     navigate('/');
   };
-  
+
   const handleClickOutside = (event) => {
     if (
       dropdownRef.current &&
@@ -196,14 +209,16 @@ function Header() {
               </Link>
             )}
 
-            <Link to="/panier" className="flex items-center" onClick={handleLinkClick}>
-              <FaShoppingCart className="mr-2" /> PANIER
-              {cartCount > 0 && (
-                <span className="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
+            {isAuthenticated && (
+              <Link to="/panier" className="flex items-center" onClick={handleLinkClick}>
+                <FaShoppingCart className="mr-2" /> PANIER
+                {cartCount > 0 && (
+                  <span className="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+            )}
           </nav>
         </div>
       )}
