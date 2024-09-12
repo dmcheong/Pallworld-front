@@ -1,22 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FaUser, FaHistory, FaBars, FaSignOutAlt, FaImages } from 'react-icons/fa'; // Importer FaImages
-import { CartContext } from '../context/CartContext';
+import { FaUser, FaHistory, FaBars, FaSignOutAlt, FaImages } from 'react-icons/fa';
 
 const UserSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const { cart } = useContext(CartContext);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const handleLogout = () => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
     localStorage.setItem('cart', JSON.stringify(cart));
     localStorage.removeItem('token');
     navigate('/');
   };
+  
 
   return (
     <div className="md:w-64 w-full">

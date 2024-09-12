@@ -6,7 +6,7 @@ import logo from '../assets/logos/logo-rect.png';
 import SearchBar from './SearchBar';
 
 function Header() {
-  const { cartCount, updateCart } = useContext(CartContext);
+  const { cartCount } = useContext(CartContext);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -42,14 +42,12 @@ function Header() {
   };
 
   const handleLogout = () => {
-    const cart = localStorage.getItem('cart');
-    localStorage.setItem('savedCart', cart);
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    localStorage.setItem('cart', JSON.stringify(cart));
     localStorage.removeItem('token');
-    localStorage.removeItem('cart');
-    updateCart([]);
     navigate('/');
   };
-
+  
   const handleClickOutside = (event) => {
     if (
       dropdownRef.current &&
