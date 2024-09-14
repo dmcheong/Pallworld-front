@@ -40,12 +40,12 @@ const Checkout = () => {
 
           const user = response.data;
           setAddress({
-            firstName: user.firstName || '',
-            lastName: user.lastName || '',
-            street: user.address || '',
-            city: user.city || '',
-            postalCode: user.codePostal || '',
-            phone: user.phone || '',
+            firstName: user.firstName,
+            lastName: user.lastName,
+            street: user.address, 
+            city: user.city,
+            postalCode: user.codePostal, 
+            phone: user.phone,
           });
         }
       } catch (error) {
@@ -65,13 +65,24 @@ const Checkout = () => {
 
   const handleOrderConfirmation = async () => {
     try {
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+
       const response = await axios.post('http://localhost:3010/create-checkout-session', {
         items: cart.map((item) => ({
+          productId: item.productId,
           name: item.name,
-          description: `${item.name} (${item.color})`,
+          color: item.color,
+          size: item.size,
+          customizationOptions: item.customization || {},
           amount: Math.round(item.price * 100),
           quantity: item.quantity,
         })),
+        userId: decodedToken.userId,
+        name: `${address.firstName} ${address.lastName}`,
+        street: address.street,
+        city: address.city,
+        postalCode: address.postalCode, 
         success_url: 'http://localhost:3000/success',
         cancel_url: 'http://localhost:3000/cancel',
       });
@@ -123,7 +134,7 @@ const Checkout = () => {
             <TextInput
               label="Complément d'adresse"
               name="addressComplement"
-              value={address.addressComplement}
+              value={address.addressComplement || ''}
               onChange={handleInputChange}
             />
             <div className="flex space-x-4">
@@ -162,25 +173,22 @@ const Checkout = () => {
                   <Link to={`/product/${product.productId}`} className="text-gray-700 font-semibold hover:underline">
                     {product.name}
                   </Link>
-                  <span className="text-gray-500 text-sm">{product.color} - {product.size}</span>
+                  <span className="text-gray-500 text-sm">{product.color || 'Couleur non définie'} - {product.size || 'Taille non définie'}</span>
                   {product.customization && (
                     <>
                       <span className="text-gray-500 text-sm">
-                        Personnalisation : {product.customization.position} - {product.customization.customizationSize}
+                        Personnalisation : {product.customization.position || 'Position non définie'} - {product.customization.customizationSize || 'Taille non définie'}
                       </span>
 
-                      <span className="text-gray-500 text-sm">
-                        Image générée :
-                        {product.customization.imageUrl && (
+                      {product.customization.imageUrl && (
                         <div className="mt-2">
                           <img
                             src={product.customization.imageUrl}
-                            alt="Pal personnalisée"
+                            alt="Mon pal"
                             className="w-16 h-16 object-contain border border-gray-300 rounded-lg"
                           />
                         </div>
                       )}
-                      </span>
                     </>
                   )}
                 </div>

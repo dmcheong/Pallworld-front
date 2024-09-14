@@ -10,23 +10,21 @@ const PurchaseHistory = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 5; 
 
   useEffect(() => {
     const fetchOrderHistory = async () => {
       try {
         const token = localStorage.getItem('token');
-        if (!token) {
-          throw new Error('Token non disponible');
-        }
-  
         const decodedToken = jwtDecode(token);
         const userId = decodedToken.userId;
   
-        const response = await axios.get(`http://localhost:3005/api/orders/${userId}`, {
+        const ordersResponse = await axios.get(`http://localhost:3005/api/orders/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
   
-        setOrders(response.data);
+        setOrders(ordersResponse.data);
         setLoading(false);
       } catch (error) {
         console.error('Erreur lors de la récupération de l\'historique des commandes :', error);
@@ -38,6 +36,15 @@ const PurchaseHistory = () => {
     fetchOrderHistory();
   }, []);
   
+  // Calcul des pages
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const totalPages = Math.ceil(orders.length / ordersPerPage);
+
+  const handleClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   if (loading) {
     return <p className="text-center mt-8">Chargement...</p>;
@@ -61,7 +68,24 @@ const PurchaseHistory = () => {
             {orders.length === 0 ? (
               <p className="text-gray-600">Vous n'avez pas encore passé de commande.</p>
             ) : (
-              orders.map((order) => <OrderItem key={order._id} order={order} />)
+              currentOrders.map((order) => <OrderItem key={order._id} order={order} />)
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-6 flex justify-center space-x-2">
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleClick(index + 1)}
+                    className={`px-4 py-2 border rounded-lg ${
+                      index + 1 === currentPage ? 'bg-sky-600 text-white' : 'bg-gray-200 text-gray-700'
+                    } hover:bg-sky-500 hover:text-white transition-colors duration-300`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
             )}
           </div>
         </div>

@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SidebarMenu from '../components/UserSidebar';
 import { jwtDecode } from 'jwt-decode';
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt, FaDownload } from 'react-icons/fa';
 
 const GeneratedImagesHistory = () => {
   const [images, setImages] = useState([]);
@@ -12,6 +12,8 @@ const GeneratedImagesHistory = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
+  const imagesPerPage = 8;
 
   const fetchGeneratedImages = async (page = 1) => {
     try {
@@ -25,7 +27,7 @@ const GeneratedImagesHistory = () => {
 
       const response = await axios.get(`http://localhost:3005/api/generatedImages/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { page, limit: 8 }  // Pagination avec un limit de 8 images par page
+        params: { page, limit: imagesPerPage }
       });
 
       setImages(response.data.images);
@@ -50,7 +52,6 @@ const GeneratedImagesHistory = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Après suppression, recharger les images pour la page actuelle
       fetchGeneratedImages(currentPage);
     } catch (error) {
       console.error('Erreur lors de la suppression de l\'image :', error);
@@ -63,7 +64,13 @@ const GeneratedImagesHistory = () => {
   }, [currentPage]);
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  const handleDownloadImage = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   if (loading) {
@@ -94,33 +101,55 @@ const GeneratedImagesHistory = () => {
                     <img src={image.imageUrl} alt="Pal générée" className="w-full h-auto rounded-md mb-2" />
                     <p className="text-gray-600">Générée le : {new Date(image.dateGenerated).toLocaleDateString()}</p>
                     <p className="text-gray-600">Prompt utilisé : {image.promptUsed}</p>
-                    <button
-                      onClick={() => handleDeleteImage(image._id)}
-                      className="absolute top-2 right-2 text-red-600 hover:text-red-800 transition-colors duration-300"
-                    >
-                      <FaTrashAlt />
-                    </button>
+                    <div className="absolute top-2 right-2 space-x-2">
+                      <button
+                        onClick={() => handleDownloadImage(image.imageUrl, `generated-image-${image._id}.png`)}
+                        className="text-sky-600 hover:text-sky-800 transition-colors duration-300"
+                      >
+                        <FaDownload />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteImage(image._id)}
+                        className="text-red-600 hover:text-red-800 transition-colors duration-300"
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
             )}
 
-            <div className="flex justify-center mt-6">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="px-4 py-2 mx-1 bg-gray-200 text-gray-600 rounded-lg disabled:opacity-50"
-              >
-                Précédent
-              </button>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="px-4 py-2 mx-1 bg-gray-200 text-gray-600 rounded-lg disabled:opacity-50"
-              >
-                Suivant
-              </button>
-            </div>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-6 flex justify-center space-x-2">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 border rounded-lg bg-gray-200 text-gray-600 hover:bg-sky-500 hover:text-white transition-colors duration-300 disabled:opacity-50"
+                >
+                  Précédent
+                </button>
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handlePageChange(index + 1)}
+                    className={`px-4 py-2 border rounded-lg ${
+                      index + 1 === currentPage ? 'bg-sky-600 text-white' : 'bg-gray-200 text-gray-700'
+                    } hover:bg-sky-500 hover:text-white transition-colors duration-300`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 border rounded-lg bg-gray-200 text-gray-600 hover:bg-sky-500 hover:text-white transition-colors duration-300 disabled:opacity-50"
+                >
+                  Suivant
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
