@@ -9,7 +9,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { jwtDecode } from 'jwt-decode';
 
 const Checkout = () => {
-  const { cart } = useContext(CartContext);
+  const { cart, updateCart } = useContext(CartContext);
   const [address, setAddress] = useState({
     firstName: '',
     lastName: '',
@@ -87,6 +87,7 @@ const Checkout = () => {
         cancel_url: 'http://localhost:3000/cancel',
       });
 
+      updateCart([]);
       window.location.href = response.data.sessionId;
     } catch (error) {
       console.error('Erreur lors de la création de la session de paiement :', error);
