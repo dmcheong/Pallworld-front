@@ -14,6 +14,7 @@ const UserSidebar = () => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     localStorage.setItem('cart', JSON.stringify(cart));
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     navigate('/');
   };
   

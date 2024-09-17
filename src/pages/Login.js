@@ -26,6 +26,8 @@ const Login = () => {
       const response = await axios.post('http://localhost:3005/api/users/signin', formData);
 
       if (response.status === 200) {
+        // Stocker l'userId et le token dans le localStorage
+        localStorage.setItem('userId', response.data.user._id);
         localStorage.setItem('token', response.data.token);
         navigate('/'); 
       }

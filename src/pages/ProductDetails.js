@@ -61,7 +61,7 @@ const ProductDetails = () => {
 
         if (token) {
           const decoded = jwtDecode(token);
-          fetchUserCredits(decoded.userId);  // Récupération des crédits de l'utilisateur
+          fetchUserCredits(decoded.userId);
         }
       } catch (error) {
         console.error('Erreur lors de la récupération du produit:', error);
@@ -102,7 +102,7 @@ const ProductDetails = () => {
       await axios.post('http://localhost:3005/api/generatedImages', {
         userId,
         imageUrl,
-        promptUsed: promptText, // Optionnel, selon si tu veux enregistrer le prompt aussi
+        promptUsed: promptText,
       });
   
       console.log('Image générée enregistrée avec succès dans l\'historique.');
@@ -113,50 +113,50 @@ const ProductDetails = () => {
   
   const handleGenerateImage = async () => {
     try {
-      if (!promptText) {
-        setImageNotification('Veuillez entrer une description pour générer une image.');
-        setImageNotificationType('error');
-        return;
-      }
-  
-      if (!token) {
-        setImageNotification("Vous devez être connecté pour générer une image.");
-        setImageNotificationType('error');
-        return;
-      }
-  
-      setLoadingImageGeneration(true); 
-  
-      const decoded = jwtDecode(token);
-      const userId = decoded.userId;
-  
-      const response = await axios.get('http://localhost:3009/generate-image', {
-        params: { text: promptText, userId: userId }
-      });
-  
-      const imageUrl = response.data.imageUrl;
-      setGeneratedImageUrl(imageUrl);
-      setRemainingTokens(response.data.remainingTokens); // Mise à jour des tokens restants
-  
-      setImageNotification('Image générée avec succès !');
-      setImageNotificationType('success');
-  
-      // Enregistrer l'image générée dans l'historique
-      saveGeneratedImage(imageUrl);
-  
+        if (!promptText) {
+            setImageNotification('Veuillez entrer une description pour générer une image.');
+            setImageNotificationType('error');
+            return;
+        }
+
+        if (!token) {
+            setImageNotification("Vous devez être connecté pour générer une image.");
+            setImageNotificationType('error');
+            return;
+        }
+
+        setLoadingImageGeneration(true); 
+
+        const decoded = jwtDecode(token);
+        const userId = decoded.userId;
+
+        const response = await axios.get('http://localhost:3009/generate-image', {
+            params: { text: promptText, userId: userId }
+        });
+
+        const imageUrl = response.data.imageUrl;
+        setGeneratedImageUrl(imageUrl);
+        setRemainingTokens(response.data.remainingTokens);
+
+        setImageNotification('Image générée avec succès !');
+        setImageNotificationType('success');
+
+        // Enregistrer l'image générée dans l'historique
+        saveGeneratedImage(imageUrl);
+
     } catch (error) {
-      console.error('Erreur lors de la génération de l\'image:', error);
-  
-      if (error.response && error.response.status === 400 && error.response.data.error.includes("tokens")) {
-        setImageNotification("Vous n'avez pas assez de tokens pour générer une image.");
-      } else if (error.response && error.response.status === 400 && error.response.data.error.includes("safety system")) {
-        setImageNotification("Votre description a été rejetée par notre système de sécurité. Veuillez reformuler votre description.");
-      } else {
-        setImageNotification("Erreur lors de la génération de l'image. Veuillez réessayer.");
-      }
-      setImageNotificationType('error');
+        console.error('Erreur lors de la génération de l\'image:', error);
+
+        if (error.response && error.response.status === 400 && error.response.data.error.includes("tokens")) {
+            setImageNotification("Vous n'avez pas assez de tokens pour générer une image.");
+        } else if (error.response && error.response.status === 400 && error.response.data.error.includes("safety system")) {
+            setImageNotification("Votre description a été rejetée par notre système de sécurité. Veuillez reformuler votre description.");
+        } else {
+            setImageNotification("Erreur lors de la génération de l'image. Veuillez réessayer.");
+        }
+        setImageNotificationType('error');
     } finally {
-      setLoadingImageGeneration(false); 
+        setLoadingImageGeneration(false); 
     }
   };
   
@@ -215,6 +215,13 @@ const ProductDetails = () => {
     }, 3000);
   };  
 
+  const handleDownloadImage = () => {
+    const link = document.createElement('a');
+    link.href = generatedImageUrl;
+    link.download = 'generated_image.png';
+    link.click();
+  };
+
   if (loading) {
     return <p>Chargement...</p>;
   }
@@ -230,6 +237,12 @@ const ProductDetails = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
+
+      {isAuthenticated && remainingTokens !== null && (
+        <div className="bg-white shadow-lg rounded-lg p-4 text-center">
+          <p className="text-gray-700">Vous avez <span className="font-bold text-sky-600">{remainingTokens}</span> tokens restants.</p>
+        </div>
+      )}
 
       <main className="container mx-auto py-12 px-6 lg:px-16">
         {/* File d'Ariane */}
@@ -355,8 +368,8 @@ const ProductDetails = () => {
           </section>
         )}
 
-        {/* Section Génération d'image */}
-        {isAuthenticated ? (
+                {/* Section Génération d'image */}
+                {isAuthenticated ? (
           <section id="image-generation-section" className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-8">
             <h2 className="text-2xl font-bold mb-4">Génération d'image</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -364,12 +377,19 @@ const ProductDetails = () => {
               <div>
                 <label className="block text-gray-700 text-lg mb-2">Description pour générer l'image :</label>
                 <textarea 
-                  className="w-full p-2 border rounded mb-4" 
+                  className="w-full p-2 border rounded mb-2" 
                   rows="4" 
                   placeholder="Entrez une description pour générer une image"
                   value={promptText}
                   onChange={(e) => setPromptText(e.target.value)}
                 />
+
+                {/* Message d'avertissement sur l'expiration */}
+                {generatedImageUrl && (
+                  <p className="text-xs text-gray-500 mb-4">
+                    Note: L'image générée expirera dans 2 heures. Veuillez la télécharger dès que possible.
+                  </p>
+                )}
 
                 {/* Affichage des tokens restants */}
                 {remainingTokens !== null && (
@@ -389,10 +409,10 @@ const ProductDetails = () => {
                     {imageNotification}
                   </div>
                 )}
-
               </div>
-              {/* Colonne droite : Affichage de l'image générée */}
-              <div className="flex justify-center items-center">
+
+              {/* Colonne droite : Affichage et téléchargement de l'image générée */}
+              <div className="flex flex-col justify-center items-center">
                 {loadingImageGeneration ? (
                   <div className="flex flex-col items-center">
                     <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
@@ -400,12 +420,20 @@ const ProductDetails = () => {
                   </div>
                 ) : (
                   generatedImageUrl ? (
-                    <img 
-                      src={generatedImageUrl} 
-                      alt="Mon pal" 
-                      className="w-full h-56 rounded-lg object-contain" 
-                      onError={() => setNotification('Impossible de charger l\'image générée.')}
-                    />
+                    <>
+                      <img 
+                        src={generatedImageUrl} 
+                        alt="Mon pal" 
+                        className="w-full h-56 rounded-lg object-contain mb-4" 
+                        onError={() => setNotification('Impossible de charger l\'image générée.')}
+                      />
+                      <button
+                        onClick={handleDownloadImage}
+                        className="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 transition-colors duration-300"
+                      >
+                        Télécharger l'image
+                      </button>
+                    </>
                   ) : (
                     <p className="text-gray-600">L'image générée apparaîtra ici.</p>
                   )

@@ -30,13 +30,13 @@ const Footer = () => {
             </li>
 
             <li>
-              <Link to="/shop/promos" className="hover:underline hover:font-semibold transition-colors duration-300">
+              <Link to="/promos" className="hover:underline hover:font-semibold transition-colors duration-300">
                 Promos
               </Link>
             </li>
 
             <li>
-              <Link to="/shop/tokens" className="hover:underline hover:font-semibold transition-colors duration-300">
+              <Link to="/tokens" className="hover:underline hover:font-semibold transition-colors duration-300">
                 Tokens
               </Link>
             </li>

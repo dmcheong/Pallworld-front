@@ -41,8 +41,8 @@ const Shop = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    setCurrentPage(1); // Reset to the first page when applying filters
-    setIsFilterModalOpen(false); // Close modal after applying filters
+    setCurrentPage(1);
+    setIsFilterModalOpen(false);
   };
 
   const handlePageChange = (newPage) => {
@@ -55,7 +55,6 @@ const Shop = () => {
     return category.replace(/-/g, ' ').replace(/^\w/, (c) => c.toUpperCase());
   };
 
-  // Detect screen resize to toggle between modal and sidebar
   useEffect(() => {
     const handleResize = () => {
       setIsScreenSmall(window.innerWidth < 1024);
@@ -96,7 +95,7 @@ const Shop = () => {
           </div>
         )}
 
-        {/* Modal for filters on small screens */}
+        {/* Modal pour les filtres pour petit écrans */}
         <FilterModal isOpen={isFilterModalOpen} onClose={() => setIsFilterModalOpen(false)}>
           <FilterSidebar onFilterChange={handleFilterChange} />
         </FilterModal>

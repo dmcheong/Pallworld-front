@@ -32,7 +32,7 @@ function Header() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768 && isMobileMenuOpen) { // 768px correspond à la largeur des tablettes en général
+      if (window.innerWidth >= 768 && isMobileMenuOpen) {
         setIsMobileMenuOpen(false);
       }
     };
@@ -58,6 +58,7 @@ function Header() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     localStorage.setItem('cart', JSON.stringify(cart));
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     navigate('/');
   };
 
@@ -185,8 +186,8 @@ function Header() {
               </div>
             )}
 
-            <Link to="/shop/promos" className="block" onClick={handleLinkClick}>PROMOS</Link>
-            <Link to="/shop/tokens" className="block" onClick={handleLinkClick}>TOKENS</Link>
+            <Link to="/promos" className="block" onClick={handleLinkClick}>PROMOS</Link>
+            <Link to="/tokens" className="block" onClick={handleLinkClick}>TOKENS</Link>
             <Link to="/contact" className="block" onClick={handleLinkClick}>CONTACT</Link>
 
             {isAuthenticated ? (
@@ -264,11 +265,11 @@ function Header() {
             )}
           </div>
 
-          <Link to="/shop/promos" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600" onClick={handleLinkClick}>
+          <Link to="/promos" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600" onClick={handleLinkClick}>
             PROMOS
           </Link>
 
-          <Link to="/shop/tokens" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600" onClick={handleLinkClick}>
+          <Link to="/tokens" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600" onClick={handleLinkClick}>
             TOKENS
           </Link>
 

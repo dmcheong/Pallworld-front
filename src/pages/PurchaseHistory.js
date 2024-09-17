@@ -11,6 +11,7 @@ const PurchaseHistory = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [openOrderId, setOpenOrderId] = useState(null);
   const ordersPerPage = 5; 
 
   useEffect(() => {
@@ -46,6 +47,10 @@ const PurchaseHistory = () => {
     setCurrentPage(pageNumber);
   };
 
+  const handleToggleOrder = (orderId) => {
+    setOpenOrderId(openOrderId === orderId ? null : orderId);
+  };
+
   if (loading) {
     return <p className="text-center mt-8">Chargement...</p>;
   }
@@ -68,7 +73,14 @@ const PurchaseHistory = () => {
             {orders.length === 0 ? (
               <p className="text-gray-600">Vous n'avez pas encore passé de commande.</p>
             ) : (
-              currentOrders.map((order) => <OrderItem key={order._id} order={order} />)
+              currentOrders.map((order) => (
+                <OrderItem
+                  key={order._id}
+                  order={order}
+                  isOpen={openOrderId === order._id} // Passer l'état ouvert
+                  onToggle={() => handleToggleOrder(order._id)} // Passer la fonction de basculement
+                />
+              ))
             )}
 
             {/* Pagination */}

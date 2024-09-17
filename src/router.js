@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
+import Tokens from './pages/Tokens';
+import Promos from './pages/Promos';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Success from './pages/Success';
@@ -28,16 +30,26 @@ const AppRouter = () => {
       <AuthHandler />
       <Routes>
         <Route path="/" element={<Home />} />
+
+        {/* Users */}
         <Route path="/connexion" element={<Login />} />
         <Route path="/inscription" element={<Signup />} />
         <Route path="/verifier-mon-compte" element={<Verify />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+
+        {/* Shop */}
         <Route path="/shop/:category" element={<Shop />} />
+        <Route path="/promos" element={<Promos />} />
+        <Route path="/tokens" element={<Tokens />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+
+        {/* Panier */}
         <Route path="/panier" element={<Cart />} />
         <Route path="/success" element={<Success />} />
         <Route path="/cancel" element={<Cancel />} /> 
+
+        {/* Static pages */}
         <Route path="/faq" element={<Faq />} />
         <Route path="/politique-de-retour" element={<Retour />} />
         <Route path="/livraison" element={<Shipping />} />
