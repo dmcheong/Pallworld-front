@@ -184,8 +184,6 @@ const ProductDetails = () => {
       },
     };
   
-    console.log('Produit ajouté au panier : ', productDetails);
-  
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existingProductIndex = cart.findIndex(
       (item) =>
@@ -204,7 +202,6 @@ const ProductDetails = () => {
     }
   
     localStorage.setItem('cart', JSON.stringify(cart));
-    console.log('Produit ajouté au panier local:', cart);
   
     updateCart(cart);
   

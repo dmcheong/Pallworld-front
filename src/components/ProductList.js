@@ -3,8 +3,8 @@ import ProductCard from './ProductCard';
 
 const ProductList = ({ products, currentPage, totalPages, onPageChange }) => {
   return (
-    <div className="px-4"> {/* Ajout de padding sur les côtés */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6"> {/* Augmenter la valeur de gap */}
+    <div className="px-4"> 
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.length > 0 ? (
           products.map((product) => (
             <ProductCard

@@ -36,39 +36,68 @@ const OrderItem = ({ order, isOpen, onToggle }) => {
           <ul className="mt-2 space-y-4">
             {order.items.map((item, index) => (
               <li key={index} className="border-t pt-4 border-gray-200">
-              {item.isTokenPurchase ? (
-                <div className="space-y-2">
-                  <p className="text-lg font-bold text-gray-800">
-                    {item.tokensQuantity} Token{item.tokensQuantity > 1 ? 's' : ''}
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    Prix total : <span className="font-medium text-gray-700">€{(item.price * item.tokensQuantity).toFixed(2)}</span>
-                  </p>
-                </div>
-              ) : (
-                item.productId && item.productId.name ? (
+                {item.isTokenPurchase ? (
                   <div className="space-y-2">
-                    <Link to={`/product/${item.productId._id}`} className="text-lg font-bold text-gray-800 hover:text-sky-600 transition-colors duration-300">
-                      {item.productId.name}
-                    </Link>
-                    <p className="text-gray-500 text-sm">
-                      Couleur : <span className="font-medium text-gray-700">{item.color}</span>
+                    <p className="text-lg font-bold text-gray-800">
+                      {item.tokensQuantity} Token{item.tokensQuantity > 1 ? 's' : ''}
                     </p>
                     <p className="text-gray-500 text-sm">
-                      Taille : <span className="font-medium text-gray-700">{item.size}</span>
+                      Prix total : <span className="font-medium text-gray-700">€{(item.price * item.tokensQuantity).toFixed(2)}</span>
                     </p>
-                    <p className="text-gray-500 text-sm">
-                      Quantité : <span className="font-medium text-gray-700">{item.quantity}</span>
-                    </p>
-                    <p className="text-gray-500 text-sm">
-                      Prix par article : <span className="font-medium text-gray-700">€{item.price.toFixed(2)}</span>
-                    </p>
+                  </div>
+                ) : item.productId && item.productId.name ? (
+                  <div className="space-y-2">
+                    <div>
+                      <Link
+                        to={`/product/${item.productId._id}`}
+                        className="text-lg font-bold text-gray-800 hover:text-sky-600 transition-colors duration-300"
+                      >
+                        {item.productId.name}
+                      </Link>
+                      <p className="text-gray-500 text-sm">
+                        Couleur : <span className="font-medium text-gray-700">{item.color}</span>
+                      </p>
+                      <p className="text-gray-500 text-sm">
+                        Taille : <span className="font-medium text-gray-700">{item.size}</span>
+                      </p>
+                      <p className="text-gray-500 text-sm">
+                        Quantité : <span className="font-medium text-gray-700">{item.quantity}</span>
+                      </p>
+                      <p className="text-gray-500 text-sm">
+                        Prix par article : <span className="font-medium text-gray-700">€{item.price.toFixed(2)}</span>
+                      </p>
+                    </div>
+                    {item.customizationOptions && item.customizationOptions.length > 0 && (
+                      <div className="mt-4">
+                        <h5 className="text-sky-600 font-medium">Options de personnalisation :</h5>
+                        <ul className="mt-2 space-y-2">
+                          {item.customizationOptions.map((option, idx) => (
+                            <li key={idx} className="bg-gray-100 p-3 rounded-md shadow-inner">
+                              <p className="text-gray-600 text-sm">
+                                Position : <span className="font-medium">{option.position}</span>
+                              </p>
+                              <p className="text-gray-600 text-sm">
+                                Taille de la personnalisation : <span className="font-medium">{option.customizationSize}</span>
+                              </p>
+                              {option.imageUrl && (
+                                <div className="mt-2">
+                                  <img
+                                    src={option.imageUrl}
+                                    alt="Personnalisation"
+                                    className="w-24 h-24 object-contain border border-gray-300 rounded-lg shadow-sm"
+                                  />
+                                </div>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <span className="text-gray-500">Produit non disponible</span>
-                )
-              )}
-              </li>            
+                )}
+              </li>
             ))}
           </ul>
 
