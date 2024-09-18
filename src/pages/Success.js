@@ -1,9 +1,22 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { CartContext } from '../context/CartContext';
 
 const Success = () => {
+  const { updateCart } = useContext(CartContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    updateCart([]);
+    localStorage.removeItem('cart');
+    
+    setTimeout(() => {
+      navigate('/historique');
+    }, 3000);
+  }, [updateCart, navigate]);
+
   return (
     <div>
       <Header />

@@ -202,7 +202,6 @@ const Profile = () => {
         setPasswordData={setPasswordData}
         handlePasswordChange={handlePasswordChange}
         handlePasswordSubmit={handlePasswordSubmit}
-        // Ajout de la fonction de réinitialisation après fermeture du modal
         resetUserData={resetUserData}
       />
     </div>

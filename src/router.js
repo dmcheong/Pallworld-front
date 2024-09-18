@@ -22,6 +22,7 @@ import Verify from './pages/Verify';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import ProductDetails from './pages/ProductDetails';
+import SearchResultsPage from './pages/SearchResultPage';
 
 const AppRouter = () => {
   return (
@@ -40,6 +41,9 @@ const AppRouter = () => {
         {/* Shop */}
         <Route path="/shop/:category" element={<Shop />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+
+        {/* Recherche */}
+        <Route path="/search" element={<SearchResultsPage />} />
 
         {/* Panier */}
         <Route path="/panier" element={<Cart />} />

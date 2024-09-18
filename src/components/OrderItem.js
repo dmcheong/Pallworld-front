@@ -39,7 +39,7 @@ const OrderItem = ({ order, isOpen, onToggle }) => {
                 {item.isTokenPurchase ? (
                   <div className="space-y-2">
                     <p className="text-lg font-bold text-gray-800">
-                      {item.tokensQuantity} Token{item.tokensQuantity > 1 ? 's' : ''}
+                      {item.tokensQuantity} pack de token
                     </p>
                     <p className="text-gray-500 text-sm">
                       Prix total : <span className="font-medium text-gray-700">€{(item.price * item.tokensQuantity).toFixed(2)}</span>

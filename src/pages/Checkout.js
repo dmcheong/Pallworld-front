@@ -67,7 +67,7 @@ const Checkout = () => {
     try {
       const token = localStorage.getItem('token');
       const decodedToken = jwtDecode(token);
-
+    
       const response = await axios.post('http://localhost:3010/create-checkout-session', {
         items: cart.map((item) => ({
           productId: item.productId,
@@ -86,14 +86,13 @@ const Checkout = () => {
         success_url: 'http://localhost:3000/success',
         cancel_url: 'http://localhost:3000/cancel',
       });
-
-      updateCart([]);
+      
       window.location.href = response.data.sessionId;
     } catch (error) {
       console.error('Erreur lors de la création de la session de paiement :', error);
     }
   };
-
+  
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
   };

@@ -56,6 +56,11 @@ function SearchBar() {
     closeSearch(); 
   };
 
+  const handleSeeAllResults = () => {
+    navigate(`/search?query=${searchQuery}`);
+    closeSearch(); 
+  };
+
   return (
     <>
       <FaSearch
@@ -91,7 +96,7 @@ function SearchBar() {
               {/* Résultats de recherche */}
               {searchResults.length > 0 && (
                 <div className="absolute mt-2 w-full bg-white shadow-lg rounded-lg z-50">
-                  {searchResults.map((product) => (
+                  {searchResults.slice(0, 3).map((product) => (
                     <div
                       key={product._id}
                       className="flex items-center p-2 hover:bg-gray-200 hover:rounded-lg cursor-pointer"
@@ -105,6 +110,18 @@ function SearchBar() {
                       <span>{product.name}</span>
                     </div>
                   ))}
+
+                  {/* Option pour voir tous les résultats */}
+                  {searchResults.length > 3 && (
+                    <div className="text-center mt-2">
+                      <button
+                        onClick={handleSeeAllResults}
+                        className="text-sky-600 hover:text-sky-800"
+                      >
+                        Voir tous les produits
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
 

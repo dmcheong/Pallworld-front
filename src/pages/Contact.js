@@ -70,7 +70,7 @@ const Contact = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Contactez-nous</h2>
 
-          <Alert message={alert.message} type={alert.type} /> {/* Affiche l'alerte */}
+          <Alert message={alert.message} type={alert.type} />
 
           <div className="flex flex-col lg:flex-row lg:space-x-16">
             {/* Contact Information */}

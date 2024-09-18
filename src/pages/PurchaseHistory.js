@@ -77,8 +77,8 @@ const PurchaseHistory = () => {
                 <OrderItem
                   key={order._id}
                   order={order}
-                  isOpen={openOrderId === order._id} // Passer l'état ouvert
-                  onToggle={() => handleToggleOrder(order._id)} // Passer la fonction de basculement
+                  isOpen={openOrderId === order._id}
+                  onToggle={() => handleToggleOrder(order._id)}
                 />
               ))
             )}

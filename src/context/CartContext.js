@@ -22,11 +22,9 @@ export const CartProvider = ({ children }) => {
     const updatedCart = [...cart];
     const productIndex = updatedCart.findIndex((item) => item.productId === product.productId);
 
-    // Check if product already exists in cart
     if (productIndex >= 0) {
       updatedCart[productIndex].quantity += 1;
     } else {
-      // Use discount price if available
       const price = product.discountPrice ? product.discountPrice : product.price;
       updatedCart.push({ ...product, price });
     }

@@ -29,7 +29,6 @@ const ProductDetails = () => {
   const [notification, setNotification] = useState(''); 
   const [notificationType, setNotificationType] = useState('');
 
-  // Vérifier si l'utilisateur est authentifié
   const token = localStorage.getItem('token');
   const isAuthenticated = !!token;
 

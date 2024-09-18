@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductList from '../components/Products/ProductList';
@@ -8,38 +8,52 @@ import FilterSidebar from '../components/Sidebars/FilterSidebar';
 import FilterModal from '../modals/FilterModal';
 import axios from 'axios';
 
-const Shop = () => {
-  const { category } = useParams();
+const SearchResultsPage = () => {
+  const location = useLocation();
+  const query = new URLSearchParams(location.search).get('query'); 
   const [filters, setFilters] = useState({});
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [availableColors, setAvailableColors] = useState([]);
+  const [availableSizes, setAvailableSizes] = useState([]); 
 
   const productsPerPage = 8;
 
   const fetchProducts = async (page = 1) => {
     try {
-      const response = await axios.get('http://localhost:3005/api/products', {
-        params: { ...filters, category, page, limit: productsPerPage },
+      const response = await axios.get('http://localhost:3005/api/search', {
+        params: { query, ...filters, page, limit: productsPerPage },
       });
-      setProducts(response.data.products || []);
+      const productsData = response.data || [];
+      setProducts(productsData);
+
+      const colors = new Set();
+      const sizes = new Set();
+      productsData.forEach(product => {
+        product.colors.forEach(color => colors.add(color));
+        product.sizes.forEach(size => sizes.add(size)); 
+      });
+
+      setAvailableColors([...colors]);
+      setAvailableSizes([...sizes]);    
       setTotalPages(response.data.totalPages || 1);
       setCurrentPage(response.data.currentPage || 1);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Erreur lors de la récupération des produits:', error);   
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProducts(currentPage);
-  }, [filters, category, currentPage]);
+    fetchProducts(currentPage); 
+  }, [filters, query, currentPage]);
 
   const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
+    setFilters(newFilters); 
     setCurrentPage(1); 
     setIsFilterModalOpen(false); 
   };
@@ -50,25 +64,27 @@ const Shop = () => {
     }
   };
 
-  const formatCategoryTitle = (category) => {
-    return category.replace(/-/g, ' ').replace(/^\w/, (c) => c.toUpperCase());
-  };
-
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
 
       <section className="bg-sky-600 text-white py-12">
         <div className="container mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold">{formatCategoryTitle(category)}</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold">Résultats de recherche pour : {query}</h1>
         </div>
       </section>
 
       <main className="flex-1 container mx-auto py-10 flex flex-col lg:flex-row gap-10">
+        {/* Filtres sur grand écran */}
         <aside className="hidden lg:block lg:w-1/4">
-          <FilterSidebar onFilterChange={handleFilterChange} category={category} />
+          <FilterSidebar
+            onFilterChange={handleFilterChange}
+            availableColorsFromSearch={availableColors}
+            availableSizesFromSearch={availableSizes} 
+          />
         </aside>
 
+        {/* Filtres sur mobile */}
         <button
           onClick={() => setIsFilterModalOpen(true)}
           className="lg:hidden bg-sky-600 text-white p-4 rounded-full fixed bottom-6 right-6 shadow-lg z-50"
@@ -77,20 +93,26 @@ const Shop = () => {
         </button>
 
         <FilterModal isOpen={isFilterModalOpen} onClose={() => setIsFilterModalOpen(false)}>
-          <FilterSidebar onFilterChange={handleFilterChange} category={category} />
+          <FilterSidebar
+            onFilterChange={handleFilterChange}
+            availableColorsFromSearch={availableColors}
+            availableSizesFromSearch={availableSizes} 
+          />
         </FilterModal>
 
+        {/* Liste des produits */}
         <div className="lg:w-3/4 w-full">
           {loading ? (
             <div className="text-center">Chargement des produits...</div>
-          ) : (
+          ) : products.length > 0 ? (
             <ProductList
               products={products}
-              category={category}
               currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
+              totalPages={totalPages}  
+              onPageChange={handlePageChange} 
             />
+          ) : (
+            <p className="text-center">Aucun produit disponible pour cette recherche.</p>
           )}
         </div>
       </main>
@@ -101,4 +123,4 @@ const Shop = () => {
   );
 };
 
-export default Shop;
+export default SearchResultsPage;
