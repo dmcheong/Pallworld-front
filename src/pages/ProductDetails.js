@@ -4,9 +4,13 @@ import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScrolltoTopButton from '../components/ScrollToTopButton';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { CartContext } from '../context/CartContext';
 import { jwtDecode } from 'jwt-decode';
+import ProductImages from '../components/Products/ProductImages';
+import ProductOptions from '../components/Products/ProductOptions';
+import ImageGeneration from '../components/Products/ImageGeneration';
+import CharacteristicsDropdown from '../components/Products/ProductCharacteristics'; 
+import ProductCustomization from '../components/Products/ProductCustomization'; 
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -14,32 +18,20 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [selectedProductSize, setSelectedProductSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
+  const [selectedImage, setSelectedImage] = useState('');
   const [selectedPosition, setSelectedPosition] = useState('');
   const [selectedCustomizationSize, setSelectedCustomizationSize] = useState('');
-  const [selectedImage, setSelectedImage] = useState('');
-  const [quantity, setQuantity] = useState(1);
-  const [showCharacteristics, setShowCharacteristics] = useState(false);
-  const [notification, setNotification] = useState('');
-  const [imageNotification, setImageNotification] = useState('');
-  const [imageNotificationType, setImageNotificationType] = useState(''); 
   const [promptText, setPromptText] = useState('');
   const [generatedImageUrl, setGeneratedImageUrl] = useState(null);
   const [remainingTokens, setRemainingTokens] = useState(null); 
   const { updateCart } = useContext(CartContext);
   const [loadingImageGeneration, setLoadingImageGeneration] = useState(false);
+  const [notification, setNotification] = useState(''); 
+  const [notificationType, setNotificationType] = useState('');
 
   // Vérifier si l'utilisateur est authentifié
   const token = localStorage.getItem('token');
   const isAuthenticated = !!token;
-
-  const fetchUserCredits = async (userId) => {
-    try {
-      const response = await axios.get(`http://localhost:3005/api/users/${userId}/credits`);
-      setRemainingTokens(response.data.credits);
-    } catch (error) {
-      console.error("Erreur lors de la récupération des crédits:", error);
-    }
-  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -69,112 +61,41 @@ const ProductDetails = () => {
       }
     };
 
+    const fetchUserCredits = async (userId) => {
+      try {
+        const response = await axios.get(`http://localhost:3005/api/users/${userId}/credits`);
+        setRemainingTokens(response.data.credits);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des crédits:", error);
+      }
+    };
+
     fetchProduct();
   }, [id, token]);
 
-  const handlePositionChange = (position) => {
-    setSelectedPosition(position);
-    const selectedOption = product.customizationOptions.find(option => option.position === position);
-    setSelectedCustomizationSize(selectedOption.customizationSize[0]);
-  };
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        setNotification('');
+        setNotificationType('');
+      }, 3000); 
 
-  const handleImageClick = (img) => {
-    setSelectedImage(img);
-  };
-
-  const toggleCharacteristics = () => {
-    setShowCharacteristics(!showCharacteristics);
-  };
-
-  const scrollToSection = () => {
-    const sectionId = isAuthenticated ? "image-generation-section" : "login-prompt-section";
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      return () => clearTimeout(timer); 
     }
-  };
+  }, [notification]);
 
-  const saveGeneratedImage = async (imageUrl) => {
-    try {
-      const decoded = jwtDecode(token);
-      const userId = decoded.userId;
-  
-      await axios.post('http://localhost:3005/api/generatedImages', {
-        userId,
-        imageUrl,
-        promptUsed: promptText,
-      });
-  
-      console.log('Image générée enregistrée avec succès dans l\'historique.');
-    } catch (error) {
-      console.error('Erreur lors de l\'enregistrement de l\'image générée:', error);
-    }
-  };
-  
-  const handleGenerateImage = async () => {
-    try {
-        if (!promptText) {
-            setImageNotification('Veuillez entrer une description pour générer une image.');
-            setImageNotificationType('error');
-            return;
-        }
-
-        if (!token) {
-            setImageNotification("Vous devez être connecté pour générer une image.");
-            setImageNotificationType('error');
-            return;
-        }
-
-        setLoadingImageGeneration(true); 
-
-        const decoded = jwtDecode(token);
-        const userId = decoded.userId;
-
-        const response = await axios.get('http://localhost:3009/generate-image', {
-            params: { text: promptText, userId: userId }
-        });
-
-        const imageUrl = response.data.imageUrl;
-        setGeneratedImageUrl(imageUrl);
-        setRemainingTokens(response.data.remainingTokens);
-
-        setImageNotification('Image générée avec succès !');
-        setImageNotificationType('success');
-
-        // Enregistrer l'image générée dans l'historique
-        saveGeneratedImage(imageUrl);
-
-    } catch (error) {
-        console.error('Erreur lors de la génération de l\'image:', error);
-
-        if (error.response && error.response.status === 400 && error.response.data.error.includes("tokens")) {
-            setImageNotification("Vous n'avez pas assez de tokens pour générer une image.");
-        } else if (error.response && error.response.status === 400 && error.response.data.error.includes("safety system")) {
-            setImageNotification("Votre description a été rejetée par notre système de sécurité. Veuillez reformuler votre description.");
-        } else {
-            setImageNotification("Erreur lors de la génération de l'image. Veuillez réessayer.");
-        }
-        setImageNotificationType('error');
-    } finally {
-        setLoadingImageGeneration(false); 
-    }
-  };
-  
-  const handleQuantityChange = (event) => {
-    setQuantity(parseInt(event.target.value));
-  };
-
-  const handleAddToCart = async () => {
-    if (!generatedImageUrl) { // Vérifie si une image a été générée
+  const handleAddToCart = () => {
+    if (!generatedImageUrl) {
       setNotification('Veuillez générer une image avant d\'ajouter le produit au panier.');
+      setNotificationType('error');
       return;
     }
-  
+
     const productDetails = {
       productId: product._id,
       name: product.name,
       price: product.price,
-      quantity,
+      quantity: 1,
       color: selectedColor,
       size: selectedProductSize,
       customization: {
@@ -183,40 +104,77 @@ const ProductDetails = () => {
         imageUrl: generatedImageUrl,
       },
     };
-  
+
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existingProductIndex = cart.findIndex(
       (item) =>
         item.productId === productDetails.productId &&
         item.color === productDetails.color &&
         item.size === productDetails.size &&
-        item.customization.position === productDetails.position &&
+        item.customization.position === productDetails.customization.position &&
         item.customization.customizationSize === productDetails.customization.customizationSize &&
         item.customization.imageUrl === productDetails.customization.imageUrl
     );
-  
+
     if (existingProductIndex >= 0) {
-      cart[existingProductIndex].quantity += quantity;
+      cart[existingProductIndex].quantity += 1;
     } else {
       cart.push(productDetails);
     }
-  
+
     localStorage.setItem('cart', JSON.stringify(cart));
-  
     updateCart(cart);
-  
-    setNotification('Produit ajouté au panier !');
-  
-    setTimeout(() => {
-      setNotification('');
-    }, 3000);
-  };  
+
+    setNotification('Produit ajouté au panier avec succès !');
+    setNotificationType('success');
+  };
+
+  const handleGenerateImage = async () => {
+    try {
+      if (!promptText) {
+        setNotification('Veuillez entrer une description pour générer une image.');
+        setNotificationType('error');
+        return;
+      }
+
+      setLoadingImageGeneration(true);
+      const decoded = jwtDecode(token);
+      const userId = decoded.userId;
+
+      const response = await axios.get('http://localhost:3009/generate-image', {
+        params: { text: promptText, userId: userId }
+      });
+
+      const imageUrl = response.data.imageUrl;
+      setGeneratedImageUrl(imageUrl);
+      setRemainingTokens(response.data.remainingTokens);
+
+      setNotification('Image générée avec succès !');
+      setNotificationType('success');
+
+    } catch (error) {
+      if (error.response && error.response.status === 400 && error.response.data.error.includes("tokens")) {
+        setNotification("Vous n'avez plus assez de tokens pour générer une image.");
+      } else if (error.response && error.response.status === 400 && error.response.data.error.includes("safety system")) {
+        setNotification("Votre description a été rejetée par notre système de sécurité. Veuillez reformuler.");
+      } else {
+        setNotification("Erreur lors de la génération de l'image.");
+      }
+      setNotificationType('error');
+    } finally {
+      setLoadingImageGeneration(false);
+    }
+  };
 
   const handleDownloadImage = () => {
-    const link = document.createElement('a');
-    link.href = generatedImageUrl;
-    link.download = 'generated_image.png';
-    link.click();
+    window.open(generatedImageUrl, '_blank'); 
+  };
+
+  const scrollToCustomization = () => {
+    const customizationSection = document.getElementById('customization-section');
+    if (customizationSection) {
+      customizationSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   if (loading) {
@@ -235,6 +193,13 @@ const ProductDetails = () => {
     <div className="min-h-screen bg-gray-100">
       <Header />
 
+      {/* Notifications/alertes */}
+      {notification && (
+        <div className={`fixed top-36 left-1/2 transform -translate-x-1/2 p-4 rounded-lg text-center shadow-lg z-50 ${notificationType === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}>
+          {notification}
+        </div>
+      )}
+
       {isAuthenticated && remainingTokens !== null && (
         <div className="bg-white shadow-lg rounded-lg p-4 text-center">
           <p className="text-gray-700">Vous avez <span className="font-bold text-sky-600">{remainingTokens}</span> tokens restants.</p>
@@ -243,39 +208,23 @@ const ProductDetails = () => {
 
       <main className="container mx-auto py-12 px-6 lg:px-16">
         {/* File d'Ariane */}
-        <nav className="text-gray-600 mb-8">
-          <ul className="flex space-x-2">
+        <nav className="text-gray-600 mb-8 break-words">
+          <ul className="flex flex-wrap space-x-2">
             <li><Link to="/" className="hover:underline hover:text-sky-600">Accueil</Link></li>
             <li>/</li>
             <li><Link to={`/shop/${product.category[0]?.name}`} className="hover:underline hover:text-sky-600">{capitalizeFirstLetter(product.category[0]?.name)}</Link></li>
             <li>/</li>
-            <li className='text-sky-600 font-semibold'>{product.name}</li>
+            <li className="text-sky-600 font-semibold">{product.name}</li>
           </ul>
         </nav>
 
         <section className="bg-white shadow-lg rounded-lg overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Image du produit */}
-          <section className="relative flex flex-col items-center">
-            <div className="relative w-full">
-              <img 
-                src={selectedImage} 
-                alt={product.name} 
-                className="w-full h-auto object-contain rounded-lg" 
-                style={{ maxHeight: '600px' }}
-              />
-            </div>
-            <div className="mt-4 flex space-x-2">
-              {product.images.map((img, index) => (
-                <img 
-                  key={index} 
-                  src={img} 
-                  alt={`${product.name} ${index}`} 
-                  onClick={() => handleImageClick(img)} 
-                  className={`w-16 h-16 object-cover rounded-lg border-2 ${selectedImage === img ? 'border-sky-600' : 'border-white'} shadow cursor-pointer hover:opacity-80 transition-opacity`}
-                />
-              ))}
-            </div>
-          </section>
+          {/* Image principale et miniatures */}
+          <ProductImages 
+            images={product.images} 
+            selectedImage={selectedImage} 
+            handleImageClick={setSelectedImage} 
+          />
 
           {/* Détails du produit */}
           <section className="p-8">
@@ -283,222 +232,60 @@ const ProductDetails = () => {
             <p className="text-gray-700 text-lg mb-6">{product.description}</p>
             <p className="text-3xl font-bold text-sky-600 mb-6">€{product.price}</p>
 
-            {/* Sélection de la couleur */}
-            {product.colors && product.colors.length > 0 && (
-              <section className="mb-6">
-                <label className="block text-gray-700 text-lg mb-2">Couleurs disponibles :</label>
-                <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2">
-                  {product.colors.map((color) => (
-                    <button 
-                      key={color} 
-                      onClick={() => setSelectedColor(color)}
-                      className={`px-6 py-2 rounded-lg border ${selectedColor === color ? 'bg-sky-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} cursor-pointer`}
-                    >
-                      {color}
-                    </button>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Sélection de la taille */}
-            {product.sizes && product.sizes.length > 0 && (
-              <section className="mb-6">
-                <label className="block text-gray-700 text-lg mb-2">Taille ou format :</label>
-                <div className="flex flex-wrap gap-2">
-                  {product.sizes.map((size) => (
-                    <button 
-                      key={size} 
-                      onClick={() => setSelectedProductSize(size)} 
-                      className={`px-6 py-2 rounded-lg text-sm border ${selectedProductSize === size ? 'bg-sky-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} cursor-pointer`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Quantité */}
-            <section className="">
-              <label className="block text-gray-700 text-lg mb-2">Quantité :</label>
-              <select 
-                className="p-2 border rounded mb-4 w-20" 
-                value={quantity} 
-                onChange={handleQuantityChange} 
-              >
-                {[...Array(10).keys()].map((i) => (
-                  <option key={i+1} value={i+1}>{i+1}</option>
-                ))}
-              </select>
-            </section>
+            {/* Sélection des couleurs et tailles */}
+            <ProductOptions
+              colors={product.colors}
+              sizes={product.sizes}
+              selectedColor={selectedColor}
+              setSelectedColor={setSelectedColor}
+              selectedProductSize={selectedProductSize}
+              setSelectedProductSize={setSelectedProductSize}
+            />
 
             {/* Bouton Personnaliser */}
-            {product.customizationOptions && product.customizationOptions.length > 0 && (
-              <button 
-                onClick={scrollToSection}
-                className="mt-4 bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 transition-colors duration-300"
-              >
-                Personnaliser
-              </button>
-            )}
+            <button
+              onClick={scrollToCustomization}
+              className="mt-4 bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 transition-colors duration-300"
+            >
+              Personnaliser
+            </button>
           </section>
         </section>
 
-         {/* Section Caractéristiques avec Accordéon */}
-         {product.characteristics && (
-          <section className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-4">
-            <button 
-              onClick={toggleCharacteristics}
-              className="text-lg font-semibold text-gray-700 flex justify-between items-center w-full py-2 rounded-lg focus:outline-none"
-            >
-              <span>Caractéristiques</span>
-              <span className='text-lg'>{showCharacteristics ? <FaChevronUp /> : <FaChevronDown />}</span>
-            </button>
-            {showCharacteristics && (
-              <ul className="mt-4 text-gray-700 text-md leading-relaxed">
-                {product.characteristics.split('\n').map((charac, index) => (
-                  <li key={index}>{charac.trim()}</li>
-                ))}
-              </ul>
-            )}
+        {/* Accordéon des caractéristiques */}
+        {product.characteristics && (
+          <section className="bg-white shadow-lg rounded-lg p-4 mt-8">
+            <CharacteristicsDropdown characteristics={product.characteristics} />
           </section>
         )}
 
-                {/* Section Génération d'image */}
-                {isAuthenticated ? (
-          <section id="image-generation-section" className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-8">
-            <h2 className="text-2xl font-bold mb-4">Génération d'image</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Colonne gauche : Champ texte et bouton */}
-              <div>
-                <label className="block text-gray-700 text-lg mb-2">Description pour générer l'image :</label>
-                <textarea 
-                  className="w-full p-2 border rounded mb-2" 
-                  rows="4" 
-                  placeholder="Entrez une description pour générer une image"
-                  value={promptText}
-                  onChange={(e) => setPromptText(e.target.value)}
-                />
+        {/* Génération d'images */}
+        <ImageGeneration 
+          isAuthenticated={isAuthenticated}
+          handleGenerateImage={handleGenerateImage}
+          handleDownloadImage={handleDownloadImage}
+          generatedImageUrl={generatedImageUrl}
+          loadingImageGeneration={loadingImageGeneration}
+          remainingTokens={remainingTokens}
+          promptText={promptText}
+          setPromptText={setPromptText}
+        />
 
-                {/* Message d'avertissement sur l'expiration */}
-                {generatedImageUrl && (
-                  <p className="text-xs text-gray-500 mb-4">
-                    Note: L'image générée expirera dans 2 heures. Veuillez la télécharger dès que possible.
-                  </p>
-                )}
-
-                {/* Affichage des tokens restants */}
-                {remainingTokens !== null && (
-                  <p className="mb-4 text-gray-700">Tokens restants : <span className="font-bold">{remainingTokens}</span></p>
-                )}
-
-                <button 
-                  onClick={handleGenerateImage}
-                  className="mt-2 bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 transition-colors duration-300"
-                >
-                  Générer l'image
-                </button>
-
-                {/* Notification pour la génération d'image */}
-                {imageNotification && (
-                  <div className={`p-4 rounded mt-4 text-center ${imageNotificationType === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}>
-                    {imageNotification}
-                  </div>
-                )}
-              </div>
-
-              {/* Colonne droite : Affichage et téléchargement de l'image générée */}
-              <div className="flex flex-col justify-center items-center">
-                {loadingImageGeneration ? (
-                  <div className="flex flex-col items-center">
-                    <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
-                    <p className="text-gray-600">Génération de l'image...</p>
-                  </div>
-                ) : (
-                  generatedImageUrl ? (
-                    <>
-                      <img 
-                        src={generatedImageUrl} 
-                        alt="Mon pal" 
-                        className="w-full h-56 rounded-lg object-contain mb-4" 
-                        onError={() => setNotification('Impossible de charger l\'image générée.')}
-                      />
-                      <button
-                        onClick={handleDownloadImage}
-                        className="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 transition-colors duration-300"
-                      >
-                        Télécharger l'image
-                      </button>
-                    </>
-                  ) : (
-                    <p className="text-gray-600">L'image générée apparaîtra ici.</p>
-                  )
-                )}
-              </div>
-            </div>
-          </section>
-        ) : (
-          <section id="login-prompt-section" className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-4">
-            <p className='text-lg font-semibold text-gray-700'>
-              <Link to="/connexion" className="text-sky-600 hover:underline">
-                Connectez-vous
-              </Link>
-              {' '}pour personnaliser votre produit.
-            </p>
-          </section>
-        )}
-
-        {/* Section de personnalisation */}
-        {isAuthenticated && product.customizationOptions && product.customizationOptions.length > 0 && (
-          <section id="customization-section" className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden p-8">
-            <h2 className="text-2xl font-bold mb-4">Personnalisation</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-              <div className="w-full">
-                <label className="block text-gray-700 text-lg mb-2">Position :</label>
-                <select 
-                  className="p-2 border rounded mb-4 w-full" 
-                  value={selectedPosition} 
-                  onChange={(e) => handlePositionChange(e.target.value)}
-                >
-                  {product.customizationOptions.map((option) => (
-                    <option key={option.position} value={option.position}>{option.position}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="w-full">
-                <label className="block text-gray-700 text-lg mb-2">Taille de personnalisation :</label>
-                <select 
-                  className="p-2 border rounded mb-4 w-full" 
-                  value={selectedCustomizationSize} 
-                  onChange={(e) => setSelectedCustomizationSize(e.target.value)}
-                >
-                  {product.customizationOptions
-                    .find(option => option.position === selectedPosition)
-                    .customizationSize.map((size) => (  
-                      <option key={size} value={size}>{size}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <button onClick={handleAddToCart} className="mt-4 bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 transition-colors duration-300">
-              Ajouter au panier
-            </button>
-
-            {/* Notification pour l'ajout au panier */}
-            {notification && (
-              <div className="bg-green-500 text-white p-4 rounded mt-4 text-center">
-                {notification}
-              </div>
-            )}
-          </section>
+        {/* Section Personnalisation */}
+        {isAuthenticated && product.customizationOptions && (
+          <ProductCustomization
+            customizationOptions={product.customizationOptions}
+            selectedPosition={selectedPosition}
+            setSelectedPosition={setSelectedPosition}
+            selectedCustomizationSize={selectedCustomizationSize}
+            setSelectedCustomizationSize={setSelectedCustomizationSize}
+            handleAddToCart={handleAddToCart}
+          />
         )}
 
         <ScrolltoTopButton />
       </main>
-      
+
       <Footer />
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaTimes } from 'react-icons/fa'; // Import the icon
+import { FaTimes } from 'react-icons/fa';
 
 const FilterModal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaTrashAlt } from 'react-icons/fa';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import SideImage from '../components/SideImage';
+import SideImage from '../components/Sidebars/SideImage';
 import Alert from '../components/Alert';
 import { CartContext } from '../context/CartContext';
 

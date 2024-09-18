@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import TextInput from '../components/TextInput';
-import FormButton from '../components/FormButton';
+import TextInput from '../components/Forms/TextInput';
+import FormButton from '../components/Forms/FormButton';
 import Alert from '../components/Alert';
 
 const ResetPassword = () => {

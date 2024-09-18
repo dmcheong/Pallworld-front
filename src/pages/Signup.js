@@ -3,10 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import SideImage from '../components/SideImage';
-import TextInput from '../components/TextInput';
-import SelectInput from '../components/SelectInput';
-import FormButton from '../components/FormButton';
+import SideImage from '../components/Sidebars/SideImage';
+import TextInput from '../components/Forms/TextInput';
+import SelectInput from '../components/Forms/SelectInput';
+import FormButton from '../components/Forms/FormButton';
 import Alert from '../components/Alert';
 
 const Signup = () => {

@@ -3,10 +3,10 @@ import emailjs from 'emailjs-com';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
-import TextInput from '../components/TextInput';
-import SelectInput from '../components/SelectInput';
-import TextArea from '../components/TextArea';
-import FormButton from '../components/FormButton';
+import TextInput from '../components/Forms/TextInput';
+import SelectInput from '../components/Forms/SelectInput';
+import TextArea from '../components/Forms/TextArea';
+import FormButton from '../components/Forms/FormButton';
 import Alert from '../components/Alert';
 
 const Contact = () => {

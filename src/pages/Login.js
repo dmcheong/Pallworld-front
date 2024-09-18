@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import SideImage from '../components/SideImage';
-import TextInput from '../components/TextInput';
-import FormButton from '../components/FormButton';
+import SideImage from '../components/Sidebars/SideImage';
+import TextInput from '../components/Forms/TextInput';
+import FormButton from '../components/Forms/FormButton';
 import { FcGoogle } from 'react-icons/fc';
 import Alert from '../components/Alert';
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import FormButton from '../components/FormButton';
-import TextInput from '../components/TextInput';
-import SelectInput from '../components/SelectInput';
+import FormButton from '../components/Forms/FormButton';
+import TextInput from '../components/Forms/TextInput';
+import SelectInput from '../components/Forms/SelectInput';
 
 const ProfileModal = ({
   modalIsOpen,

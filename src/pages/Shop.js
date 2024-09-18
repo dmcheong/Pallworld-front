@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import ProductList from '../components/ProductList';
+import ProductList from '../components/Products/ProductList';
 import ScrollToTopButton from '../components/ScrollToTopButton';
-import FilterSidebar from '../components/FilterSidebar';
+import FilterSidebar from '../components/Sidebars/FilterSidebar';
 import FilterModal from '../modals/FilterModal';
 import axios from 'axios';
 

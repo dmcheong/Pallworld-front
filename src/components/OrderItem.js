@@ -79,11 +79,14 @@ const OrderItem = ({ order, isOpen, onToggle }) => {
                               <p className="text-gray-600 text-sm">
                                 Taille de la personnalisation : <span className="font-medium">{option.customizationSize}</span>
                               </p>
+                              <p className="text-gray-600 text-sm">
+                                Prompt utilisé : <span className="font-medium">{option.promptUsed}</span>
+                              </p>
                               {option.imageUrl && (
                                 <div className="mt-2">
                                   <img
                                     src={option.imageUrl}
-                                    alt="Personnalisation"
+                                    alt="Pal généré"
                                     className="w-24 h-24 object-contain border border-gray-300 rounded-lg shadow-sm"
                                   />
                                 </div>

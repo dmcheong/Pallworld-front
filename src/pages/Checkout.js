@@ -4,7 +4,7 @@ import axios from 'axios';
 import { CartContext } from '../context/CartContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import TextInput from '../components/TextInput';
+import TextInput from '../components/Forms/TextInput';
 import { FaArrowLeft } from 'react-icons/fa';
 import { jwtDecode } from 'jwt-decode';
 

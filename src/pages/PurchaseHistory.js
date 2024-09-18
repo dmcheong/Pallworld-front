@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import SidebarMenu from '../components/UserSidebar';
+import SidebarMenu from '../components/Sidebars/UserSidebar';
 import OrderItem from '../components/OrderItem';
 import { jwtDecode } from 'jwt-decode';
 

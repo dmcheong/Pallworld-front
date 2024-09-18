@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import SidebarMenu from '../components/UserSidebar';
+import SidebarMenu from '../components/Sidebars/UserSidebar';
 import { jwtDecode } from 'jwt-decode';
 import { FaTrashAlt, FaDownload } from 'react-icons/fa';
 
@@ -98,7 +98,7 @@ const GeneratedImagesHistory = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {images.map((image) => (
                   <div key={image._id} className="bg-gray-100 p-4 rounded-lg shadow relative">
-                    <img src={image.imageUrl} alt="Pal générée" className="w-full h-auto rounded-md mb-2" />
+                    <img src={image.imageUrl} alt="Pal généré" className="w-full h-auto rounded-md mb-2" />
                     <p className="text-gray-600">Générée le : {new Date(image.dateGenerated).toLocaleDateString()}</p>
                     <p className="text-gray-600">Prompt utilisé : {image.promptUsed}</p>
                     <div className="absolute top-2 right-2 space-x-2">
