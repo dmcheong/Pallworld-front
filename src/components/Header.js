@@ -186,7 +186,7 @@ function Header() {
               </div>
             )}
 
-            <Link to="/promos" className="block" onClick={handleLinkClick}>PROMOS</Link>
+            <Link to="/shop/promos" className="block" onClick={handleLinkClick}>PROMOS</Link>
 
             {isAuthenticated && (
               <Link to="/tokens" className="block" onClick={handleLinkClick}>TOKENS</Link>
@@ -269,7 +269,7 @@ function Header() {
             )}
           </div>
 
-          <Link to="/promos" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600" onClick={handleLinkClick}>
+          <Link to="/shop/promos" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600" onClick={handleLinkClick}>
             PROMOS
           </Link>
 

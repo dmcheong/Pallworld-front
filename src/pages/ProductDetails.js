@@ -230,7 +230,17 @@ const ProductDetails = () => {
           <section className="p-8">
             <h1 className="text-4xl font-extrabold mb-4">{product.name}</h1>
             <p className="text-gray-700 text-lg mb-6">{product.description}</p>
-            <p className="text-3xl font-bold text-sky-600 mb-6">€{product.price}</p>
+
+            <div className="mb-6">
+              {product.discountPrice ? (
+                <div className="flex items-center space-x-4">
+                  <p className="text-red-500 line-through text-xl">€{product.price}</p>
+                  <p className="text-sky-600 text-3xl font-bold">€{product.discountPrice}</p>
+                </div>
+              ) : (
+                <p className="text-3xl font-bold text-sky-600">€{product.price}</p>
+              )}
+            </div>
 
             {/* Sélection des couleurs et tailles */}
             <ProductOptions

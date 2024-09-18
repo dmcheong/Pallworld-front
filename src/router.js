@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Tokens from './pages/Tokens';
-import Promos from './pages/Promos';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Success from './pages/Success';
@@ -40,7 +39,6 @@ const AppRouter = () => {
 
         {/* Shop */}
         <Route path="/shop/:category" element={<Shop />} />
-        <Route path="/promos" element={<Promos />} />
         <Route path="/product/:id" element={<ProductDetails />} />
 
         {/* Panier */}

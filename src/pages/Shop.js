@@ -41,8 +41,8 @@ const Shop = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    setCurrentPage(1); // Reset to first page when filters change
-    setIsFilterModalOpen(false); // Close modal when filters are applied
+    setCurrentPage(1); 
+    setIsFilterModalOpen(false); 
   };
 
   const handlePageChange = (newPage) => {
@@ -91,6 +91,7 @@ const Shop = () => {
           ) : (
             <ProductList
               products={products}
+              category={category}
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}

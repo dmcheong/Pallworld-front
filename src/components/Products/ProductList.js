@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductCard from './ProductCard';
 
-const ProductList = ({ products, currentPage, totalPages, onPageChange }) => {
+const ProductList = ({ products, category, currentPage, totalPages, onPageChange }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-4">
       {products.length > 0 ? (
@@ -11,7 +11,9 @@ const ProductList = ({ products, currentPage, totalPages, onPageChange }) => {
             id={product._id}
             image={product.images[0] || 'comingsoon.jpg'}
             title={product.name}
-            price={product.price}
+            price={product.discountPrice ? product.discountPrice : product.price}
+            oldPrice={product.discountPrice ? product.price : null}
+            category={category} 
           />
         ))
       ) : (
