@@ -14,7 +14,8 @@ const ProductCarousel = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get('http://localhost:3005/api/products');
-        setProducts(response.data.slice(0, 10)); // Limite à 10 produits pour le carrousel
+        console.log(response.data);
+        setProducts(response.data.products.slice(0, 10));
         setLoading(false);
       } catch (error) {
         console.error('Erreur lors de la récupération des produits:', error);
@@ -75,20 +76,26 @@ const ProductCarousel = () => {
       <div className="container mx-auto">
         <Slider {...settings}>
           {products.map((product) => (
-            <div key={product._id} className="p-4">
-              <div 
-                className="border rounded-lg p-4 flex flex-col items-center shadow-lg transform transition-transform duration-300 hover:scale-105 hover:z-10 cursor-pointer"
-                onClick={() => handleProductClick(product._id)}
-              >
-                <img
-                  src={product.images[0]}
-                  alt={product.name}
-                  className="h-56 w-full object-cover mb-4 rounded-lg"
-                />
-                <h3 className="text-lg font-semibold">{product.name}</h3>
-                <p className="mt-2">€{product.price}</p>
+            product.images && product.images[0] && product.name ? (
+              <div key={product._id} className="p-4">
+                <div 
+                  className="border rounded-lg p-4 flex flex-col items-center shadow-lg transform transition-transform duration-300 hover:scale-105 hover:z-10 cursor-pointer"
+                  onClick={() => handleProductClick(product._id)}
+                >
+                  <img
+                    src={product.images[0]}
+                    alt={product.name}
+                    className="h-72 w-full object-contain mb-4 rounded-lg"
+                  />
+                  <h3 className="text-lg font-semibold">{product.name}</h3>
+                  <p className="mt-2">€{product.price}</p>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div key={product._id} className="p-4">
+                <p className="text-red-500">Produit invalide</p>
+              </div>
+            )
           ))}
         </Slider>
       </div>
