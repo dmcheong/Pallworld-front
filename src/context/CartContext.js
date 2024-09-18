@@ -18,8 +18,24 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(newCart));
   };
 
+  const addToCart = (product) => {
+    const updatedCart = [...cart];
+    const productIndex = updatedCart.findIndex((item) => item.productId === product.productId);
+
+    // Check if product already exists in cart
+    if (productIndex >= 0) {
+      updatedCart[productIndex].quantity += 1;
+    } else {
+      // Use discount price if available
+      const price = product.discountPrice ? product.discountPrice : product.price;
+      updatedCart.push({ ...product, price });
+    }
+    
+    updateCart(updatedCart);
+  };
+
   return (
-    <CartContext.Provider value={{ cart, cartCount, updateCart }}>
+    <CartContext.Provider value={{ cart, cartCount, updateCart, addToCart }}>
       {children}
     </CartContext.Provider>
   );

@@ -126,7 +126,7 @@ const Home = () => {
             </div>
           </Link>
 
-          <Link to="/promos" className="relative group transform transition-transform hover:scale-105">
+          <Link to="/shop/promos" className="relative group transform transition-transform hover:scale-105">
             <div className="overflow-hidden rounded-lg shadow-lg">
               <img src={promos} alt="Promos" className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity" loading="lazy" />
             </div>
