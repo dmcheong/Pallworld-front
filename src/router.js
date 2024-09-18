@@ -31,7 +31,7 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Home />} />
 
-        {/* Users */}
+        {/* Utilisateurs */}
         <Route path="/connexion" element={<Login />} />
         <Route path="/inscription" element={<Signup />} />
         <Route path="/verifier-mon-compte" element={<Verify />} />
@@ -41,7 +41,6 @@ const AppRouter = () => {
         {/* Shop */}
         <Route path="/shop/:category" element={<Shop />} />
         <Route path="/promos" element={<Promos />} />
-        <Route path="/tokens" element={<Tokens />} />
         <Route path="/product/:id" element={<ProductDetails />} />
 
         {/* Panier */}
@@ -49,12 +48,13 @@ const AppRouter = () => {
         <Route path="/success" element={<Success />} />
         <Route path="/cancel" element={<Cancel />} /> 
 
-        {/* Static pages */}
+        {/* Pages statiques */}
         <Route path="/faq" element={<Faq />} />
         <Route path="/politique-de-retour" element={<Retour />} />
         <Route path="/livraison" element={<Shipping />} />
         <Route path="/contact" element={<Contact />} />
 
+        {/* Routes protégées */}
         <Route
           path="/profil"
           element={
@@ -84,6 +84,14 @@ const AppRouter = () => {
           element={
             <PrivateRoute>
               <Checkout />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tokens"
+          element={
+            <PrivateRoute>
+              <Tokens  />
             </PrivateRoute>
           }
         />

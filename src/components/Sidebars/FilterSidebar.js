@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const FilterSidebar = ({ onFilterChange, category }) => {
   const [filters, setFilters] = useState({
-    color: '', // Modifié pour accepter une seule couleur
+    color: '',
     size: '',
     minPrice: 0,
     maxPrice: 100,
@@ -41,7 +41,7 @@ const FilterSidebar = ({ onFilterChange, category }) => {
   const handleColorClick = (color) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      color: prevFilters.color === color ? '' : color, // Un seul choix de couleur à la fois
+      color: prevFilters.color === color ? '' : color,
     }));
   };
 

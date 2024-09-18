@@ -31,17 +31,10 @@ function Tokens() {
     try {
       const userId = localStorage.getItem('userId');
 
-      if (!userId) {
-        setError('Connectez-vous pour acheter des tokens.');
-        setLoading(false);
-        return;
-      }
-
-      // Définir les informations pour la session de paiement
       const items = [
         {
           name: `Pack de ${selectedOption.quantity} Token${selectedOption.quantity > 1 ? 's' : ''}`,
-          amount: selectedOption.price * 100, // Convertir en centimes pour Stripe
+          amount: selectedOption.price * 100,
           quantity: 1,
         },
       ];
@@ -64,7 +57,7 @@ function Tokens() {
   };
 
   if (successUrl) {
-    window.location.href = successUrl; // Redirection vers Stripe Checkout
+    window.location.href = successUrl;
   }
 
   return (

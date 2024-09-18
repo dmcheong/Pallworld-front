@@ -187,7 +187,11 @@ function Header() {
             )}
 
             <Link to="/promos" className="block" onClick={handleLinkClick}>PROMOS</Link>
-            <Link to="/tokens" className="block" onClick={handleLinkClick}>TOKENS</Link>
+
+            {isAuthenticated && (
+              <Link to="/tokens" className="block" onClick={handleLinkClick}>TOKENS</Link>
+            )}
+
             <Link to="/contact" className="block" onClick={handleLinkClick}>CONTACT</Link>
 
             {isAuthenticated ? (
@@ -269,9 +273,11 @@ function Header() {
             PROMOS
           </Link>
 
-          <Link to="/tokens" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600" onClick={handleLinkClick}>
-            TOKENS
-          </Link>
+          {isAuthenticated && (
+            <Link to="/tokens" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600" onClick={handleLinkClick}>
+              TOKENS
+            </Link>
+          )}
 
           <Link to="/contact" className="text-sm sm:text-base hover:underline hover:font-medium hover:text-sky-600" onClick={handleLinkClick}>
             CONTACT
