@@ -114,6 +114,20 @@ const Profile = () => {
     }
   };
 
+  const resetUserData = () => {
+    const token = localStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.userId;
+
+    axios.get(`http://localhost:3005/api/users/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }).then((response) => {
+      setUserData(response.data);
+    }).catch((error) => {
+      console.error('Erreur lors du rechargement des données utilisateur :', error);
+    });
+  };
+
   if (loading) {
     return <p className="text-center mt-8">Chargement...</p>;
   }
@@ -188,6 +202,8 @@ const Profile = () => {
         setPasswordData={setPasswordData}
         handlePasswordChange={handlePasswordChange}
         handlePasswordSubmit={handlePasswordSubmit}
+        // Ajout de la fonction de réinitialisation après fermeture du modal
+        resetUserData={resetUserData}
       />
     </div>
   );

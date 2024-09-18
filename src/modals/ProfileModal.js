@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import FormButton from '../components/FormButton';
 import TextInput from '../components/TextInput';
@@ -22,42 +22,60 @@ const ProfileModal = ({
     "République tchèque", "Roumanie", "Slovaquie", "Slovénie", "Suède"
   ];
 
+  const [localUserData, setLocalUserData] = useState(userData);
+
+  useEffect(() => {
+    if (modalIsOpen) {
+      setLocalUserData(userData);
+    }
+  }, [modalIsOpen, userData]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUserData((prevData) => ({
+    setLocalUserData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
+  const handleCancel = () => {
+    setUserData(userData);
+    setModalIsOpen(false);
+  };
+
+  const handleSave = () => {
+    setUserData(localUserData);
+    handleSubmit(); 
+  };
+
   return (
     <Modal
       isOpen={modalIsOpen}
-      onRequestClose={() => setModalIsOpen(false)}
       contentLabel="Modifier le profil"
       className="modal"
       overlayClassName="modal-overlay"
+      shouldCloseOnOverlayClick={false}
     >
       <div className="modal-content">
         <div>
           <h2 className="text-2xl font-bold mb-4">Modifier le profil</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSave}>
             <TextInput
               label="Nom"
               name="lastName"
-              value={userData.lastName || ''}
+              value={localUserData.lastName || ''}
               onChange={handleInputChange}
             />
             <TextInput
               label="Prénom"
               name="firstName"
-              value={userData.firstName || ''}
+              value={localUserData.firstName || ''}
               onChange={handleInputChange}
             />
             <TextInput
               label="E-mail"
               name="email"
-              value={userData.email || ''}
+              value={localUserData.email || ''}
               onChange={handleInputChange}
               type="email"
               disabled
@@ -65,38 +83,38 @@ const ProfileModal = ({
             <TextInput
               label="Téléphone"
               name="phone"
-              value={userData.phone || ''}
+              value={localUserData.phone || ''}
               onChange={handleInputChange}
             />
             <TextInput
               label="Adresse"
               name="address"
-              value={userData.address || ''}
+              value={localUserData.address || ''}
               onChange={handleInputChange}
             />
             <TextInput
               label="Ville"
               name="city"
-              value={userData.city || ''}
+              value={localUserData.city || ''}
               onChange={handleInputChange}
             />
             <TextInput
               label="Code Postal"
               name="codePostal"
-              value={userData.codePostal || ''}
+              value={localUserData.codePostal || ''}
               onChange={handleInputChange}
             />
             <SelectInput
               label="Pays"
               name="country"
-              value={userData.country || ''}
+              value={localUserData.country || ''}
               onChange={handleInputChange}
               options={europeanCountries}
               required
             />
             <div className="form-buttons mt-4">
               <FormButton text="Enregistrer" />
-              <FormButton text="Annuler" type="button" onClick={() => setModalIsOpen(false)} color="gray" />
+              <FormButton text="Annuler" type="button" onClick={handleCancel} color="gray" />
             </div>
           </form>
         </div>
@@ -119,7 +137,7 @@ const ProfileModal = ({
             />
             <div className="form-buttons mt-4">
               <FormButton text="Enregistrer" />
-              <FormButton text="Annuler" type="button" onClick={() => setModalIsOpen(false)} color="gray"  />
+              <FormButton text="Annuler" type="button" onClick={handleCancel} color="gray" />
             </div>
           </form>
         </div>
