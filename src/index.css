@@ -78,7 +78,7 @@ code {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Fond assombri */
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
 }
 
@@ -91,10 +91,10 @@ code {
   padding: 20px;
   border-radius: 8px;
   z-index: 1001;
-  width: 90%; /* Largeur ajustée pour la réactivité */
-  max-width: 800px; /* Largeur maximale augmentée pour s'adapter aux deux colonnes */
-  max-height: 90vh; /* Hauteur maximale pour éviter que le modal dépasse l'écran */
-  overflow-y: auto; /* Permet de faire défiler si le contenu dépasse */
+  width: 90%;
+  max-width: 800px; 
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal-content {
@@ -142,10 +142,9 @@ code {
   max-width: 150px;
 }
 
-/* Media Query pour écrans plus petits */
 @media (max-width: 768px) {
   .modal-content {
-    grid-template-columns: 1fr; /* Passe à une colonne */
+    grid-template-columns: 1fr;
   }
 }
 
