@@ -32,7 +32,7 @@ const ImageGeneration = ({
 
               {generatedImageUrl && (
                 <p className="text-xs text-gray-500 mb-4">
-                  Note: L'image générée expirera dans 2 heures. Veuillez la télécharger dès que possible.
+                  Note: L'image générée expirera dans 2 heures, veuillez la télécharger dès que possible. Elle sera également disponible dans votre historique de commandes.
                 </p>
               )}
 

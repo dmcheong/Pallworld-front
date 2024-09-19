@@ -116,7 +116,6 @@ function Header() {
                     >
                       <Link to="/profil" className="block px-4 py-2 hover:bg-gray-200 transition-colors duration-200" onClick={handleLinkClick}>Profil</Link>
                       <Link to="/historique" className="block px-4 py-2 hover:bg-gray-200 transition-colors duration-200" onClick={handleLinkClick}>Historique de commande</Link>
-                      <Link to="/mes-images" className="block px-4 py-2 hover:bg-gray-200 transition-colors duration-200" onClick={handleLinkClick}>Historique des images générées</Link>
                       <button onClick={() => { handleLogout(); handleLinkClick(); }} className="w-full text-left px-4 py-2 hover:bg-gray-200 transition-colors duration-200">Déconnexion</button>
                     </div>
                   )}
@@ -203,7 +202,6 @@ function Header() {
                   <div className="ml-4 mt-4 space-y-2 z-50 relative">
                     <Link to="/profil" className="block" onClick={handleLinkClick}>Profil</Link>
                     <Link to="/historique" className="block" onClick={handleLinkClick}>Historique de commande</Link>
-                    <Link to="/mes-images" className="block" onClick={handleLinkClick}>Historique des images générées</Link>
                     <button onClick={() => { handleLogout(); handleLinkClick(); }} className="w-full text-left">Déconnexion</button>
                   </div>
                 )}

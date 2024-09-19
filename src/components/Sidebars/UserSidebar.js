@@ -57,18 +57,6 @@ const UserSidebar = () => {
             Historique de commandes
           </NavLink>
 
-          <NavLink
-            to="/mes-images"
-            className={({ isActive }) =>
-              `flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition ${
-                isActive ? 'font-bold text-sky-600' : ''
-              }`
-            }
-          >
-            <FaImages className="mr-3" /> {/* Utiliser l'icône FaImages */}
-            Historique des images générées
-          </NavLink>
-
           {/* Bouton de déconnexion */}
           <button
             onClick={handleLogout}
