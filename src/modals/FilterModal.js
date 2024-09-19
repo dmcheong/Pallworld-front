@@ -21,11 +21,10 @@ const FilterModal = ({ isOpen, onClose, children }) => {
       <div className="bg-white rounded-lg w-full max-w-lg mx-auto p-6 relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition-colors"
+          className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition-colors z-50"
         >
           <FaTimes size={24} />
         </button>
-
         {children}
       </div>
     </div>
