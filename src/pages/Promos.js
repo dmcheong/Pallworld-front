@@ -4,7 +4,6 @@ import Footer from '../components/Footer';
 import ScrollToTopButton from '../components/ScrollToTopButton';
 import ProductCard from '../components/Products/ProductCard'; 
 import axios from 'axios';
-
 const Promos = () => {
   const [promoProducts, setPromoProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +13,7 @@ const Promos = () => {
 
   const fetchPromoProducts = async (page = 1) => {
     try {
-      const response = await axios.get('http://localhost:3005/api/products/promos', {
+      const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/products/promos`, {
         params: { page, limit: productsPerPage },
       });
       setPromoProducts(response.data.products || []);

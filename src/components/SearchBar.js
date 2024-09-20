@@ -40,7 +40,7 @@ function SearchBar() {
     setLoading(true);
 
     try {
-      const response = await axios.get('http://localhost:3005/api/search', {
+      const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/search`, {
         params: { query }
       });
       setSearchResults(response.data);

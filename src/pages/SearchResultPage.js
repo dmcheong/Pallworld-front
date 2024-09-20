@@ -24,7 +24,7 @@ const SearchResultsPage = () => {
 
   const fetchProducts = async (page = 1) => {
     try {
-      const response = await axios.get('http://localhost:3005/api/search', {
+      const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/search`, {
         params: { query, ...filters, page, limit: productsPerPage },
       });
       const productsData = response.data || [];

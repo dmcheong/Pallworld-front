@@ -34,7 +34,7 @@ const Checkout = () => {
           const decodedToken = jwtDecode(token);
           const userId = decodedToken.userId;
 
-          const response = await axios.get(`http://localhost:3005/api/users/${userId}`, {
+          const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/users/${userId}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
 
@@ -68,7 +68,7 @@ const Checkout = () => {
       const token = localStorage.getItem('token');
       const decodedToken = jwtDecode(token);
     
-      const response = await axios.post('http://localhost:3010/create-checkout-session', {
+      const response = await axios.post(`http://localhost:${process.env.REACT_APP_PORT_STRIPE}/create-checkout-session`, {
         items: cart.map((item) => ({
           productId: item.productId,
           name: item.name,

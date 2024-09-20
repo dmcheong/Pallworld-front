@@ -23,7 +23,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3005/api/users/signin', formData);
+      const response = await axios.post(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/users/signin`, formData);
 
       if (response.status === 200) {
         // Stocker l'userId et le token dans le localStorage
@@ -38,7 +38,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:3006/auth/google'; 
+    window.location.href = `http://localhost:${process.env.REACT_APP_PORT_OAUTH}/auth/google`; 
   };
 
   return (

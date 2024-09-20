@@ -13,7 +13,7 @@ const ProductCarousel = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:3005/api/products');
+        const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/products`);
         console.log(response.data);
         setProducts(response.data.products.slice(0, 10));
         setLoading(false);

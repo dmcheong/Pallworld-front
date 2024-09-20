@@ -30,7 +30,7 @@ const Profile = () => {
         const decodedToken = jwtDecode(token);
         const userId = decodedToken.userId;
 
-        const response = await axios.get(`http://localhost:3005/api/users/${userId}`, {
+        const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/users/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -49,7 +49,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:3005/api/users/${userData._id}`, userData, {
+      await axios.put(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/users/${userData._id}`, userData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -81,7 +81,7 @@ const Profile = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:3005/api/users/${userData._id}/password`, {
+      await axios.put(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/users/${userData._id}/password`, {
         newPassword: passwordData.newPassword,
       }, {
         headers: { Authorization: `Bearer ${token}` },
@@ -101,7 +101,7 @@ const Profile = () => {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:3005/api/users/${userData._id}`, {
+      await axios.delete(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/users/${userData._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -119,7 +119,7 @@ const Profile = () => {
     const decodedToken = jwtDecode(token);
     const userId = decodedToken.userId;
 
-    axios.get(`http://localhost:3005/api/users/${userId}`, {
+    axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     }).then((response) => {
       setUserData(response.data);

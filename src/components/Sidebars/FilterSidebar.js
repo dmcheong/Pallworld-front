@@ -15,7 +15,7 @@ const FilterSidebar = ({ onFilterChange, category, availableColorsFromSearch = [
     if (!availableColorsFromSearch.length && !availableSizesFromSearch.length && category) {
       const fetchSizes = async () => {
         try {
-          const response = await axios.get('http://localhost:3005/api/products/sizes', {
+          const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/products/sizes`, {
             params: { category },
           });
           setAvailableSizes(response.data.sizes);
@@ -26,7 +26,7 @@ const FilterSidebar = ({ onFilterChange, category, availableColorsFromSearch = [
 
       const fetchColors = async () => {
         try {
-          const response = await axios.get('http://localhost:3005/api/products/colors', {
+          const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/products/colors`, {
             params: { category },
           });
           setAvailableColors(response.data.colors);

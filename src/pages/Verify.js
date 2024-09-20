@@ -14,7 +14,7 @@ const Verify = () => {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const response = await axios.post('http://localhost:3005/api/users/verify', { token });
+        const response = await axios.post(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/users/verify`, { token });
         setMessage(response.data.message);
         setTimeout(() => {
           navigate('/connexion');

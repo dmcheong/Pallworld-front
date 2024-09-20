@@ -17,7 +17,7 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3005/api/users/forgot-password', { email });
+      const response = await axios.post(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/users/forgot-password`, { email });
       setAlert({ message: 'Vérifiez votre email pour le lien de réinitialisation.', type: 'success' });
     } catch (error) {
       setAlert({ message: error.response?.data?.message || 'Erreur lors de la demande.', type: 'error' });

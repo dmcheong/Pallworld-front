@@ -22,7 +22,7 @@ const ResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3005/api/users/reset-password', { token, password });
+      await axios.post(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/users/reset-password`, { token, password });
       setAlert({ message: 'Mot de passe mis à jour avec succès.', type: 'success' });
       setTimeout(() => {
         navigate('/connexion');

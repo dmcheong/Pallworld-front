@@ -39,7 +39,7 @@ function Tokens() {
         },
       ];
 
-      const response = await axios.post('http://localhost:3010/create-checkout-session', {
+      const response = await axios.post(`http://localhost:${process.env.REACT_APP_PORT_STRIPE}/create-checkout-session`, {
         items,
         userId,
         success_url: 'http://localhost:3001/success',

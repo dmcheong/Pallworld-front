@@ -21,7 +21,7 @@ const Shop = () => {
 
   const fetchProducts = async (page = 1) => {
     try {
-      const response = await axios.get('http://localhost:3005/api/products', {
+      const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/products`, {
         params: { ...filters, category, page, limit: productsPerPage },
       });
       setProducts(response.data.products || []);

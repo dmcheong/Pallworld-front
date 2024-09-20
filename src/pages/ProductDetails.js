@@ -35,7 +35,7 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:3005/api/products/${id}`);
+        const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/products/${id}`);
         setProduct(response.data);
         setSelectedImage(response.data.images[0]);
         setLoading(false);
@@ -62,7 +62,7 @@ const ProductDetails = () => {
 
     const fetchUserCredits = async (userId) => {
       try {
-        const response = await axios.get(`http://localhost:3005/api/users/${userId}/credits`);
+        const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_BDD_API}/api/users/${userId}/credits`);
         setRemainingTokens(response.data.credits);
       } catch (error) {
         console.error("Erreur lors de la récupération des crédits:", error);
@@ -140,7 +140,7 @@ const ProductDetails = () => {
       const decoded = jwtDecode(token);
       const userId = decoded.userId;
 
-      const response = await axios.get('http://localhost:3009/generate-image', {
+      const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT_IA_REQUEST}/generate-image`, {
         params: { text: promptText, userId: userId }
       });
 
