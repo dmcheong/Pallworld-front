@@ -42,8 +42,8 @@ function Tokens() {
       const response = await axios.post('http://localhost:3010/create-checkout-session', {
         items,
         userId,
-        success_url: 'http://localhost:3000/success',
-        cancel_url: 'http://localhost:3000/cancel',
+        success_url: 'http://localhost:3001/success',
+        cancel_url: 'http://localhost:3001/cancel',
       });
 
       setSuccessUrl(response.data.sessionId);

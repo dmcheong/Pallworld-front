@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FaUser, FaHistory, FaBars, FaSignOutAlt, FaImages } from 'react-icons/fa';
+import { FaUser, FaHistory, FaBars, FaSignOutAlt } from 'react-icons/fa';
 
 const UserSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
