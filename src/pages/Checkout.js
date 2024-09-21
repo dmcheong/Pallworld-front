@@ -83,8 +83,8 @@ const Checkout = () => {
         street: address.street,
         city: address.city,
         postalCode: address.postalCode, 
-        success_url: 'http://localhost:3001/success',
-        cancel_url: 'http://localhost:3001/cancel',
+        success_url: `http://localhost:${process.env.PORT}/success`,
+        cancel_url: `http://localhost:${process.env.PORT}/cancel`,
       });
       
       window.location.href = response.data.sessionId;
