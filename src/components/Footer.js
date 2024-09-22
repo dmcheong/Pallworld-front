@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/logos/logo-rect.png';
 
 const Footer = () => {
+  const token = localStorage.getItem('token');
+  const isAuthenticated = !!token;
+  
   return (
     <footer className="text-black py-8 bg-gray-100">
       <div className="container mx-auto grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-8">
@@ -18,28 +21,18 @@ const Footer = () => {
           <h3 className="font-bold mb-2">PRODUITS</h3>
           <ul>
             <li>
-              <Link to="/shop/textile" className="hover:underline hover:font-semibold transition-colors duration-300">
-                Textile
-              </Link>
-            </li>
-
-            <li>
-              <Link to="/shop/goodies" className="hover:underline hover:font-semibold transition-colors duration-300">
-                Goodies
-              </Link>
-            </li>
-
-            <li>
               <Link to="/shop/promos" className="hover:underline hover:font-semibold transition-colors duration-300">
                 Promos
               </Link>
             </li>
 
-            <li>
-              <Link to="/tokens" className="hover:underline hover:font-semibold transition-colors duration-300">
-                Tokens
-              </Link>
-            </li>
+            {isAuthenticated && (
+              <li>
+                <Link to="/tokens" className="hover:underline hover:font-semibold transition-colors duration-300">
+                  Tokens
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
 
