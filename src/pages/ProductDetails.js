@@ -252,12 +252,14 @@ const ProductDetails = () => {
             />
 
             {/* Bouton Personnaliser */}
-            <button
+            {isAuthenticated && (
+              <button
               onClick={scrollToCustomization}
               className="mt-4 bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 transition-colors duration-300"
-            >
+              >
               Personnaliser
-            </button>
+              </button>
+            )}
           </section>
         </section>
 
